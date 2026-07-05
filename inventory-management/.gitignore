@@ -4,6 +4,25 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Local secrets and environment overrides
+.env
+.env.*
+*.env
+application-local.properties
+application-dev.properties
+
+# Logs and transient files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
 ### STS ###
 .apt_generated
 .classpath
@@ -19,6 +38,13 @@ target/
 *.iml
 *.ipr
 
+# VS Code workspace settings
+.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -28,6 +54,3 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
-### VS Code ###
-.vscode/
