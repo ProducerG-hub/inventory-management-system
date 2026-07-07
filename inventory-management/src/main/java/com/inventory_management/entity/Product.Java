@@ -1,0 +1,43 @@
+package com.inventory_management.entity;
+
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "products")
+public class Product {
+    @Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Column(name = "product_id")
+private Integer productId;
+
+@Column(name = "product_name", nullable = false)
+private String productName;
+
+@Column(name = "buying_price", nullable = false)
+private BigDecimal buyingPrice;
+
+@Column(name = "selling_price", nullable = false)
+private BigDecimal sellingPrice;
+
+@Column(nullable = false)
+private Integer quantity;
+
+@Column(name = "is_active")
+private Boolean isActive;
+
+@Column(name = "created_at")
+private LocalDateTime createdAt;
+
+//Relationship with Category
+@ManyToOne
+@JoinColumn(name = "category_id")
+private Category category;
+
+//Relationship with Supplier
+@ManyToOne
+@JoinColumn(name = "supplier_id")
+private Supplier supplier;
+}

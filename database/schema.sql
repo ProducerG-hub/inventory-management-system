@@ -48,9 +48,17 @@ PRODUCTS(
 
     FK(category_id)
         REFERENCES CATEGORIES(category_id),
+    
+    -- Cardinality
+    1 Product belongs to 1 Category (1:1)
+    1 Category can have many Products (1:M)
 
     FK(supplier_id)
         REFERENCES SUPPLIERS(supplier_id)
+    
+    -- Cardinality
+    1 Product belongs to 1 Supplier (1:1)
+    1 Supplier can have many Products (1:M)
 )
 
 -- Customers table schema
@@ -80,8 +88,16 @@ SALES(
     FK(customer_id)
         REFERENCES CUSTOMERS(customer_id),
 
+    -- Cardinality
+    1 Sale belongs to 1 Customer (1:1)
+    1 Customer can have many Sales (1:M)
+
     FK(user_id)
         REFERENCES USERS(user_id)
+    
+    -- Cardinality
+    1 Sale belongs to 1 User (1:1)
+    1 User can have many Sales (1:M)
 )
 
 -- Sale Items table schema
@@ -99,8 +115,16 @@ SALE_ITEMS(
     FK(sale_id)
         REFERENCES SALES(sale_id),
 
+    -- Cardinality
+    1 Sale Item belongs to 1 Sale (1:1)
+    1 Sale can have many Sale Items (1:M)
+
     FK(product_id)
         REFERENCES PRODUCTS(product_id)
+
+    -- Cardinality
+    1 Sale Item belongs to 1 Product (1:1)
+    1 Product can have many Sale Items (1:M)
 )
 
 -- Stock Movements table schema
@@ -118,6 +142,14 @@ STOCK_MOVEMENTS(
     FK(product_id)
         REFERENCES PRODUCTS(product_id),
 
+    -- Cardinality
+    1 Stock Movement belongs to 1 Product (1:1)
+    1 Product can have many Stock Movements (1:M)
+
     FK(user_id)
         REFERENCES USERS(user_id)
+
+    -- Cardinality
+    1 Stock Movement belongs to 1 User (1:1)
+    1 User can have many Stock Movements (1:M)
 )
