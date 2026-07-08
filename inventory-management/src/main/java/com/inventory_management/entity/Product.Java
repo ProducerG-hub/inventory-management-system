@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -48,4 +49,7 @@ private Category category;
 @ManyToOne
 @JoinColumn(name = "supplier_id")
 private Supplier supplier;
+
+@OneToMany(mappedBy = "product")
+private List<SaleItem> saleItems;
 }
