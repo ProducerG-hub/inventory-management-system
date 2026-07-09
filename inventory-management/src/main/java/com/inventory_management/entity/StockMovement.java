@@ -36,6 +36,13 @@ public class StockMovement {
     @Column(name = "movement_date")
     private LocalDateTime movementDate;
 
+    @PrePersist
+    protected void onCreate() {
+        if (movementDate == null) {
+            movementDate = LocalDateTime.now();
+        }
+    }
+
 
     @Column(name = "remarks")
     private String remarks;

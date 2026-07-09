@@ -40,6 +40,17 @@ private Boolean isActive;
 @Column(name = "created_at")
 private LocalDateTime createdAt;
 
+@PrePersist
+protected void onCreate() {
+    if (isActive == null) {
+        isActive = true;
+    }
+
+    if (createdAt == null) {
+        createdAt = LocalDateTime.now();
+    }
+}
+
 //Relationship with Category
 @ManyToOne
 @JoinColumn(name = "category_id")

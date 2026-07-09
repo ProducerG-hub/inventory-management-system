@@ -39,6 +39,17 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @PrePersist
+    protected void onCreate() {
+        if (isActive == null) {
+            isActive = true;
+        }
+
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
+
     @OneToMany(mappedBy = "user")
     private List<Sale> sales;
 

@@ -31,6 +31,13 @@ public class Sale {
     @Column(name = "sale_date")
     private LocalDateTime saleDate;
 
+    @PrePersist
+    protected void onCreate() {
+        if (saleDate == null) {
+            saleDate = LocalDateTime.now();
+        }
+    }
+
 
     @ManyToOne
     @JoinColumn(
