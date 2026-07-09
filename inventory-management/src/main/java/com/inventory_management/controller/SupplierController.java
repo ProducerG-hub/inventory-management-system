@@ -5,6 +5,7 @@ import com.inventory_management.dto.request.SupplierRequestDTO;
 import com.inventory_management.dto.response.SupplierResponseDTO;
 import com.inventory_management.service.SupplierService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class SupplierController {
 
     @PostMapping
     public ResponseEntity<SupplierResponseDTO> createSupplier(
-            @RequestBody SupplierRequestDTO request
+            @Valid @RequestBody SupplierRequestDTO request
     ){
 
         return new ResponseEntity<>(

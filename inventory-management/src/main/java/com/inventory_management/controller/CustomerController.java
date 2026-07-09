@@ -4,6 +4,7 @@ import com.inventory_management.dto.request.CustomerRequestDTO;
 import com.inventory_management.dto.response.CustomerResponseDTO;
 import com.inventory_management.service.CustomerService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerResponseDTO> createCustomer(
-            @RequestBody CustomerRequestDTO request
+            @Valid @RequestBody CustomerRequestDTO request
     ) {
 
         CustomerResponseDTO response = customerService.createCustomer(request);

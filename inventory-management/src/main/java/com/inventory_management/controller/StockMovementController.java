@@ -4,6 +4,7 @@ import com.inventory_management.dto.request.StockMovementRequestDTO;
 import com.inventory_management.dto.response.StockMovementResponseDTO;
 import com.inventory_management.service.StockMovementService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class StockMovementController {
 
     @PostMapping
     public ResponseEntity<StockMovementResponseDTO> createStockMovement(
-            @RequestBody StockMovementRequestDTO request
+            @Valid @RequestBody StockMovementRequestDTO request
     ) {
 
         StockMovementResponseDTO response = stockMovementService.createStockMovement(request);

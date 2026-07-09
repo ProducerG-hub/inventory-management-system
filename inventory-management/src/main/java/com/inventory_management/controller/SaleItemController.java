@@ -4,6 +4,7 @@ import com.inventory_management.dto.request.SaleItemRequestDTO;
 import com.inventory_management.dto.response.SaleItemResponseDTO;
 import com.inventory_management.service.SaleItemService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class SaleItemController {
 
     @PostMapping
     public ResponseEntity<SaleItemResponseDTO> createSaleItem(
-            @RequestBody SaleItemRequestDTO request
+            @Valid @RequestBody SaleItemRequestDTO request
     ) {
 
         SaleItemResponseDTO response = saleItemService.createSaleItem(request);
