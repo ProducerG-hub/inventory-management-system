@@ -4,7 +4,9 @@ USERS(
     full_name VARCHAR(100),
     email VARCHAR(100),
     password VARCHAR(255),
-    created_at TIMESTAMP,
+    role VARCHAR(50),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PK(user_id)
 )
