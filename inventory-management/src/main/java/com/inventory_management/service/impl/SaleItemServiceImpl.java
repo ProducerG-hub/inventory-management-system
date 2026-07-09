@@ -10,6 +10,7 @@ import com.inventory_management.repository.ProductRepository;
 import com.inventory_management.repository.SaleItemRepository;
 import com.inventory_management.repository.SaleRepository;
 import com.inventory_management.service.SaleItemService;
+import com.inventory_management.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -56,7 +57,7 @@ public class SaleItemServiceImpl implements SaleItemService {
 
         SaleItem saleItem = saleItemRepository.findById(saleItemId)
                 .orElseThrow(() ->
-                        new RuntimeException("Sale Item not found")
+                        new ResourceNotFoundException("Sale Item not found")
                 );
 
         return saleItemMapper.toResponse(saleItem);
@@ -70,7 +71,7 @@ public class SaleItemServiceImpl implements SaleItemService {
 
         SaleItem existingSaleItem = saleItemRepository.findById(saleItemId)
                 .orElseThrow(() ->
-                        new RuntimeException("Sale Item not found")
+                        new ResourceNotFoundException("Sale Item not found")
                 );
 
         existingSaleItem.setUnitPrice(request.getUnitPrice());
@@ -88,7 +89,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     public void deleteSaleItem(Integer saleItemId) {
 
         if (!saleItemRepository.existsById(saleItemId)) {
-            throw new RuntimeException("Sale Item not found");
+            throw new ResourceNotFoundException("Sale Item not found");
         }
 
         saleItemRepository.deleteById(saleItemId);
@@ -97,7 +98,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     private Sale getSaleById(Integer saleId) {
 
         return saleRepository.findById(saleId)
-                .orElseThrow(() -> new RuntimeException("Sale not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Sale not found"));
     }
 
     private Product getProductById(Integer productId) {
