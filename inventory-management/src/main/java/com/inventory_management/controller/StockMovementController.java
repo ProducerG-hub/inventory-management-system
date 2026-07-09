@@ -4,6 +4,8 @@ import com.inventory_management.dto.request.StockMovementRequestDTO;
 import com.inventory_management.dto.response.StockMovementResponseDTO;
 import com.inventory_management.service.StockMovementService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -16,11 +18,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stock-movements")
 @RequiredArgsConstructor
+@Tag(name = "Stock Movements", description = "Stock movement management APIs")
 public class StockMovementController {
 
     private final StockMovementService stockMovementService;
 
     @PostMapping
+        @Operation(summary = "Create a new stock movement", description = "Creates a new stock movement in the inventory")
     public ResponseEntity<StockMovementResponseDTO> createStockMovement(
             @Valid @RequestBody StockMovementRequestDTO request
     ) {
@@ -31,12 +35,14 @@ public class StockMovementController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all stock movements", description = "Retrieves a list of all stock movements in the inventory")
     public ResponseEntity<List<StockMovementResponseDTO>> getAllStockMovements() {
 
         return ResponseEntity.ok(stockMovementService.getAllStockMovements());
     }
 
     @GetMapping("/{id}")
+        @Operation(summary = "Get stock movement by ID", description = "Retrieves a stock movement by its ID")
     public ResponseEntity<StockMovementResponseDTO> getStockMovementById(
             @PathVariable Integer id
     ) {
@@ -45,6 +51,7 @@ public class StockMovementController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update stock movement by ID", description = "Updates an existing stock movement by its ID")
     public ResponseEntity<StockMovementResponseDTO> updateStockMovement(
             @PathVariable Integer id,
             @RequestBody StockMovementRequestDTO request
@@ -54,6 +61,7 @@ public class StockMovementController {
     }
 
     @DeleteMapping("/{id}")
+        @Operation(summary = "Delete stock movement by ID", description = "Deletes a stock movement by its ID")
     public ResponseEntity<Void> deleteStockMovement(
             @PathVariable Integer id
     ) {
