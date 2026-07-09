@@ -4,6 +4,7 @@ import com.inventory_management.dto.request.ProductRequestDTO;
 import com.inventory_management.dto.response.ProductResponseDTO;
 import com.inventory_management.service.ProductService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(
-            @RequestBody ProductRequestDTO request
+            @Valid @RequestBody ProductRequestDTO request
     ) {
 
         ProductResponseDTO response = productService.createProduct(request);
@@ -37,7 +38,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> getProductById(
-            @PathVariable Integer id
+           @Valid @PathVariable Integer id
     ) {
 
         return ResponseEntity.ok(productService.getProductById(id));

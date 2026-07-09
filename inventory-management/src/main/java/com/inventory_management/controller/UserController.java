@@ -4,6 +4,7 @@ import com.inventory_management.dto.request.UserRequestDTO;
 import com.inventory_management.dto.response.UserResponseDTO;
 import com.inventory_management.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(
-            @RequestBody UserRequestDTO request
+            @Valid @RequestBody UserRequestDTO request
     ) {
 
         UserResponseDTO response = userService.createUser(request);

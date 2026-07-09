@@ -4,6 +4,7 @@ import com.inventory_management.dto.request.CategoryRequestDTO;
 import com.inventory_management.dto.response.CategoryResponseDTO;
 import com.inventory_management.service.CategoryService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryResponseDTO> createCategory(
-            @RequestBody CategoryRequestDTO request
+            @Valid @RequestBody CategoryRequestDTO request
     ){
 
         CategoryResponseDTO response =
