@@ -18,10 +18,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @RequiredArgsConstructor
 public class SaleItemServiceImpl implements SaleItemService {
+    private static final Logger logger = LoggerFactory.getLogger(SaleItemServiceImpl.class);
 
     private final SaleItemRepository saleItemRepository;
 
@@ -39,13 +42,13 @@ public class SaleItemServiceImpl implements SaleItemService {
         saleItem.setProduct(getProductById(request.getProductId()));
 
         SaleItem savedSaleItem = saleItemRepository.save(saleItem);
-
+        logger.info("Sale item created: {}", savedSaleItem);
         return saleItemMapper.toResponse(savedSaleItem);
     }
 
     @Override
     public List<SaleItemResponseDTO> getAllSaleItems() {
-
+        logger.info("Fetching all sale items");
         return saleItemRepository.findAll()
                 .stream()
                 .map(saleItemMapper::toResponse)
@@ -54,7 +57,7 @@ public class SaleItemServiceImpl implements SaleItemService {
 
     @Override
     public SaleItemResponseDTO getSaleItemById(Integer saleItemId) {
-
+        logger.info("Fetching sale item by ID: {}", saleItemId);
         SaleItem saleItem = saleItemRepository.findById(saleItemId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Sale Item not found")
@@ -81,12 +84,13 @@ public class SaleItemServiceImpl implements SaleItemService {
         existingSaleItem.setProduct(getProductById(request.getProductId()));
 
         SaleItem updatedSaleItem = saleItemRepository.save(existingSaleItem);
-
+        logger.info("Sale item updated: {}", saleItemId);
         return saleItemMapper.toResponse(updatedSaleItem);
     }
 
     @Override
     public void deleteSaleItem(Integer saleItemId) {
+        logger.info("Deleting sale item by ID: {}", saleItemId);
 
         if (!saleItemRepository.existsById(saleItemId)) {
             throw new ResourceNotFoundException("Sale Item not found");

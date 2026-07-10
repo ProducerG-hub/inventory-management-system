@@ -17,10 +17,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private final ProductRepository productRepository;
 
@@ -38,13 +42,14 @@ public class ProductServiceImpl implements ProductService {
         product.setSupplier(getSupplierById(request.getSupplierId()));
 
         Product savedProduct = productRepository.save(product);
+        logger.info("Product created: {}", savedProduct.getProductName());
 
         return productMapper.toResponse(savedProduct);
     }
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
-
+        logger.info("Fetching all products");
         return productRepository.findAll()
                 .stream()
                 .map(productMapper::toResponse)
@@ -53,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDTO getProductById(Integer productId) {
-
+        logger.info("Fetching product by ID: {}", productId);
         Product product = productRepository.findById(productId)
                 .orElseThrow(() ->
                         new RuntimeException("Product not found")
@@ -82,12 +87,14 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setSupplier(getSupplierById(request.getSupplierId()));
 
         Product updatedProduct = productRepository.save(existingProduct);
+        logger.info("Product updated: {}", updatedProduct.getProductName());
 
         return productMapper.toResponse(updatedProduct);
     }
 
     @Override
     public void deleteProduct(Integer productId) {
+        logger.info("Deleting product by ID: {}", productId);
 
         if (!productRepository.existsById(productId)) {
             throw new RuntimeException("Product not found");

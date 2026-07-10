@@ -6,6 +6,8 @@ import com.inventory_management.entity.Supplier;
 import com.inventory_management.mapper.SupplierMapper;
 import com.inventory_management.repository.SupplierRepository;
 import com.inventory_management.service.SupplierService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SupplierServiceImpl implements SupplierService {
-
+    private static final Logger logger = LoggerFactory.getLogger(SupplierServiceImpl.class);
 
     private final SupplierRepository supplierRepository;
 
@@ -31,13 +33,15 @@ public class SupplierServiceImpl implements SupplierService {
         Supplier supplier = supplierMapper.toEntity(request);
 
         Supplier savedSupplier = supplierRepository.save(supplier);
-
+        logger.info("Supplier created: {}", savedSupplier);
         return supplierMapper.toResponse(savedSupplier);
     }
 
 
     @Override
     public List<SupplierResponseDTO> getAllSuppliers() {
+        logger.info("Fetching all suppliers");
+
 
         return supplierRepository.findAll()
                 .stream()
@@ -54,6 +58,7 @@ public class SupplierServiceImpl implements SupplierService {
                         new RuntimeException("Supplier not found")
                 );
 
+        logger.info("Fetching supplier by ID: {}", supplierId);
         return supplierMapper.toResponse(supplier);
     }
 
@@ -83,12 +88,14 @@ public class SupplierServiceImpl implements SupplierService {
                 supplierRepository.save(existingSupplier);
 
 
+        logger.info("Supplier updated: {}", updatedSupplier);
         return supplierMapper.toResponse(updatedSupplier);
     }
 
 
     @Override
     public void deleteSupplier(Integer supplierId) {
+        logger.info("Deleting supplier by ID: {}", supplierId);
 
 
         if(!supplierRepository.existsById(supplierId)){

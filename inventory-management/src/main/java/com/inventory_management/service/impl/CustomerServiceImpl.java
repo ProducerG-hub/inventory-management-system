@@ -6,6 +6,8 @@ import com.inventory_management.entity.Customer;
 import com.inventory_management.mapper.CustomerMapper;
 import com.inventory_management.repository.CustomerRepository;
 import com.inventory_management.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +19,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     private final CustomerRepository customerRepository;
 
     private final CustomerMapper customerMapper;
@@ -28,13 +31,13 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerMapper.toEntity(request);
 
         Customer savedCustomer = customerRepository.save(customer);
-
+        logger.info("Customer created: {}", savedCustomer.getCustomerName());
         return customerMapper.toResponse(savedCustomer);
     }
 
     @Override
     public List<CustomerResponseDTO> getAllCustomers() {
-
+        logger.info("Fetching all customers");
         return customerRepository.findAll()
                 .stream()
                 .map(customerMapper::toResponse)
@@ -43,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponseDTO getCustomerById(Integer customerId) {
-
+        logger.info("Fetching customer by ID: {}", customerId);
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() ->
                         new RuntimeException("Customer not found")
@@ -70,12 +73,13 @@ public class CustomerServiceImpl implements CustomerService {
         existingCustomer.setDistrict(request.getDistrict());
 
         Customer updatedCustomer = customerRepository.save(existingCustomer);
-
+        logger.info("Customer updated: {}", updatedCustomer.getCustomerName());
         return customerMapper.toResponse(updatedCustomer);
     }
 
     @Override
     public void deleteCustomer(Integer customerId) {
+        logger.info("Deleting customer by ID: {}", customerId);
 
         if (!customerRepository.existsById(customerId)) {
             throw new RuntimeException("Customer not found");

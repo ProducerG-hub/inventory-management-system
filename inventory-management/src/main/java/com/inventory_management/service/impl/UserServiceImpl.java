@@ -6,6 +6,8 @@ import com.inventory_management.entity.User;
 import com.inventory_management.mapper.UserMapper;
 import com.inventory_management.repository.UserRepository;
 import com.inventory_management.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
@@ -28,12 +30,14 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(request);
 
         User savedUser = userRepository.save(user);
-
+        logger.info("User created: {}", savedUser);
         return userMapper.toResponse(savedUser);
     }
 
     @Override
     public List<UserResponseDTO> getAllUsers() {
+        logger.info("Fetching all users");
+
 
         return userRepository.findAll()
                 .stream()
@@ -43,12 +47,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO getUserById(Integer userId) {
+        logger.info("Fetching user by ID: {}", userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
                         new RuntimeException("User not found")
                 );
 
+        logger.info("Fetching user by ID: {}", userId);
         return userMapper.toResponse(user);
     }
 
@@ -71,11 +77,13 @@ public class UserServiceImpl implements UserService {
 
         User updatedUser = userRepository.save(existingUser);
 
+        logger.info("User updated: {}", updatedUser);
         return userMapper.toResponse(updatedUser);
     }
 
     @Override
     public void deleteUser(Integer userId) {
+        logger.info("Deleting user by ID: {}", userId);
 
         if (!userRepository.existsById(userId)) {
             throw new RuntimeException("User not found");

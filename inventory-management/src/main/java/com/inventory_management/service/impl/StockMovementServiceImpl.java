@@ -10,6 +10,8 @@ import com.inventory_management.repository.ProductRepository;
 import com.inventory_management.repository.StockMovementRepository;
 import com.inventory_management.repository.UserRepository;
 import com.inventory_management.service.StockMovementService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StockMovementServiceImpl implements StockMovementService {
-
+    private static final Logger logger = LoggerFactory.getLogger(StockMovementServiceImpl.class);
     private final StockMovementRepository stockMovementRepository;
 
     private final ProductRepository productRepository;
@@ -38,12 +40,14 @@ public class StockMovementServiceImpl implements StockMovementService {
         stockMovement.setUser(getUserById(request.getUserId()));
 
         StockMovement savedStockMovement = stockMovementRepository.save(stockMovement);
-
+        logger.info("Stock movement created: {}", savedStockMovement);
         return stockMovementMapper.toResponse(savedStockMovement);
     }
 
     @Override
     public List<StockMovementResponseDTO> getAllStockMovements() {
+        logger.info("Fetching all stock movements");
+
 
         return stockMovementRepository.findAll()
                 .stream()
@@ -53,6 +57,7 @@ public class StockMovementServiceImpl implements StockMovementService {
 
     @Override
     public StockMovementResponseDTO getStockMovementById(Integer movementId) {
+        logger.info("Fetching stock movement by ID: {}", movementId);
 
         StockMovement stockMovement = stockMovementRepository.findById(movementId)
                 .orElseThrow(() ->
@@ -80,12 +85,13 @@ public class StockMovementServiceImpl implements StockMovementService {
         existingStockMovement.setUser(getUserById(request.getUserId()));
 
         StockMovement updatedStockMovement = stockMovementRepository.save(existingStockMovement);
-
+        logger.info("Stock movement updated: {}", updatedStockMovement);
         return stockMovementMapper.toResponse(updatedStockMovement);
     }
 
     @Override
     public void deleteStockMovement(Integer movementId) {
+        logger.info("Deleting stock movement by ID: {}", movementId);
 
         if (!stockMovementRepository.existsById(movementId)) {
             throw new RuntimeException("Stock Movement not found");
