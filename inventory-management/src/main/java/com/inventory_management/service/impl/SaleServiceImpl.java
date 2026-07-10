@@ -10,6 +10,8 @@ import com.inventory_management.repository.CustomerRepository;
 import com.inventory_management.repository.SaleRepository;
 import com.inventory_management.repository.UserRepository;
 import com.inventory_management.service.SaleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SaleServiceImpl implements SaleService {
-
+    private static final Logger logger = LoggerFactory.getLogger(SaleServiceImpl.class);
     private final SaleRepository saleRepository;
 
     private final CustomerRepository customerRepository;
@@ -38,13 +40,13 @@ public class SaleServiceImpl implements SaleService {
         sale.setUser(getUserById(request.getUserId()));
 
         Sale savedSale = saleRepository.save(sale);
-
+        logger.info("Sale created: {}", savedSale);
         return saleMapper.toResponse(savedSale);
     }
 
     @Override
     public List<SaleResponseDTO> getAllSales() {
-
+        logger.info("Fetching all sales");
         return saleRepository.findAll()
                 .stream()
                 .map(saleMapper::toResponse)
@@ -53,7 +55,7 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public SaleResponseDTO getSaleById(Integer saleId) {
-
+        logger.info("Fetching sale by ID: {}", saleId);
         Sale sale = saleRepository.findById(saleId)
                 .orElseThrow(() ->
                         new RuntimeException("Sale not found")
@@ -78,12 +80,14 @@ public class SaleServiceImpl implements SaleService {
         existingSale.setUser(getUserById(request.getUserId()));
 
         Sale updatedSale = saleRepository.save(existingSale);
-
+        logger.info("Sale updated: {}", updatedSale);
         return saleMapper.toResponse(updatedSale);
     }
 
     @Override
     public void deleteSale(Integer saleId) {
+        logger.info("Deleting sale by ID: {}", saleId);
+
 
         if (!saleRepository.existsById(saleId)) {
             throw new RuntimeException("Sale not found");
