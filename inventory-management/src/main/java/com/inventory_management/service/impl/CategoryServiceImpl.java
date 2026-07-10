@@ -8,6 +8,7 @@ import com.inventory_management.repository.CategoryRepository;
 import com.inventory_management.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
@@ -29,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional
     public CategoryResponseDTO createCategory(CategoryRequestDTO request) {
 
         Category category = categoryMapper.toEntity(request);
@@ -41,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryResponseDTO> getAllCategories() {
         logger.info("Fetching all categories");
         return categoryRepository.findAll()
@@ -51,6 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryResponseDTO getCategoryById(Integer categoryId) {
         logger.info("Fetching category by ID: {}", categoryId);
 
@@ -64,6 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional
     public CategoryResponseDTO updateCategory(
             Integer categoryId,
             CategoryRequestDTO request
@@ -88,6 +94,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional
     public void deleteCategory(Integer categoryId) {
         logger.info("Deleting category by ID: {}", categoryId);
 
@@ -96,6 +103,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         categoryRepository.deleteById(categoryId);
+        logger.info("Category deleted: {}", categoryId);
     }
 
 }

@@ -8,6 +8,7 @@ import com.inventory_management.repository.SupplierRepository;
 import com.inventory_management.service.SupplierService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SupplierServiceImpl implements SupplierService {
     private static final Logger logger = LoggerFactory.getLogger(SupplierServiceImpl.class);
 
@@ -28,6 +30,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     @Override
+    @Transactional
     public SupplierResponseDTO createSupplier(SupplierRequestDTO request) {
 
         Supplier supplier = supplierMapper.toEntity(request);
@@ -39,6 +42,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<SupplierResponseDTO> getAllSuppliers() {
         logger.info("Fetching all suppliers");
 
@@ -51,6 +55,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public SupplierResponseDTO getSupplierById(Integer supplierId) {
 
         Supplier supplier = supplierRepository.findById(supplierId)
@@ -64,6 +69,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     @Override
+    @Transactional
     public SupplierResponseDTO updateSupplier(
             Integer supplierId,
             SupplierRequestDTO request
@@ -94,6 +100,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 
     @Override
+    @Transactional
     public void deleteSupplier(Integer supplierId) {
         logger.info("Deleting supplier by ID: {}", supplierId);
 
@@ -106,6 +113,8 @@ public class SupplierServiceImpl implements SupplierService {
 
 
         supplierRepository.deleteById(supplierId);
+
+        logger.info("Supplier deleted: {}", supplierId);
 
     }
 

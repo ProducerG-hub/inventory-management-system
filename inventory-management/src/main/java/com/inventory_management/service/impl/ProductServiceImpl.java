@@ -10,6 +10,7 @@ import com.inventory_management.repository.CategoryRepository;
 import com.inventory_management.repository.ProductRepository;
 import com.inventory_management.repository.SupplierRepository;
 import com.inventory_management.service.ProductService;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -35,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
+    @Transactional
     public ProductResponseDTO createProduct(ProductRequestDTO request) {
 
         Product product = productMapper.toEntity(request);
@@ -48,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProductResponseDTO> getAllProducts() {
         logger.info("Fetching all products");
         return productRepository.findAll()
@@ -57,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponseDTO getProductById(Integer productId) {
         logger.info("Fetching product by ID: {}", productId);
         Product product = productRepository.findById(productId)
@@ -68,6 +73,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponseDTO updateProduct(
             Integer productId,
             ProductRequestDTO request
@@ -93,6 +99,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Integer productId) {
         logger.info("Deleting product by ID: {}", productId);
 
@@ -101,6 +108,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productRepository.deleteById(productId);
+        logger.info("Product deleted: {}", productId);
     }
 
     private Category getCategoryById(Integer categoryId) {

@@ -12,6 +12,7 @@ import com.inventory_management.repository.UserRepository;
 import com.inventory_management.service.StockMovementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class StockMovementServiceImpl implements StockMovementService {
     private static final Logger logger = LoggerFactory.getLogger(StockMovementServiceImpl.class);
     private final StockMovementRepository stockMovementRepository;
@@ -33,6 +35,7 @@ public class StockMovementServiceImpl implements StockMovementService {
     private final StockMovementMapper stockMovementMapper;
 
     @Override
+    @Transactional
     public StockMovementResponseDTO createStockMovement(StockMovementRequestDTO request) {
 
         StockMovement stockMovement = stockMovementMapper.toEntity(request);
@@ -45,6 +48,7 @@ public class StockMovementServiceImpl implements StockMovementService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<StockMovementResponseDTO> getAllStockMovements() {
         logger.info("Fetching all stock movements");
 
@@ -56,6 +60,7 @@ public class StockMovementServiceImpl implements StockMovementService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public StockMovementResponseDTO getStockMovementById(Integer movementId) {
         logger.info("Fetching stock movement by ID: {}", movementId);
 
@@ -68,6 +73,7 @@ public class StockMovementServiceImpl implements StockMovementService {
     }
 
     @Override
+    @Transactional
     public StockMovementResponseDTO updateStockMovement(
             Integer movementId,
             StockMovementRequestDTO request
@@ -90,6 +96,7 @@ public class StockMovementServiceImpl implements StockMovementService {
     }
 
     @Override
+    @Transactional
     public void deleteStockMovement(Integer movementId) {
         logger.info("Deleting stock movement by ID: {}", movementId);
 

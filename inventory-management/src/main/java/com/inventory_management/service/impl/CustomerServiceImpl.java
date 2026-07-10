@@ -8,6 +8,7 @@ import com.inventory_management.repository.CustomerRepository;
 import com.inventory_management.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
     
     private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
@@ -26,6 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
 
     @Override
+    @Transactional
     public CustomerResponseDTO createCustomer(CustomerRequestDTO request) {
 
         Customer customer = customerMapper.toEntity(request);
@@ -36,6 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CustomerResponseDTO> getAllCustomers() {
         logger.info("Fetching all customers");
         return customerRepository.findAll()
@@ -45,6 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CustomerResponseDTO getCustomerById(Integer customerId) {
         logger.info("Fetching customer by ID: {}", customerId);
         Customer customer = customerRepository.findById(customerId)
@@ -56,6 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public CustomerResponseDTO updateCustomer(
             Integer customerId,
             CustomerRequestDTO request
@@ -78,6 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public void deleteCustomer(Integer customerId) {
         logger.info("Deleting customer by ID: {}", customerId);
 
@@ -86,6 +93,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         customerRepository.deleteById(customerId);
+        logger.info("Customer deleted: {}", customerId);
     }
 
 }
