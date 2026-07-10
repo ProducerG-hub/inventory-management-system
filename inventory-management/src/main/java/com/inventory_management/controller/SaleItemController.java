@@ -4,6 +4,8 @@ import com.inventory_management.dto.request.SaleItemRequestDTO;
 import com.inventory_management.dto.response.SaleItemResponseDTO;
 import com.inventory_management.service.SaleItemService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -16,11 +18,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/sale-items")
 @RequiredArgsConstructor
+@Tag(name = "Sale Items", description = "Sale item management APIs")
 public class SaleItemController {
 
     private final SaleItemService saleItemService;
 
     @PostMapping
+        @Operation(summary = "Create a new sale item", description = "Creates a new sale item in the inventory")
     public ResponseEntity<SaleItemResponseDTO> createSaleItem(
             @Valid @RequestBody SaleItemRequestDTO request
     ) {
@@ -31,12 +35,14 @@ public class SaleItemController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all sale items", description = "Retrieves a list of all sale items in the inventory")
     public ResponseEntity<List<SaleItemResponseDTO>> getAllSaleItems() {
 
         return ResponseEntity.ok(saleItemService.getAllSaleItems());
     }
 
     @GetMapping("/{id}")
+        @Operation(summary = "Get sale item by ID", description = "Retrieves a sale item by its ID")
     public ResponseEntity<SaleItemResponseDTO> getSaleItemById(
             @PathVariable Integer id
     ) {
@@ -45,6 +51,7 @@ public class SaleItemController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update sale item by ID", description = "Updates an existing sale item by its ID")
     public ResponseEntity<SaleItemResponseDTO> updateSaleItem(
             @PathVariable Integer id,
             @RequestBody SaleItemRequestDTO request
@@ -54,6 +61,7 @@ public class SaleItemController {
     }
 
     @DeleteMapping("/{id}")
+        @Operation(summary = "Delete sale item by ID", description = "Deletes a sale item by its ID")
     public ResponseEntity<Void> deleteSaleItem(
             @PathVariable Integer id
     ) {

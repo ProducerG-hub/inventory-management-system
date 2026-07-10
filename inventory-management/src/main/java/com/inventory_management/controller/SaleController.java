@@ -4,6 +4,8 @@ import com.inventory_management.dto.request.SaleRequestDTO;
 import com.inventory_management.dto.response.SaleResponseDTO;
 import com.inventory_management.service.SaleService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -16,11 +18,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/sales")
 @RequiredArgsConstructor
+@Tag(name = "Sales", description = "Sale management APIs")
 public class SaleController {
 
     private final SaleService saleService;
 
     @PostMapping
+        @Operation(summary = "Create a new sale", description = "Creates a new sale in the inventory")
     public ResponseEntity<SaleResponseDTO> createSale(
             @Valid @RequestBody SaleRequestDTO request
     ) {
@@ -31,12 +35,14 @@ public class SaleController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all sales", description = "Retrieves a list of all sales in the inventory")
     public ResponseEntity<List<SaleResponseDTO>> getAllSales() {
 
         return ResponseEntity.ok(saleService.getAllSales());
     }
 
     @GetMapping("/{id}")
+        @Operation(summary = "Get sale by ID", description = "Retrieves a sale by its ID")
     public ResponseEntity<SaleResponseDTO> getSaleById(
             @PathVariable Integer id
     ) {
@@ -45,6 +51,7 @@ public class SaleController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update sale by ID", description = "Updates an existing sale by its ID")
     public ResponseEntity<SaleResponseDTO> updateSale(
             @PathVariable Integer id,
             @RequestBody SaleRequestDTO request
@@ -54,6 +61,7 @@ public class SaleController {
     }
 
     @DeleteMapping("/{id}")
+        @Operation(summary = "Delete sale by ID", description = "Deletes a sale by its ID")
     public ResponseEntity<Void> deleteSale(
             @PathVariable Integer id
     ) {

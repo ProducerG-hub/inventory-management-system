@@ -4,6 +4,8 @@ import com.inventory_management.dto.request.CategoryRequestDTO;
 import com.inventory_management.dto.response.CategoryResponseDTO;
 import com.inventory_management.service.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
+@Tag(name = "Categories", description = "Category management APIs")
 public class CategoryController {
 
 
@@ -24,6 +27,7 @@ public class CategoryController {
 
 
     @PostMapping
+    @Operation(summary = "Create a new category", description = "Creates a new category in the inventory")
     public ResponseEntity<CategoryResponseDTO> createCategory(
             @Valid @RequestBody CategoryRequestDTO request
     ){
@@ -40,6 +44,7 @@ public class CategoryController {
 
 
     @GetMapping
+        @Operation(summary = "Get all categories", description = "Retrieves a list of all categories in the inventory")
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategories(){
 
         return ResponseEntity.ok(
@@ -50,6 +55,7 @@ public class CategoryController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get category by ID", description = "Retrieves a category by its ID")
     public ResponseEntity<CategoryResponseDTO> getCategoryById(
             @PathVariable Integer id
     ){
@@ -62,6 +68,7 @@ public class CategoryController {
 
 
     @PutMapping("/{id}")
+        @Operation(summary = "Update category by ID", description = "Updates an existing category by its ID")
     public ResponseEntity<CategoryResponseDTO> updateCategory(
             @PathVariable Integer id,
             @RequestBody CategoryRequestDTO request
@@ -75,6 +82,7 @@ public class CategoryController {
 
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete category by ID", description = "Deletes a category by its ID")
     public ResponseEntity<Void> deleteCategory(
             @PathVariable Integer id
     ){
