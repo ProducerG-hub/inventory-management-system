@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new product", description = "Creates a new product in the inventory")
     public ResponseEntity<ProductResponseDTO> createProduct(
             @Valid @RequestBody ProductRequestDTO request
@@ -35,6 +37,7 @@ public class ProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get all products", description = "Retrieves a list of all products in the inventory")
     public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
 
@@ -42,6 +45,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get product by ID", description = "Retrieves a product by its ID")
     public ResponseEntity<ProductResponseDTO> getProductById(
            @Valid @PathVariable Integer id
@@ -51,6 +55,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update product by ID", description = "Updates an existing product by its ID")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Integer id,
@@ -61,6 +66,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete product by ID", description = "Deletes a product by its ID")
     public ResponseEntity<Void> deleteProduct(
             @PathVariable Integer id

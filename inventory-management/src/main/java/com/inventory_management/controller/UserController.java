@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Create a new user", description = "Creates a new user in the inventory")
     public ResponseEntity<UserResponseDTO> createUser(
             @Valid @RequestBody UserRequestDTO request
@@ -35,6 +37,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get all users", description = "Retrieves a list of all users in the inventory")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
 
@@ -42,6 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
         @Operation(summary = "Get user by ID", description = "Retrieves a user by its ID")
     public ResponseEntity<UserResponseDTO> getUserById(
             @PathVariable Integer id
@@ -51,6 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update user by ID", description = "Updates an existing user by its ID")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Integer id,
@@ -61,6 +66,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Delete user by ID", description = "Deletes a user by its ID")
     public ResponseEntity<Void> deleteUser(
             @PathVariable Integer id

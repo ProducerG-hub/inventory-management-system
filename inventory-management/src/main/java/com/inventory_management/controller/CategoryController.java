@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class CategoryController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new category", description = "Creates a new category in the inventory")
     public ResponseEntity<CategoryResponseDTO> createCategory(
             @Valid @RequestBody CategoryRequestDTO request
@@ -44,6 +46,7 @@ public class CategoryController {
 
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
         @Operation(summary = "Get all categories", description = "Retrieves a list of all categories in the inventory")
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategories(){
 
@@ -55,6 +58,7 @@ public class CategoryController {
 
 
     @GetMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get category by ID", description = "Retrieves a category by its ID")
     public ResponseEntity<CategoryResponseDTO> getCategoryById(
             @PathVariable Integer id
@@ -68,6 +72,7 @@ public class CategoryController {
 
 
     @PutMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Update category by ID", description = "Updates an existing category by its ID")
     public ResponseEntity<CategoryResponseDTO> updateCategory(
             @PathVariable Integer id,
@@ -82,6 +87,7 @@ public class CategoryController {
 
 
     @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete category by ID", description = "Deletes a category by its ID")
     public ResponseEntity<Void> deleteCategory(
             @PathVariable Integer id
