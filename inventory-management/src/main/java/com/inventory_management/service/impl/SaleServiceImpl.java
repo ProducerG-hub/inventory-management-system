@@ -12,6 +12,7 @@ import com.inventory_management.repository.UserRepository;
 import com.inventory_management.service.SaleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SaleServiceImpl implements SaleService {
     private static final Logger logger = LoggerFactory.getLogger(SaleServiceImpl.class);
     private final SaleRepository saleRepository;
@@ -33,6 +35,7 @@ public class SaleServiceImpl implements SaleService {
     private final SaleMapper saleMapper;
 
     @Override
+    @Transactional
     public SaleResponseDTO createSale(SaleRequestDTO request) {
 
         Sale sale = saleMapper.toEntity(request);
@@ -45,6 +48,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SaleResponseDTO> getAllSales() {
         logger.info("Fetching all sales");
         return saleRepository.findAll()
@@ -54,6 +58,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SaleResponseDTO getSaleById(Integer saleId) {
         logger.info("Fetching sale by ID: {}", saleId);
         Sale sale = saleRepository.findById(saleId)
@@ -65,6 +70,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    @Transactional
     public SaleResponseDTO updateSale(
             Integer saleId,
             SaleRequestDTO request
@@ -85,6 +91,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    @Transactional
     public void deleteSale(Integer saleId) {
         logger.info("Deleting sale by ID: {}", saleId);
 

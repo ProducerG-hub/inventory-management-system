@@ -11,6 +11,7 @@ import com.inventory_management.repository.SaleItemRepository;
 import com.inventory_management.repository.SaleRepository;
 import com.inventory_management.service.SaleItemService;
 import com.inventory_management.exception.ResourceNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SaleItemServiceImpl implements SaleItemService {
     private static final Logger logger = LoggerFactory.getLogger(SaleItemServiceImpl.class);
 
@@ -35,6 +37,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     private final SaleItemMapper saleItemMapper;
 
     @Override
+    @Transactional
     public SaleItemResponseDTO createSaleItem(SaleItemRequestDTO request) {
 
         SaleItem saleItem = saleItemMapper.toEntity(request);
@@ -47,6 +50,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SaleItemResponseDTO> getAllSaleItems() {
         logger.info("Fetching all sale items");
         return saleItemRepository.findAll()
@@ -56,6 +60,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SaleItemResponseDTO getSaleItemById(Integer saleItemId) {
         logger.info("Fetching sale item by ID: {}", saleItemId);
         SaleItem saleItem = saleItemRepository.findById(saleItemId)
@@ -67,6 +72,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     }
 
     @Override
+    @Transactional
     public SaleItemResponseDTO updateSaleItem(
             Integer saleItemId,
             SaleItemRequestDTO request
@@ -89,6 +95,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     }
 
     @Override
+    @Transactional
     public void deleteSaleItem(Integer saleItemId) {
         logger.info("Deleting sale item by ID: {}", saleItemId);
 

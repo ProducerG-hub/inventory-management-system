@@ -6,6 +6,7 @@ import com.inventory_management.entity.User;
 import com.inventory_management.mapper.UserMapper;
 import com.inventory_management.repository.UserRepository;
 import com.inventory_management.service.UserService;
+import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
+    @Transactional
     public UserResponseDTO createUser(UserRequestDTO request) {
 
         User user = userMapper.toEntity(request);
@@ -35,6 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponseDTO> getAllUsers() {
         logger.info("Fetching all users");
 
@@ -46,6 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponseDTO getUserById(Integer userId) {
         logger.info("Fetching user by ID: {}", userId);
 
@@ -59,6 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResponseDTO updateUser(
             Integer userId,
             UserRequestDTO request
@@ -82,6 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Integer userId) {
         logger.info("Deleting user by ID: {}", userId);
 
