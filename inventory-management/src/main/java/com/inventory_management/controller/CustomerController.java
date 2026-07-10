@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Create a new customer", description = "Creates a new customer in the inventory")
     public ResponseEntity<CustomerResponseDTO> createCustomer(
             @Valid @RequestBody CustomerRequestDTO request
@@ -35,6 +37,7 @@ public class CustomerController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get all customers", description = "Retrieves a list of all customers in the inventory")
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
 
@@ -42,6 +45,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
         @Operation(summary = "Get customer by ID", description = "Retrieves a customer by its ID")
     public ResponseEntity<CustomerResponseDTO> getCustomerById(
             @PathVariable Integer id
@@ -51,6 +55,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update customer by ID", description = "Updates an existing customer by its ID")
     public ResponseEntity<CustomerResponseDTO> updateCustomer(
             @PathVariable Integer id,
@@ -61,6 +66,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Delete customer by ID", description = "Deletes a customer by its ID")
     public ResponseEntity<Void> deleteCustomer(
             @PathVariable Integer id

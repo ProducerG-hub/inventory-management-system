@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class SaleController {
     private final SaleService saleService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Create a new sale", description = "Creates a new sale in the inventory")
     public ResponseEntity<SaleResponseDTO> createSale(
             @Valid @RequestBody SaleRequestDTO request
@@ -35,13 +37,15 @@ public class SaleController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all sales", description = "Retrieves a list of all sales in the inventory")
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
+        @Operation(summary = "Get all sales", description = "Retrieves a list of all sales in the inventory")
     public ResponseEntity<List<SaleResponseDTO>> getAllSales() {
 
         return ResponseEntity.ok(saleService.getAllSales());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
         @Operation(summary = "Get sale by ID", description = "Retrieves a sale by its ID")
     public ResponseEntity<SaleResponseDTO> getSaleById(
             @PathVariable Integer id
@@ -51,6 +55,7 @@ public class SaleController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update sale by ID", description = "Updates an existing sale by its ID")
     public ResponseEntity<SaleResponseDTO> updateSale(
             @PathVariable Integer id,
@@ -61,6 +66,7 @@ public class SaleController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Delete sale by ID", description = "Deletes a sale by its ID")
     public ResponseEntity<Void> deleteSale(
             @PathVariable Integer id

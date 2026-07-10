@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +30,7 @@ public class SupplierController {
 
 
     @PostMapping
+        @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new supplier", description = "Creates a new supplier in the inventory")
     public ResponseEntity<SupplierResponseDTO> createSupplier(
             @Valid @RequestBody SupplierRequestDTO request
@@ -45,6 +46,7 @@ public class SupplierController {
 
 
     @GetMapping
+        @PreAuthorize("hasRole('ADMIN','STAFF')")
         @Operation(summary = "Get all suppliers", description = "Retrieves a list of all suppliers in the inventory")
     public ResponseEntity<List<SupplierResponseDTO>> getAllSuppliers(){
 
@@ -57,6 +59,7 @@ public class SupplierController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get supplier by ID", description = "Retrieves a supplier by its ID")
     public ResponseEntity<SupplierResponseDTO> getSupplierById(
             @PathVariable Integer id
@@ -71,6 +74,7 @@ public class SupplierController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Update supplier by ID", description = "Updates an existing supplier by its ID")
     public ResponseEntity<SupplierResponseDTO> updateSupplier(
             @PathVariable Integer id,
@@ -86,6 +90,7 @@ public class SupplierController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete supplier by ID", description = "Deletes a supplier by its ID")
     public ResponseEntity<Void> deleteSupplier(
             @PathVariable Integer id
