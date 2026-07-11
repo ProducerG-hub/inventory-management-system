@@ -2,14 +2,18 @@ package com.inventory_management.service;
 
 import com.inventory_management.dto.request.CustomerRequestDTO;
 import com.inventory_management.dto.response.CustomerResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface CustomerService {
 
     CustomerResponseDTO createCustomer(CustomerRequestDTO request);
 
-    List<CustomerResponseDTO> getAllCustomers();
+        Page<CustomerResponseDTO> getAllCustomers(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
 
     CustomerResponseDTO getCustomerById(Integer customerId);
 

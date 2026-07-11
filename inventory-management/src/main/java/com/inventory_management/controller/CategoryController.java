@@ -11,10 +11,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -47,11 +46,16 @@ public class CategoryController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN','STAFF')")
-        @Operation(summary = "Get all categories", description = "Retrieves a list of all categories in the inventory")
-    public ResponseEntity<List<CategoryResponseDTO>> getAllCategories(){
+    @Operation(summary = "Get all categories", description = "Retrieves a paginated list of all categories in the inventory")
+    public ResponseEntity<Page<CategoryResponseDTO>> getAllCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "categoryId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ){
 
         return ResponseEntity.ok(
-                categoryService.getAllCategories()
+                categoryService.getAllCategories(page, size, sortBy, sortDir)
         );
     }
 

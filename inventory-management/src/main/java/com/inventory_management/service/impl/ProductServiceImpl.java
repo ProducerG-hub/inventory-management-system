@@ -15,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 @RequiredArgsConstructor
@@ -52,12 +54,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ProductResponseDTO> getAllProducts() {
-        logger.info("Fetching all products");
-        return productRepository.findAll()
-                .stream()
-                .map(productMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<ProductResponseDTO> getAllProducts(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+    ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return productRepository.findAll(pageable)
+                .map(productMapper::toResponse);
     }
 
     @Override

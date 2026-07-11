@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/sales")
@@ -38,10 +38,15 @@ public class SaleController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN','STAFF')")
-        @Operation(summary = "Get all sales", description = "Retrieves a list of all sales in the inventory")
-    public ResponseEntity<List<SaleResponseDTO>> getAllSales() {
+    @Operation(summary = "Get all sales", description = "Retrieves a paginated list of all sales in the inventory")
+    public ResponseEntity<Page<SaleResponseDTO>> getAllSales(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "saleId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
 
-        return ResponseEntity.ok(saleService.getAllSales());
+        return ResponseEntity.ok(saleService.getAllSales(page, size, sortBy, sortDir));
     }
 
     @GetMapping("/{id}")
