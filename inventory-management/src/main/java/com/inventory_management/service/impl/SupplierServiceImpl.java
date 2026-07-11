@@ -64,6 +64,28 @@ public class SupplierServiceImpl implements SupplierService {
             .map(supplierMapper::toResponse);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SupplierResponseDTO> searchSuppliers(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        logger.info("Searching suppliers with keyword: {}", keyword);
+
+        return supplierRepository.searchSuppliers(keyword, pageable)
+            .map(supplierMapper::toResponse);
+    }
+
 
     @Override
     @Transactional(readOnly = true)

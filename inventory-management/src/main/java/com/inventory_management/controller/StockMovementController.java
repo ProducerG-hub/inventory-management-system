@@ -49,6 +49,20 @@ public class StockMovementController {
         return ResponseEntity.ok(stockMovementService.getAllStockMovements(page, size, sortBy, sortDir));
     }
 
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(summary = "Search stock movements", description = "Searches for stock movements based on a keyword with pagination and sorting")
+    public ResponseEntity<Page<StockMovementResponseDTO>> searchStockMovements(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "movementId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
+
+        return ResponseEntity.ok(stockMovementService.searchStockMovements(keyword, page, size, sortBy, sortDir));
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN','STAFF')")
         @Operation(summary = "Get stock movement by ID", description = "Retrieves a stock movement by its ID")

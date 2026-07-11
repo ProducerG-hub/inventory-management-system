@@ -16,6 +16,14 @@ public interface CategoryService {
         String sortDir
     );
 
+    Page<CategoryResponseDTO> searchCategories(
+        String keyword,
+        int page,
+        int size,
+        String sortBy,
+        String sortDir
+    );
+
     CategoryResponseDTO getCategoryById(Integer categoryId);
 
     CategoryResponseDTO updateCategory(Integer categoryId, CategoryRequestDTO request);

@@ -15,6 +15,20 @@ public interface ProductService {
         String sortDir
 );
 
+Page<ProductResponseDTO> searchProducts(
+
+        String keyword,
+
+        int page,
+
+        int size,
+
+        String sortBy,
+
+        String sortDir
+
+);
+
     ProductResponseDTO getProductById(Integer productId);
 
     ProductResponseDTO updateProduct(Integer productId, ProductRequestDTO request);

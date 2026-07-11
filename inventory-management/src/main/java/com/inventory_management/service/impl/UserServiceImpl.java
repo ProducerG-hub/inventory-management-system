@@ -65,6 +65,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<UserResponseDTO> searchUsers(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+    ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        logger.info("Searching users with keyword: {}", keyword);
+
+        return userRepository.findAll(pageable)
+                .map(userMapper::toResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public UserResponseDTO getUserById(Integer userId) {
         logger.info("Fetching user by ID: {}", userId);
 

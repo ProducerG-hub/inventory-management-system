@@ -51,6 +51,27 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     @Transactional(readOnly = true)
+        public Page<SaleResponseDTO> searchSales(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        logger.info("Searching sales with keyword: {}", keyword);
+        return saleRepository.searchSales(keyword, pageable)
+            .map(saleMapper::toResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
         public Page<SaleResponseDTO> getAllSales(
             int page,
             int size,

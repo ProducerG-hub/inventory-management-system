@@ -72,6 +72,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+        @Transactional(readOnly = true)
+        public Page<ProductResponseDTO> searchProducts(
+
+                String keyword,
+
+                int page,
+
+                int size,
+
+                String sortBy,
+
+                String sortDir
+
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable =
+                PageRequest.of(page, size, sort);
+
+        return productRepository
+
+                .searchProducts(keyword, pageable)
+
+                .map(productMapper::toResponse);
+
+        }
+
+    @Override
     @Transactional(readOnly = true)
     public ProductResponseDTO getProductById(Integer productId) {
         logger.info("Fetching product by ID: {}", productId);

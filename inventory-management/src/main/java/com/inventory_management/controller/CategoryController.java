@@ -59,10 +59,24 @@ public class CategoryController {
         );
     }
 
+        @GetMapping("/search")
+        @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+        @Operation(summary = "Search categories", description = "Searches for categories by keyword with pagination and sorting")
+        public ResponseEntity<Page<CategoryResponseDTO>> searchCategories(
+                @RequestParam String keyword,
+                @RequestParam(defaultValue = "0") int page,
+                @RequestParam(defaultValue = "10") int size,
+                @RequestParam(defaultValue = "categoryId") String sortBy,
+                @RequestParam(defaultValue = "asc") String sortDir
+        ){
 
+                return ResponseEntity.ok(
+                        categoryService.searchCategories(keyword, page, size, sortBy, sortDir)
+                );
+        }
 
     @GetMapping("/{id}")
-        @PreAuthorize("hasRole('ADMIN','STAFF')")
+        @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Get category by ID", description = "Retrieves a category by its ID")
     public ResponseEntity<CategoryResponseDTO> getCategoryById(
             @PathVariable Integer id

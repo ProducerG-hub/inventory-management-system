@@ -61,10 +61,25 @@ public class SupplierController {
 
     }
 
+    @GetMapping("/search")
+        @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+        @Operation(summary = "Search suppliers", description = "Searches for suppliers by keyword with pagination and sorting")
+        public ResponseEntity<Page<SupplierResponseDTO>> searchSuppliers(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "supplierId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+        ){
 
+        return ResponseEntity.ok(
+            supplierService.searchSuppliers(keyword, page, size, sortBy, sortDir)
+        );
+
+    }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Get supplier by ID", description = "Retrieves a supplier by its ID")
     public ResponseEntity<SupplierResponseDTO> getSupplierById(
             @PathVariable Integer id
