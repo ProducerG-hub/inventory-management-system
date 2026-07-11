@@ -18,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 @RequiredArgsConstructor
@@ -49,12 +51,22 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SaleResponseDTO> getAllSales() {
+        public Page<SaleResponseDTO> getAllSales(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
         logger.info("Fetching all sales");
-        return saleRepository.findAll()
-                .stream()
-                .map(saleMapper::toResponse)
-                .collect(Collectors.toList());
+        return saleRepository.findAll(pageable)
+            .map(saleMapper::toResponse);
     }
 
     @Override

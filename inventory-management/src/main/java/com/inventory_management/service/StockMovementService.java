@@ -2,14 +2,18 @@ package com.inventory_management.service;
 
 import com.inventory_management.dto.request.StockMovementRequestDTO;
 import com.inventory_management.dto.response.StockMovementResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface StockMovementService {
 
     StockMovementResponseDTO createStockMovement(StockMovementRequestDTO request);
 
-    List<StockMovementResponseDTO> getAllStockMovements();
+        Page<StockMovementResponseDTO> getAllStockMovements(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
 
     StockMovementResponseDTO getStockMovementById(Integer movementId);
 

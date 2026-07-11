@@ -3,13 +3,18 @@ package com.inventory_management.service;
 import com.inventory_management.dto.request.CategoryRequestDTO;
 import com.inventory_management.dto.response.CategoryResponseDTO;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface CategoryService {
 
     CategoryResponseDTO createCategory(CategoryRequestDTO request);
 
-    List<CategoryResponseDTO> getAllCategories();
+    Page<CategoryResponseDTO> getAllCategories(
+        int page,
+        int size,
+        String sortBy,
+        String sortDir
+    );
 
     CategoryResponseDTO getCategoryById(Integer categoryId);
 

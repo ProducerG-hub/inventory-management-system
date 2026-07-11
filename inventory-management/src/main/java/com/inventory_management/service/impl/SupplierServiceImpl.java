@@ -14,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 
 @Service
@@ -43,14 +45,23 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SupplierResponseDTO> getAllSuppliers() {
+        public Page<SupplierResponseDTO> getAllSuppliers(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
         logger.info("Fetching all suppliers");
 
-
-        return supplierRepository.findAll()
-                .stream()
-                .map(supplierMapper::toResponse)
-                .collect(Collectors.toList());
+        return supplierRepository.findAll(pageable)
+            .map(supplierMapper::toResponse);
     }
 
 

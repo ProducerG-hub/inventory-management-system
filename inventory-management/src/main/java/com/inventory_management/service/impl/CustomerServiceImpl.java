@@ -14,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 @RequiredArgsConstructor
@@ -40,12 +42,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CustomerResponseDTO> getAllCustomers() {
+        public Page<CustomerResponseDTO> getAllCustomers(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
         logger.info("Fetching all customers");
-        return customerRepository.findAll()
-                .stream()
-                .map(customerMapper::toResponse)
-                .collect(Collectors.toList());
+        return customerRepository.findAll(pageable)
+            .map(customerMapper::toResponse);
     }
 
     @Override

@@ -2,14 +2,18 @@ package com.inventory_management.service;
 
 import com.inventory_management.dto.request.UserRequestDTO;
 import com.inventory_management.dto.response.UserResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface UserService {
 
     UserResponseDTO createUser(UserRequestDTO request);
 
-    List<UserResponseDTO> getAllUsers();
+        Page<UserResponseDTO> getAllUsers(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
 
     UserResponseDTO getUserById(Integer userId);
 

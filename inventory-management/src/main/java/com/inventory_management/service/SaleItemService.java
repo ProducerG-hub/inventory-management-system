@@ -2,14 +2,18 @@ package com.inventory_management.service;
 
 import com.inventory_management.dto.request.SaleItemRequestDTO;
 import com.inventory_management.dto.response.SaleItemResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface SaleItemService {
 
     SaleItemResponseDTO createSaleItem(SaleItemRequestDTO request);
 
-    List<SaleItemResponseDTO> getAllSaleItems();
+        Page<SaleItemResponseDTO> getAllSaleItems(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
 
     SaleItemResponseDTO getSaleItemById(Integer saleItemId);
 

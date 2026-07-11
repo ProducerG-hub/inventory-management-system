@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 
 @RestController
@@ -47,11 +47,16 @@ public class SupplierController {
 
     @GetMapping
         @PreAuthorize("hasRole('ADMIN','STAFF')")
-        @Operation(summary = "Get all suppliers", description = "Retrieves a list of all suppliers in the inventory")
-    public ResponseEntity<List<SupplierResponseDTO>> getAllSuppliers(){
+        @Operation(summary = "Get all suppliers", description = "Retrieves a paginated list of all suppliers in the inventory")
+        public ResponseEntity<Page<SupplierResponseDTO>> getAllSuppliers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "supplierId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+        ){
 
         return ResponseEntity.ok(
-                supplierService.getAllSuppliers()
+            supplierService.getAllSuppliers(page, size, sortBy, sortDir)
         );
 
     }

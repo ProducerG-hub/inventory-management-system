@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/products")
@@ -37,13 +37,37 @@ public class ProductController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
-    @Operation(summary = "Get all products", description = "Retrieves a list of all products in the inventory")
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(summary = "Get all products", description = "Retrieves a list of all products in the inventory with pagination and sorting")
+    public ResponseEntity<Page<ProductResponseDTO>> getAllProducts(
 
-        return ResponseEntity.ok(productService.getAllProducts());
+            @RequestParam(defaultValue = "0") int page,
+
+            @RequestParam(defaultValue = "10") int size,
+
+            @RequestParam(defaultValue = "productId") String sortBy,
+
+            @RequestParam(defaultValue = "asc") String sortDir
+
+    ) {
+
+        return ResponseEntity.ok(
+
+                productService.getAllProducts(
+
+                        page,
+
+                        size,
+
+                        sortBy,
+
+                        sortDir
+
+                )
+
+        );
+
     }
-
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get product by ID", description = "Retrieves a product by its ID")

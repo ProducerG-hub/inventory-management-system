@@ -14,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 
 @Service
@@ -45,14 +47,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoryResponseDTO> getAllCategories() {
-        logger.info("Fetching all categories");
-        return categoryRepository.findAll()
-                .stream()
-                .map(categoryMapper::toResponse)
-                .collect(Collectors.toList());
-    }
+    public Page<CategoryResponseDTO> getAllCategories(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+    ) {
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
 
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return categoryRepository.findAll(pageable)
+                .map(categoryMapper::toResponse);
+    }
+    
 
     @Override
     @Transactional(readOnly = true)

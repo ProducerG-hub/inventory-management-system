@@ -2,14 +2,18 @@ package com.inventory_management.service;
 
 import com.inventory_management.dto.request.ProductRequestDTO;
 import com.inventory_management.dto.response.ProductResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProductService {
 
     ProductResponseDTO createProduct(ProductRequestDTO request);
 
-    List<ProductResponseDTO> getAllProducts();
+    Page<ProductResponseDTO> getAllProducts(
+        int page,
+        int size,
+        String sortBy,
+        String sortDir
+);
 
     ProductResponseDTO getProductById(Integer productId);
 

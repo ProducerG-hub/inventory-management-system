@@ -11,10 +11,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -26,7 +25,7 @@ public class CustomerController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-        @Operation(summary = "Create a new customer", description = "Creates a new customer in the inventory")
+    @Operation(summary = "Create a new customer", description = "Creates a new customer in the inventory")
     public ResponseEntity<CustomerResponseDTO> createCustomer(
             @Valid @RequestBody CustomerRequestDTO request
     ) {
@@ -38,15 +37,20 @@ public class CustomerController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN','STAFF')")
-    @Operation(summary = "Get all customers", description = "Retrieves a list of all customers in the inventory")
-    public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
+    @Operation(summary = "Get all customers", description = "Retrieves a paginated list of all customers in the inventory")
+    public ResponseEntity<Page<CustomerResponseDTO>> getAllCustomers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "customerId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
 
-        return ResponseEntity.ok(customerService.getAllCustomers());
+        return ResponseEntity.ok(customerService.getAllCustomers(page, size, sortBy, sortDir));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN','STAFF')")
-        @Operation(summary = "Get customer by ID", description = "Retrieves a customer by its ID")
+    @Operation(summary = "Get customer by ID", description = "Retrieves a customer by its ID")
     public ResponseEntity<CustomerResponseDTO> getCustomerById(
             @PathVariable Integer id
     ) {
@@ -67,7 +71,7 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-        @Operation(summary = "Delete customer by ID", description = "Deletes a customer by its ID")
+    @Operation(summary = "Delete customer by ID", description = "Deletes a customer by its ID")
     public ResponseEntity<Void> deleteCustomer(
             @PathVariable Integer id
     ) {

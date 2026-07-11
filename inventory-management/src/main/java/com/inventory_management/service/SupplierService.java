@@ -2,8 +2,7 @@ package com.inventory_management.service;
 
 import com.inventory_management.dto.request.SupplierRequestDTO;
 import com.inventory_management.dto.response.SupplierResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 
 public interface SupplierService {
@@ -12,7 +11,12 @@ public interface SupplierService {
     SupplierResponseDTO createSupplier(SupplierRequestDTO request);
 
 
-    List<SupplierResponseDTO> getAllSuppliers();
+        Page<SupplierResponseDTO> getAllSuppliers(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
 
 
     SupplierResponseDTO getSupplierById(Integer supplierId);

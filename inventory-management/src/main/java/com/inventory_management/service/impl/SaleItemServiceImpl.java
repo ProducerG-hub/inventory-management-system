@@ -17,10 +17,12 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 @RequiredArgsConstructor
@@ -51,12 +53,22 @@ public class SaleItemServiceImpl implements SaleItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SaleItemResponseDTO> getAllSaleItems() {
+        public Page<SaleItemResponseDTO> getAllSaleItems(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
         logger.info("Fetching all sale items");
-        return saleItemRepository.findAll()
-                .stream()
-                .map(saleItemMapper::toResponse)
-                .collect(Collectors.toList());
+        return saleItemRepository.findAll(pageable)
+            .map(saleItemMapper::toResponse);
     }
 
     @Override

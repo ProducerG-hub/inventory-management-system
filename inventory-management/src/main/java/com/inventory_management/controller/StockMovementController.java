@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;   
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/stock-movements")
@@ -38,10 +38,15 @@ public class StockMovementController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN','STAFF')")
-    @Operation(summary = "Get all stock movements", description = "Retrieves a list of all stock movements in the inventory")
-    public ResponseEntity<List<StockMovementResponseDTO>> getAllStockMovements() {
+    @Operation(summary = "Get all stock movements", description = "Retrieves a paginated list of all stock movements in the inventory")
+    public ResponseEntity<Page<StockMovementResponseDTO>> getAllStockMovements(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "movementId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
 
-        return ResponseEntity.ok(stockMovementService.getAllStockMovements());
+        return ResponseEntity.ok(stockMovementService.getAllStockMovements(page, size, sortBy, sortDir));
     }
 
     @GetMapping("/{id}")

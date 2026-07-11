@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/users")
@@ -38,10 +38,15 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN','STAFF')")
-    @Operation(summary = "Get all users", description = "Retrieves a list of all users in the inventory")
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+    @Operation(summary = "Get all users", description = "Retrieves a paginated list of all users in the inventory")
+    public ResponseEntity<Page<UserResponseDTO>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "userId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
 
-        return ResponseEntity.ok(userService.getAllUsers());
+        return ResponseEntity.ok(userService.getAllUsers(page, size, sortBy, sortDir));
     }
 
     @GetMapping("/{id}")

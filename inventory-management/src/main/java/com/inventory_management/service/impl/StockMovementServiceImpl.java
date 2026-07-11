@@ -18,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 @RequiredArgsConstructor
@@ -49,14 +51,22 @@ public class StockMovementServiceImpl implements StockMovementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<StockMovementResponseDTO> getAllStockMovements() {
+        public Page<StockMovementResponseDTO> getAllStockMovements(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
         logger.info("Fetching all stock movements");
-
-
-        return stockMovementRepository.findAll()
-                .stream()
-                .map(stockMovementMapper::toResponse)
-                .collect(Collectors.toList());
+        return stockMovementRepository.findAll(pageable)
+            .map(stockMovementMapper::toResponse);
     }
 
     @Override
