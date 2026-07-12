@@ -1,0 +1,100 @@
+:root {
+
+    /* ========================================
+       COLORS
+    ======================================== */
+
+    --primary-color: #2563EB;
+    --primary-hover: #1D4ED8;
+
+    --secondary-color: #1E293B;
+
+    --success-color: #22C55E;
+    --warning-color: #F59E0B;
+    --danger-color: #EF4444;
+    --info-color: #0EA5E9;
+
+    --background-color: #F8FAFC;
+    --surface-color: #FFFFFF;
+
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
+    --text-light: #FFFFFF;
+
+    --border-color: #E5E7EB;
+
+    /* Sidebar */
+
+    --sidebar-bg: #1E293B;
+    --sidebar-hover: #334155;
+    --sidebar-active: #2563EB;
+    --sidebar-text: #FFFFFF;
+
+    /* Navbar */
+
+    --navbar-bg: #FFFFFF;
+    --navbar-border: #E5E7EB;
+
+    /* ========================================
+       TYPOGRAPHY
+    ======================================== */
+
+    --font-family: "Poppins", sans-serif;
+
+    --font-xs: .75rem;
+    --font-sm: .875rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.5rem;
+    --font-xxl: 2rem;
+
+    --font-light:300;
+    --font-normal:400;
+    --font-medium:500;
+    --font-semibold:600;
+    --font-bold:700;
+
+    /* ========================================
+       BORDER RADIUS
+    ======================================== */
+
+    --radius-sm:6px;
+    --radius-md:8px;
+    --radius-lg:12px;
+    --radius-xl:16px;
+    --radius-round:50%;
+
+    /* ========================================
+       SPACING
+    ======================================== */
+
+    --space-xs:4px;
+    --space-sm:8px;
+    --space-md:16px;
+    --space-lg:24px;
+    --space-xl:32px;
+    --space-xxl:48px;
+
+    /* ========================================
+       SHADOWS
+    ======================================== */
+
+    --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+    --shadow-md:0 4px 10px rgba(0,0,0,.10);
+    --shadow-lg:0 10px 25px rgba(0,0,0,.12);
+
+    /* ========================================
+       TRANSITIONS
+    ======================================== */
+
+    --transition-fast:.2s ease;
+    --transition-normal:.3s ease;
+
+    /* ========================================
+       LAYOUT
+    ======================================== */
+
+    --navbar-height:70px;
+    --sidebar-width:260px;
+
+}
