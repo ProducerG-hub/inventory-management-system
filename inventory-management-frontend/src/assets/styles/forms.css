@@ -1,0 +1,54 @@
+/* ==========================================
+   FORM ELEMENTS
+========================================== */
+
+.form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+
+    font-weight: var(--font-medium);
+
+    color: var(--text-primary);
+}
+
+.form-control-custom,
+.form-select-custom {
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-md);
+
+    background: var(--surface-color);
+
+    transition: var(--transition-fast);
+
+}
+
+.form-control-custom:focus,
+.form-select-custom:focus {
+
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+textarea.form-control-custom {
+    resize: vertical;
+}
+
+.form-error {
+    margin-top: 6px;
+
+    color: var(--danger-color);
+
+    font-size: var(--font-sm);
+}

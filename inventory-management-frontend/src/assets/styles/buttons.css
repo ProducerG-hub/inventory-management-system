@@ -1,0 +1,65 @@
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.btn-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: var(--radius-md);
+
+    font-size: var(--font-md);
+    font-weight: var(--font-medium);
+
+    cursor: pointer;
+
+    transition: var(--transition-fast);
+}
+
+.btn-primary-custom {
+    background: var(--primary-color);
+    color: var(--text-light);
+}
+
+.btn-primary-custom:hover {
+    background: var(--primary-hover);
+}
+
+.btn-success-custom {
+    background: var(--success-color);
+    color: var(--text-light);
+}
+
+.btn-success-custom:hover {
+    opacity: .9;
+}
+
+.btn-warning-custom {
+    background: var(--warning-color);
+    color: var(--text-light);
+}
+
+.btn-danger-custom {
+    background: var(--danger-color);
+    color: var(--text-light);
+}
+
+.btn-outline-custom {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline-custom:hover {
+    background: var(--background-color);
+}
+
+.btn-custom:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
