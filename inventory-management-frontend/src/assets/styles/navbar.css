@@ -1,0 +1,44 @@
+.navbar-custom{
+
+
+    height:var(--navbar-height);
+
+
+    background:var(--navbar-bg);
+
+
+    border-bottom:1px solid var(--navbar-border);
+
+
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+
+    padding:0 25px;
+
+
+
+    position:sticky;
+
+    top:0;
+
+
+    z-index:1000;
+
+
+}
+
+
+
+.navbar-title{
+
+
+    font-weight:var(--font-semibold);
+
+    color:var(--text-primary);
+
+}
