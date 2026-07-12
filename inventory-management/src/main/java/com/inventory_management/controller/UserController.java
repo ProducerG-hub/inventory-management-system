@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Get all users", description = "Retrieves a paginated list of all users in the inventory")
     public ResponseEntity<Page<UserResponseDTO>> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
@@ -49,8 +49,22 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers(page, size, sortBy, sortDir));
     }
 
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(summary = "Search users", description = "Searches for users based on a keyword with pagination and sorting")
+    public ResponseEntity<Page<UserResponseDTO>> searchUsers(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "userId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
+
+        return ResponseEntity.ok(userService.searchUsers(keyword, page, size, sortBy, sortDir));
+    }
+
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
         @Operation(summary = "Get user by ID", description = "Retrieves a user by its ID")
     public ResponseEntity<UserResponseDTO> getUserById(
             @PathVariable Integer id

@@ -58,6 +58,20 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(summary = "Search customers", description = "Searches for customers based on a keyword")
+    public ResponseEntity<Page<CustomerResponseDTO>> searchCustomers(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "customerId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
+
+        return ResponseEntity.ok(customerService.searchCustomers(keyword, page, size, sortBy, sortDir));
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update customer by ID", description = "Updates an existing customer by its ID")

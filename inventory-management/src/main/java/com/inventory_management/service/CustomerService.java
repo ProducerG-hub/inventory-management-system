@@ -15,6 +15,14 @@ public interface CustomerService {
             String sortDir
         );
 
+        Page<CustomerResponseDTO> searchCustomers(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
+
     CustomerResponseDTO getCustomerById(Integer customerId);
 
     CustomerResponseDTO updateCustomer(Integer customerId, CustomerRequestDTO request);

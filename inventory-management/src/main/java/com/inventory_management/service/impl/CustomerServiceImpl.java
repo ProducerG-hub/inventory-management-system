@@ -62,6 +62,27 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<CustomerResponseDTO> searchCustomers(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+    ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        logger.info("Searching customers with keyword: {}", keyword);
+        return customerRepository.searchCustomers(keyword, pageable)
+                .map(customerMapper::toResponse);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public CustomerResponseDTO getCustomerById(Integer customerId) {
         logger.info("Fetching customer by ID: {}", customerId);
         Customer customer = customerRepository.findById(customerId)

@@ -129,4 +129,25 @@ public class StockMovementServiceImpl implements StockMovementService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<StockMovementResponseDTO> searchStockMovements(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+    ) {
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        logger.info("Searching stock movements with keyword: {}", keyword);
+
+        return stockMovementRepository.searchStockMovements(keyword, pageable)
+                .map(stockMovementMapper::toResponse);
+    }
+
 }

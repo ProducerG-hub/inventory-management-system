@@ -15,6 +15,14 @@ public interface StockMovementService {
             String sortDir
         );
 
+        Page<StockMovementResponseDTO> searchStockMovements(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
+
     StockMovementResponseDTO getStockMovementById(Integer movementId);
 
     StockMovementResponseDTO updateStockMovement(Integer movementId, StockMovementRequestDTO request);

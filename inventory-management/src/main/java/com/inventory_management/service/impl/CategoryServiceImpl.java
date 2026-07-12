@@ -62,6 +62,25 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll(pageable)
                 .map(categoryMapper::toResponse);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+        public Page<CategoryResponseDTO> searchCategories(
+                String keyword,
+                int page,
+                int size,
+                String sortBy,
+                String sortDir
+        ) {
+                Sort sort = sortDir.equalsIgnoreCase("desc")
+                        ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending();
+        
+                Pageable pageable = PageRequest.of(page, size, sort);
+        
+                return categoryRepository.searchCategories(keyword, pageable)
+                        .map(categoryMapper::toResponse);
+        }
     
 
     @Override

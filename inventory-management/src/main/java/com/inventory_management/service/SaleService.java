@@ -15,6 +15,14 @@ public interface SaleService {
             String sortDir
         );
 
+        Page<SaleResponseDTO> searchSales(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
+
     SaleResponseDTO getSaleById(Integer saleId);
 
     SaleResponseDTO updateSale(Integer saleId, SaleRequestDTO request);

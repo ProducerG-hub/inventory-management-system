@@ -15,6 +15,13 @@ public interface UserService {
             String sortDir
         );
 
+        Page<UserResponseDTO> searchUsers(
+            String keyword, 
+            int page, int size,
+            String sortBy, 
+            String sortDir
+        );
+
     UserResponseDTO getUserById(Integer userId);
 
     UserResponseDTO updateUser(Integer userId, UserRequestDTO request);

@@ -49,6 +49,20 @@ public class SaleController {
         return ResponseEntity.ok(saleService.getAllSales(page, size, sortBy, sortDir));
     }
 
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(summary = "Search sales", description = "Searches for sales based on a keyword with pagination and sorting")
+    public ResponseEntity<Page<SaleResponseDTO>> searchSales(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "saleId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ) {
+
+        return ResponseEntity.ok(saleService.searchSales(keyword, page, size, sortBy, sortDir));
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN','STAFF')")
         @Operation(summary = "Get sale by ID", description = "Retrieves a sale by its ID")

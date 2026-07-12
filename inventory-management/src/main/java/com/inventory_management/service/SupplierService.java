@@ -18,6 +18,14 @@ public interface SupplierService {
             String sortDir
         );
 
+        Page<SupplierResponseDTO> searchSuppliers(
+            String keyword,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+        );
+
 
     SupplierResponseDTO getSupplierById(Integer supplierId);
 

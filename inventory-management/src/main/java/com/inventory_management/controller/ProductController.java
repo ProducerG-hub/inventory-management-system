@@ -68,6 +68,45 @@ public class ProductController {
         );
 
     }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    public ResponseEntity<Page<ProductResponseDTO>>
+
+    searchProducts(
+
+            @RequestParam String keyword,
+
+            @RequestParam(defaultValue = "0") int page,
+
+            @RequestParam(defaultValue = "10") int size,
+
+            @RequestParam(defaultValue = "productId") String sortBy,
+
+            @RequestParam(defaultValue = "asc") String sortDir
+
+    ){
+
+        return ResponseEntity.ok(
+
+                productService.searchProducts(
+
+                        keyword,
+
+                        page,
+
+                        size,
+
+                        sortBy,
+
+                        sortDir
+
+                )
+
+        );
+
+    }
+    
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN','STAFF')")
     @Operation(summary = "Get product by ID", description = "Retrieves a product by its ID")
