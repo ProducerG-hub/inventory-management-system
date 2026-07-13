@@ -1,4 +1,9 @@
 @import url('variables.css');
+@import url('forms.css');
+@import url('table.css');
+@import url('buttons.css');
+@import url('sidebar.css');
+@import url('navbar.css');
 
 *{
     margin:0;
@@ -108,9 +113,3 @@ ul{
     border-top:1px solid var(--border-color);
 
 }
-
-@import url('forms.css');
-@import url('table.css');
-@import url('buttons.css');
-@import url('sidebar.css');
-@import url('navbar.css');
