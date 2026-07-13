@@ -5,6 +5,7 @@ import com.inventory_management.dto.response.ProductResponseDTO;
 import com.inventory_management.entity.Category;
 import com.inventory_management.entity.Product;
 import com.inventory_management.entity.Supplier;
+import com.inventory_management.exception.ResourceNotFoundException;
 import com.inventory_management.mapper.ProductMapper;
 import com.inventory_management.repository.CategoryRepository;
 import com.inventory_management.repository.ProductRepository;
@@ -141,17 +142,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
-    public void deleteProduct(Integer productId) {
-        logger.info("Deleting product by ID: {}", productId);
+        @Transactional
+        public void deleteProduct(Integer productId) {
 
-        if (!productRepository.existsById(productId)) {
-            throw new RuntimeException("Product not found");
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found")
+                );
+
+        product.setIsActive(false);
+
+        productRepository.save(product);
         }
-
-        productRepository.deleteById(productId);
-        logger.info("Product deleted: {}", productId);
-    }
 
     private Category getCategoryById(Integer categoryId) {
 

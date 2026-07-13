@@ -1,0 +1,204 @@
+.modal-overlay {
+
+    position: fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(15,23,42,0.55);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:1000;
+
+}
+
+
+
+.product-modal {
+
+    background:var(--surface-color);
+
+    width:500px;
+
+    max-width:90%;
+
+    border-radius:var(--radius-lg);
+
+    padding:24px;
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+
+
+.modal-header {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.modal-header h3 {
+
+    color:var(--primary-color);
+}
+
+
+
+.close-btn {
+
+    border:none;
+
+    background:none;
+
+    font-size:25px;
+
+    cursor:pointer;
+
+    color:var(--text-secondary);
+
+}
+
+.save-btn {
+
+    background:var(--primary-color);
+
+    color:var(--text-light);
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:var(--radius-md);
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:var(--transition-fast);
+
+}
+
+.cancel-btn {
+
+    background:var(--secondary-color);
+
+    color:var(--text-light);
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:var(--radius-md);
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:var(--transition-fast);
+
+}
+
+.product-form-grid {
+
+
+    display:grid;
+
+
+    grid-template-columns: repeat(2, 1fr);
+
+
+    gap:16px;
+
+
+}
+
+
+
+.product-form input,
+.product-form select {
+
+
+    width:100%;
+
+
+    padding:12px;
+
+
+    border:1px solid var(--border-color);
+
+
+    border-radius:var(--radius-md);
+
+
+    font-family:var(--font-family);
+
+
+    outline:none;
+
+
+}
+
+
+
+.product-form input:focus,
+.product-form select:focus {
+
+
+    border-color:var(--primary-color);
+
+
+}
+
+
+
+
+
+.form-actions {
+
+
+    display:flex;
+
+
+    justify-content:flex-end;
+
+
+    gap:12px;
+
+
+    margin-top:24px;
+
+
+}
+
+@media(max-width:600px){
+
+
+    .product-form-grid{
+
+
+        grid-template-columns:1fr;
+
+
+    }
+
+
+}
