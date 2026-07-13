@@ -1,474 +1,317 @@
 .login-page {
-
-    min-height:100vh;
-
-    display:flex;
-
-    background:
-    linear-gradient(
-        135deg,
-        #F8FAFC,
-        #EFF6FF
-    );
-
+    min-height: 100vh;
+    display: flex;
+    background: linear-gradient(135deg, var(--background-color), #EFF6FF);
 }
-
-
 
 /* =========================
    BRAND SECTION
 ========================= */
 
-
 .login-brand {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
 
-    flex:1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    position:relative;
+    padding: var(--space-xxl);
 
-    overflow:hidden;
+    color: var(--text-light);
 
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-
-    padding:var(--space-xxl);
-
-
-    color:white;
-
-
-    background:
-
-    linear-gradient(
+    background: linear-gradient(
         135deg,
-        #1E293B,
-        #2563EB
+        var(--secondary-color),
+        var(--primary-color)
     );
-
 }
-
-
 
 .brand-content {
-
-    position:relative;
-
-    z-index:2;
-
-    max-width:420px;
-
+    position: relative;
+    z-index: 2;
+    max-width: 420px;
 }
-
-
 
 .brand-logo {
+    width: 90px;
+    height: 90px;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    width:90px;
+    margin-bottom: var(--space-lg);
 
-    height:90px;
+    border-radius: var(--radius-xl);
 
+    background: rgba(255, 255, 255, 0.12);
 
-    display:flex;
+    backdrop-filter: blur(12px);
 
-    align-items:center;
+    font-size: 2rem;
+    font-weight: var(--font-bold);
 
-    justify-content:center;
-
-
-    border-radius:var(--radius-xl);
-
-
-    background:
-
-    rgba(255,255,255,.12);
-
-
-    backdrop-filter:blur(10px);
-
-
-    font-size:40px;
-
-    font-weight:var(--font-bold);
-
-
-    margin-bottom:var(--space-lg);
-
+    color: var(--text-light);
 }
-
-
 
 .brand-content h2 {
+    font-size: var(--font-xxl);
+    font-weight: var(--font-bold);
 
-
-    font-size:var(--font-xxl);
-
-
-    font-weight:var(--font-bold);
-
-
-    margin-bottom:var(--space-md);
-
+    margin-bottom: var(--space-md);
 }
-
-
 
 .brand-content p {
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
 
-
-    font-size:var(--font-lg);
-
-
-    color:rgba(255,255,255,.85);
-
-
-    line-height:1.6;
-
+    font-size: var(--font-lg);
 }
-
-
 
 /* Decorative circles */
 
-
 .brand-circle {
-
-
-    position:absolute;
-
-
-    border-radius:50%;
-
-
-    background:
-
-    rgba(255,255,255,.08);
-
-
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
 }
-
-
 
 .circle-one {
+    width: 350px;
+    height: 350px;
 
-
-    width:350px;
-
-    height:350px;
-
-
-    top:-120px;
-
-    right:-100px;
-
-
+    top: -120px;
+    right: -120px;
 }
-
-
 
 .circle-two {
+    width: 250px;
+    height: 250px;
 
-
-    width:250px;
-
-    height:250px;
-
-
-    bottom:-80px;
-
-    left:-80px;
-
-
+    left: -80px;
+    bottom: -80px;
 }
-
-
 
 /* =========================
    LOGIN SECTION
 ========================= */
 
-
 .login-container {
+    flex: 1;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    flex:1;
-
-
-    display:flex;
-
-
-    align-items:center;
-
-    justify-content:center;
-
-
-    padding:var(--space-xl);
-
+    padding: var(--space-xl);
 }
-
-
-
 
 .login-card {
+    width: 420px;
 
+    background: var(--surface-color);
 
-    width:420px;
+    padding: 40px;
 
+    border-radius: var(--radius-xl);
 
-    background:white;
+    border: 1px solid rgba(37, 99, 235, .08);
 
-
-    padding:40px;
-
-
-    border-radius:var(--radius-xl);
-
-
-    border:
-
-    1px solid rgba(37,99,235,.08);
-
-
-    box-shadow:var(--shadow-lg);
-
-
+    box-shadow: var(--shadow-lg);
 }
-
-
 
 .login-card h2 {
+    color: var(--text-primary);
 
+    margin-bottom: var(--space-xs);
 
-    color:var(--text-primary);
-
-
-    font-size:var(--font-xxl);
-
-
-    margin-bottom:var(--space-xs);
-
-
+    font-size: var(--font-xxl);
 }
-
-
 
 .login-card p {
+    color: var(--text-secondary);
 
-
-    color:var(--text-secondary);
-
-
-    margin-bottom:var(--space-xl);
-
+    margin-bottom: var(--space-xl);
 }
-
-
 
 /* =========================
    FORM
 ========================= */
 
-
 .form-group {
-
-
-    margin-bottom:var(--space-lg);
-
-
+    margin-bottom: var(--space-lg);
 }
-
-
 
 .form-group label {
+    display: block;
 
+    margin-bottom: var(--space-sm);
 
-    display:block;
+    font-weight: var(--font-medium);
 
-
-    margin-bottom:var(--space-sm);
-
-
-    font-weight:var(--font-medium);
-
-
-    color:var(--text-primary);
-
-
+    color: var(--text-primary);
 }
-
-
 
 .form-group input {
+    width: 100%;
 
+    padding: 14px 16px;
 
-    width:100%;
+    border: 1px solid var(--border-color);
 
+    border-radius: var(--radius-md);
 
-    padding:14px 16px;
+    font-size: var(--font-md);
 
+    font-family: var(--font-family);
 
-    font-family:var(--font-family);
+    outline: none;
 
-
-    font-size:var(--font-md);
-
-
-    border:
-
-    1px solid var(--border-color);
-
-
-    border-radius:var(--radius-md);
-
-
-    outline:none;
-
-
-    transition:var(--transition-fast);
-
-
+    transition: var(--transition-fast);
 }
-
-
 
 .form-group input:focus {
+    border-color: var(--primary-color);
 
-
-    border-color:var(--primary-color);
-
-
-    box-shadow:
-
-    0 0 0 4px rgba(37,99,235,.12);
-
-
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
+/* =========================
+   PASSWORD
+========================= */
 
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 50px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 15px;
+
+    transform: translateY(-50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+
+    color: var(--text-secondary);
+
+    font-size: 20px;
+
+    transition: var(--transition-fast);
+}
+
+.password-toggle:hover {
+    color: var(--primary-color);
+}
+
+/* =========================
+   ERROR MESSAGE
+========================= */
+
+.error-message {
+    margin-top: var(--space-xs);
+
+    color: var(--danger-color);
+
+    font-size: var(--font-sm);
+}
 
 /* =========================
    BUTTON
 ========================= */
 
-
 .login-btn {
+    width: 100%;
 
+    padding: 14px;
 
-    width:100%;
+    border: none;
 
+    border-radius: var(--radius-md);
 
-    padding:14px;
+    cursor: pointer;
 
+    font-size: var(--font-md);
+    font-weight: var(--font-semibold);
 
-    border:none;
+    color: var(--text-light);
 
-
-    border-radius:var(--radius-md);
-
-
-    cursor:pointer;
-
-
-    color:white;
-
-
-    font-size:var(--font-md);
-
-
-    font-weight:var(--font-semibold);
-
-
-    background:
-
-
-    linear-gradient(
-
+    background: linear-gradient(
         135deg,
-
-        #2563EB,
-
-        #1D4ED8
-
+        var(--primary-color),
+        var(--primary-hover)
     );
 
-
-    transition:var(--transition-fast);
-
-
+    transition: var(--transition-normal);
 }
 
+.login-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
 
-
-.login-btn:hover {
-
-
-    transform:translateY(-2px);
-
-
-    background:
-
-
-    linear-gradient(
-
-        135deg,
-
-        #1D4ED8,
-
-        #1E40AF
-
-    );
-
-
+    box-shadow: var(--shadow-md);
 }
 
+.login-btn:disabled {
+    opacity: .7;
 
+    cursor: not-allowed;
+}
 
 /* =========================
    RESPONSIVE
 ========================= */
 
+@media (max-width: 900px) {
 
-@media(max-width:900px){
-
-
-    .login-page{
-
-
-        flex-direction:column;
-
-
+    .login-page {
+        flex-direction: column;
     }
 
-
-
-    .login-brand{
-
-
-        min-height:350px;
-
-
+    .login-brand {
+        min-height: 320px;
     }
-
 
 }
 
+@media (max-width: 600px) {
 
-
-@media(max-width:500px){
-
-
-    .login-card{
-
-
-        padding:25px;
-
-
+    .login-container {
+        padding: var(--space-lg);
     }
 
+    .login-card {
+        width: 100%;
+
+        padding: 30px;
+    }
+
+    .brand-logo {
+        width: 70px;
+        height: 70px;
+
+        font-size: 1.5rem;
+    }
+
+    .brand-content h2 {
+        font-size: var(--font-xl);
+    }
+
+    .brand-content p {
+        font-size: var(--font-md);
+    }
 
 }

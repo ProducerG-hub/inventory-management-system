@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import authStorage from "../utils/authStorage";
+import storage from "../utils/authStorage";
 
 
 const AuthContext = createContext();
@@ -9,20 +9,20 @@ export const AuthProvider = ({ children }) => {
 
 
     const [user, setUser] = useState(
-        authStorage.getUser()
+        storage.getUser()
     );
 
 
     const [token, setToken] = useState(
-        authStorage.getToken()
+        storage.getToken()
     );
 
 
     const login = (userData, accessToken) => {
 
-        authStorage.setUser(userData);
+        storage.setUser(userData);
 
-        authStorage.setToken(accessToken);
+        storage.setToken(accessToken);
 
 
         setUser(userData);
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
 
-        authStorage.clear();
+        storage.clear();
 
 
         setUser(null);
