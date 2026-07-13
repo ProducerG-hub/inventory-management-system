@@ -15,7 +15,7 @@ const navigation = [
     {
         key: "dashboard",
         label: "Dashboard",
-        path: ROUTES.DASHBOARD,
+        path: `/${ROUTES.DASHBOARD}`,
         icon: HouseDoorFill,
         roles: [ROLES.ADMIN, ROLES.STAFF]
     },
@@ -23,7 +23,7 @@ const navigation = [
     {
         key: "products",
         label: "Products",
-        path: ROUTES.PRODUCTS,
+        path: `/${ROUTES.PRODUCTS}`,
         icon: BoxSeam,
         roles: [ROLES.ADMIN, ROLES.STAFF]
     },
@@ -31,7 +31,7 @@ const navigation = [
     {
         key: "categories",
         label: "Categories",
-        path: ROUTES.CATEGORIES,
+        path: `/${ROUTES.CATEGORIES}`,
         icon: TagsFill,
         roles: [ROLES.ADMIN, ROLES.STAFF]
     },
@@ -39,7 +39,7 @@ const navigation = [
     {
         key: "suppliers",
         label: "Suppliers",
-        path: ROUTES.SUPPLIERS,
+        path: `/${ROUTES.SUPPLIERS}`,
         icon: Truck,
         roles: [ROLES.ADMIN, ROLES.STAFF]
     },
@@ -47,7 +47,7 @@ const navigation = [
     {
         key: "users",
         label: "Users",
-        path: ROUTES.USERS,
+        path: `/${ROUTES.USERS}`,
         icon: PeopleFill,
         roles: [ROLES.ADMIN]
     },
@@ -55,7 +55,7 @@ const navigation = [
     {
         key: "reports",
         label: "Reports",
-        path: ROUTES.REPORTS,
+        path: `/${ROUTES.REPORTS}`,
         icon: FileEarmarkBarGraphFill,
         roles: [ROLES.ADMIN, ROLES.STAFF]
     }

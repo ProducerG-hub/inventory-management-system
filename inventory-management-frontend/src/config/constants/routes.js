@@ -1,19 +1,19 @@
 const ROUTES = {
-
     LOGIN: "/login",
 
-    DASHBOARD: "/",
+    ROOT: "/",
 
-    PRODUCTS: "/products",
+    DASHBOARD: "dashboard",
 
-    CATEGORIES: "/categories",
+    PRODUCTS: "products",
 
-    SUPPLIERS: "/suppliers",
+    CATEGORIES: "categories",
 
-    USERS: "/users",
+    SUPPLIERS: "suppliers",
 
-    REPORTS: "/reports"
+    USERS: "users",
 
+    REPORTS: "reports"
 };
 
 export default ROUTES;
