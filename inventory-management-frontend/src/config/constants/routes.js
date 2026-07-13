@@ -1,5 +1,6 @@
 const ROUTES = {
     LOGIN: "/login",
+    LOGOUT: "/logout",
 
     ROOT: "/",
 

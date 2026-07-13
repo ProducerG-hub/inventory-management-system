@@ -8,6 +8,12 @@ const API_ENDPOINTS = {
 
     },
 
+    DASHBOARD: {
+
+        GET_DASHBOARD: "/dashboard"
+
+    },
+
     PRODUCTS: {
 
         BASE: "/products",
