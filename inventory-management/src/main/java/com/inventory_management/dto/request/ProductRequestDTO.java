@@ -40,7 +40,6 @@ public class ProductRequestDTO {
     private Integer quantity;
 
     @Schema(description = "The status of the product", example = "true")
-    @NotNull(message = "Product status is required")
     private Boolean isActive;
 
     @Schema(description = "The category ID of the product", example = "1")

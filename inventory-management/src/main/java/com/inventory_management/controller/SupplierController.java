@@ -46,7 +46,7 @@ public class SupplierController {
 
 
     @GetMapping
-        @PreAuthorize("hasRole('ADMIN','STAFF')")
+        @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
         @Operation(summary = "Get all suppliers", description = "Retrieves a paginated list of all suppliers in the inventory")
         public ResponseEntity<Page<SupplierResponseDTO>> getAllSuppliers(
             @RequestParam(defaultValue = "0") int page,

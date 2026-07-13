@@ -45,7 +45,7 @@ public class CategoryController {
 
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Get all categories", description = "Retrieves a paginated list of all categories in the inventory")
     public ResponseEntity<Page<CategoryResponseDTO>> getAllCategories(
             @RequestParam(defaultValue = "0") int page,
