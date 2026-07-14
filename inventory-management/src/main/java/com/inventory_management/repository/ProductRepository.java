@@ -58,5 +58,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             Integer quantity
     );
 
+    Page<Product> findByIsActiveTrue(Pageable pageable);
+
+    Page<Product> findByIsActiveFalse(Pageable pageable);
+
 
 }

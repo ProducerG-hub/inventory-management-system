@@ -33,6 +33,7 @@ const Products = () => {
     const [products,setProducts] = useState([]);
     const [keyword,setKeyword] = useState("");
     const [page,setPage] = useState(0);
+    const [activeTab, setActiveTab] = useState("active");
     const [totalPages,setTotalPages] = useState(0);
 
     const [showModal,setShowModal] = useState(false);
@@ -53,24 +54,11 @@ const Products = () => {
 
 
             let response;
-
-
-
             const params={
-
-
                 page,
-
-
                 size:10,
-
-
                 sortBy:"productId",
-
-
                 sortDir:"asc"
-
-
             };
 
 
@@ -92,62 +80,75 @@ const Products = () => {
             }else{
 
 
-                response = await productService.getProducts(params);
+                if(keyword.trim()){
 
+                    response = await productService.searchProducts({...params,keyword,active: activeTab });
+
+            }else{
+
+                if(activeTab==="active"){
+
+                    response = await productService.getActiveProducts(params);
+
+                }else{
+
+                    response = await productService.getInactiveProducts(params);
+
+                }
 
             }
 
 
-
-
-
-
-
-
-
+            }
 
             setProducts(response.content);
-
-
             setTotalPages(response.totalPages);
-
-
-
-
         }catch(error){
 
             toast.error(
                 "Failed to load products"
             );
-
-
         }
-
-
-
     };
-
-
-
-
-
-
-
-
     useEffect(()=>{
 
 
         loadProducts();
 
 
-    },[page,keyword]);
+    },[page,keyword,activeTab]);
 
+    const handleRestore = async(product)=>{
 
+    const loading = toast.loading(
+        "Restoring product..."
+    );
 
+    try{
 
+        await productService.restoreProduct(
+            product.productId
+        );
 
+        toast.dismiss(loading);
 
+        toast.success(
+            "Product restored successfully"
+        );
 
+        loadProducts();
+
+    }catch(error){
+
+        toast.dismiss(loading);
+
+        toast.error(
+            "Restore failed"
+        );
+
+    }
+
+};
 
 
 
@@ -340,12 +341,59 @@ const Products = () => {
 
             </div>
 
+                {
+                user?.role==="ADMIN" && (
 
+                    <div className="products-tabs">
 
+                        <button
 
+                            className={
+                                activeTab==="active"
+                                ? "tab-btn active"
+                                : "tab-btn"
+                            }
 
+                            onClick={()=>{
 
+                                setPage(0);
 
+                                setActiveTab("active");
+
+                            }}
+
+                        >
+
+                            Active Products
+
+                        </button>
+
+                        <button
+
+                            className={
+                                activeTab==="inactive"
+                                ? "tab-btn active"
+                                : "tab-btn"
+                            }
+
+                            onClick={()=>{
+
+                                setPage(0);
+
+                                setActiveTab("inactive");
+
+                            }}
+
+                        >
+
+                            Inactive Products
+
+                        </button>
+
+                    </div>
+
+                )
+            }
             <ProductSearch
 
                 keyword={keyword}
@@ -373,18 +421,9 @@ const Products = () => {
             <ProductTable
 
                 products={products}
-
-
+                 activeTab={activeTab}
+                onRestore={handleRestore}
                 onEdit={(product)=>{
-
-
-                    console.log(
-                        "Edit Product:",
-                        product
-                    );
-
-
-
                     setSelectedProduct(product);
 
 
@@ -404,14 +443,6 @@ const Products = () => {
 
             />
 
-
-
-
-
-
-
-
-
             <ProductPagination
 
                 currentPage={page}
@@ -421,13 +452,6 @@ const Products = () => {
                 setPage={setPage}
 
             />
-
-
-
-
-
-
-
 
             {
                 showModal && (

@@ -202,3 +202,35 @@
 
 
 }
+
+.restore-btn{
+
+    background: linear-gradient(
+        135deg,
+        var(--success-color),
+        #16a34a
+    );
+
+    color: white;
+
+    border: none;
+
+    padding: 8px 16px;
+
+    border-radius: var(--radius-md);
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: var(--transition-normal);
+
+}
+
+.restore-btn:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-md);
+
+}

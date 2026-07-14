@@ -29,6 +29,22 @@ Page<ProductResponseDTO> searchProducts(
 
 );
 
+Page<ProductResponseDTO> getActiveProducts(
+        int page,
+        int size,
+        String sortBy,
+        String sortDir
+);
+
+Page<ProductResponseDTO> getInactiveProducts(
+        int page,
+        int size,
+        String sortBy,
+        String sortDir
+);
+
+    void restoreProduct(Integer id);
+
     ProductResponseDTO getProductById(Integer productId);
 
     ProductResponseDTO updateProduct(Integer productId, ProductRequestDTO request);

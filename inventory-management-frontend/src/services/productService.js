@@ -71,8 +71,37 @@ const productService = {
 
         );
 
-    }
+    },
 
+    async getActiveProducts(params){
+
+        const response = await axiosInstance.get(
+            "/products/active",
+            {params}
+        );
+
+        return response.data;
+
+    },
+
+    async getInactiveProducts(params){
+
+    const response = await axiosInstance.get(
+        "/products/inactive",
+        {params}
+    );
+
+    return response.data;
+
+    },
+
+    async restoreProduct(id){
+
+    await axiosInstance.patch(
+        `/products/${id}/restore`
+    );
+
+}
 
 };
 
