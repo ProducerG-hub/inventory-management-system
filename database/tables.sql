@@ -11,7 +11,9 @@ CREATE TABLE users (
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     category_name VARCHAR(100) UNIQUE NOT NULL,
-    description TEXT
+    description TEXT,
+    active BOOLEAN DEFAULT TRUE,
+    deleted_at TIMESTAMP
 );
 
 CREATE TABLE suppliers (
