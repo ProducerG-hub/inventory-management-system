@@ -16,6 +16,8 @@ CATEGORIES(
     category_id SERIAL,
     category_name VARCHAR(100),
     description TEXT,
+    active BOOLEAN DEFAULT TRUE,
+    deleted_at TIMESTAMP,
 
     PK(category_id)
 )

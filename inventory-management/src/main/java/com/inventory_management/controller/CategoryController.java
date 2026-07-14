@@ -1,17 +1,14 @@
 package com.inventory_management.controller;
-
 import com.inventory_management.dto.request.CategoryRequestDTO;
 import com.inventory_management.dto.response.CategoryResponseDTO;
 import com.inventory_management.service.CategoryService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,16 +16,24 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
-@Tag(name = "Categories", description = "Category management APIs")
+@Tag(
+        name = "Categories",
+        description = "Category management APIs"
+)
 public class CategoryController {
+
 
 
     private final CategoryService categoryService;
 
+    // ================= CREATE CATEGORY =================
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Create a new category", description = "Creates a new category in the inventory")
+    @Operation(
+            summary = "Create a new category",
+            description = "Creates a new category"
+    )
     public ResponseEntity<CategoryResponseDTO> createCategory(
             @Valid @RequestBody CategoryRequestDTO request
     ){
@@ -36,84 +41,176 @@ public class CategoryController {
         CategoryResponseDTO response =
                 categoryService.createCategory(request);
 
+
         return new ResponseEntity<>(
                 response,
                 HttpStatus.CREATED
         );
+
     }
 
-
+    // ================= GET CATEGORIES =================
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-    @Operation(summary = "Get all categories", description = "Retrieves a paginated list of all categories in the inventory")
+    @Operation(
+            summary = "Get categories by status",
+            description = "Retrieves active or inactive categories with pagination"
+    )
     public ResponseEntity<Page<CategoryResponseDTO>> getAllCategories(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "categoryId") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
+            @RequestParam(defaultValue = "true")
+            Boolean active,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "categoryId")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String sortDir
     ){
 
+
         return ResponseEntity.ok(
-                categoryService.getAllCategories(page, size, sortBy, sortDir)
+                categoryService.getAllCategories(
+                        active,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
         );
+
     }
 
-        @GetMapping("/search")
-        @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-        @Operation(summary = "Search categories", description = "Searches for categories by keyword with pagination and sorting")
-        public ResponseEntity<Page<CategoryResponseDTO>> searchCategories(
-                @RequestParam String keyword,
-                @RequestParam(defaultValue = "0") int page,
-                @RequestParam(defaultValue = "10") int size,
-                @RequestParam(defaultValue = "categoryId") String sortBy,
-                @RequestParam(defaultValue = "asc") String sortDir
-        ){
+    // ================= SEARCH CATEGORY =================
 
-                return ResponseEntity.ok(
-                        categoryService.searchCategories(keyword, page, size, sortBy, sortDir)
-                );
-        }
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(
+            summary = "Search categories",
+            description = "Search categories by keyword and status"
+    )
+    public ResponseEntity<Page<CategoryResponseDTO>> searchCategories(
+            @RequestParam String keyword,
+
+            @RequestParam(defaultValue = "true")
+            Boolean active,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "categoryId")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String sortDir
+    ){
+
+
+        return ResponseEntity.ok(
+                categoryService.searchCategories(
+                        keyword,
+                        active,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
+        );
+
+    }
+
+    // ================= GET CATEGORY BY ID =================
 
     @GetMapping("/{id}")
-        @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-    @Operation(summary = "Get category by ID", description = "Retrieves a category by its ID")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(
+            summary = "Get category by ID",
+            description = "Retrieves category details"
+    )
     public ResponseEntity<CategoryResponseDTO> getCategoryById(
             @PathVariable Integer id
     ){
 
+
         return ResponseEntity.ok(
                 categoryService.getCategoryById(id)
         );
+
     }
 
 
+    // ================= UPDATE CATEGORY =================
 
     @PutMapping("/{id}")
-        @PreAuthorize("hasRole('ADMIN')")
-        @Operation(summary = "Update category by ID", description = "Updates an existing category by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+            summary = "Update category",
+            description = "Updates category information"
+    )
     public ResponseEntity<CategoryResponseDTO> updateCategory(
             @PathVariable Integer id,
-            @RequestBody CategoryRequestDTO request
+
+            @Valid @RequestBody CategoryRequestDTO request
     ){
 
+
         return ResponseEntity.ok(
-                categoryService.updateCategory(id, request)
+                categoryService.updateCategory(
+                        id,
+                        request
+                )
         );
+
     }
 
-
+    // ================= SOFT DELETE =================
 
     @DeleteMapping("/{id}")
-        @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Delete category by ID", description = "Deletes a category by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+            summary = "Delete category",
+            description = "Soft deletes category"
+    )
     public ResponseEntity<Void> deleteCategory(
             @PathVariable Integer id
     ){
 
+
         categoryService.deleteCategory(id);
 
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.noContent()
+                .build();
+
     }
+
+    // ================= RESTORE CATEGORY =================
+
+    @PatchMapping("/{id}/restore")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+            summary = "Restore category",
+            description = "Restores deleted category"
+    )
+    public ResponseEntity<CategoryResponseDTO> restoreCategory(
+            @PathVariable Integer id
+    ){
+
+
+        return ResponseEntity.ok(
+                categoryService.restoreCategory(id)
+        );
+
+    }
+
 
 }

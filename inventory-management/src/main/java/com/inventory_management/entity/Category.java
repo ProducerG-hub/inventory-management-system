@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name="categories")
 @Getter
@@ -19,11 +21,20 @@ public class Category {
     @Column(name="category_id")
     private Integer categoryId;
 
-    @Column(name="category_name")
+
+    @Column(name="category_name", nullable = false)
     private String categoryName;
+
 
     @Column(name="description")
     private String description;
 
-}
 
+    @Column(name="active")
+    private Boolean active = true;
+
+
+    @Column(name="deleted_at")
+    private LocalDateTime deletedAt;
+
+}
