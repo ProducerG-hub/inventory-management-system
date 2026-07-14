@@ -4,10 +4,10 @@ import { useAuth } from "../../context/AuthContext";
 const ProductTable = ({
 
     products,
-
     onEdit,
-
-    onDelete
+    onDelete,
+    onRestore,
+    activeTab
 
 }) => {
 
@@ -233,60 +233,40 @@ const ProductTable = ({
                                     user?.role === "ADMIN" && (
 
 
-                                        <td>
+                                        <td className="actions">
 
+    {
+        activeTab === "active" ? (
 
-                                            <button
+            <>
+                <button
+                    className="edit-btn"
+                    onClick={() => onEdit(product)}
+                >
+                    Edit
+                </button>
 
+                <button
+                    className="delete-btn"
+                    onClick={() => onDelete(product)}
+                >
+                    Deactivate
+                </button>
+            </>
 
-                                                className="edit-btn"
+        ) : (
 
+            <button
+                className="restore-btn"
+                onClick={() => onRestore(product)}
+            >
+                Restore
+            </button>
 
-                                                onClick={() =>
+        )
+    }
 
-                                                    onEdit(product)
-
-                                                }
-
-                                            >
-
-                                                Edit
-
-
-                                            </button>
-
-
-
-
-
-                                            <button
-
-
-                                                className="delete-btn"
-
-
-                                                onClick={() =>
-
-                                                    onDelete(
-
-                                                        product
-
-                                                    )
-
-                                                }
-
-
-                                            >
-
-                                                Delete
-
-
-                                            </button>
-
-
-
-                                        </td>
-
+</td>
 
 
                                     )

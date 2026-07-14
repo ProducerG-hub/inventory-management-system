@@ -36,9 +36,9 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/active")
     @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-    @Operation(summary = "Get all products", description = "Retrieves a list of all products in the inventory with pagination and sorting")
+    @Operation(summary = "Get all active products", description = "Retrieves a list of all active products in the inventory with pagination and sorting")
     public ResponseEntity<Page<ProductResponseDTO>> getAllProducts(
 
             @RequestParam(defaultValue = "0") int page,
@@ -53,7 +53,7 @@ public class ProductController {
 
         return ResponseEntity.ok(
 
-                productService.getAllProducts(
+                productService.getActiveProducts(
 
                         page,
 
@@ -106,6 +106,53 @@ public class ProductController {
         );
 
     }
+
+        @GetMapping("/inactive")
+        @PreAuthorize("hasRole('ADMIN')")
+        @Operation(summary = "Get all inactive products", description = "Retrieves a list of all inactive products in the inventory with pagination and sorting")
+        public ResponseEntity<Page<ProductResponseDTO>>
+        getInactiveProducts(
+
+                @RequestParam(defaultValue = "0") int page,
+
+                @RequestParam(defaultValue = "10") int size,
+
+                @RequestParam(defaultValue = "productId") String sortBy,
+
+                @RequestParam(defaultValue = "asc") String sortDir
+
+        ){
+
+        return ResponseEntity.ok(
+
+                productService.getInactiveProducts(
+
+                        page,
+
+                        size,
+
+                        sortBy,
+
+                        sortDir
+
+                )
+
+        );
+
+        }
+
+        @PatchMapping("/{id}/restore")
+        @PreAuthorize("hasRole('ADMIN')")
+        @Operation(summary = "Restore product", description = "Restores an inactive product by its ID")
+        public ResponseEntity<Void> restoreProduct(
+        @PathVariable Integer id
+        ){
+
+        productService.restoreProduct(id);
+
+        return ResponseEntity.ok().build();
+
+        }
     
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN','STAFF')")

@@ -155,6 +155,44 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
         }
 
+        @Override
+        public Page<ProductResponseDTO> getActiveProducts(
+                int page,
+                int size,
+                String sortBy,
+                String sortDir
+        ){
+
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return productRepository
+                .findByIsActiveTrue(pageable)
+                .map(productMapper::toResponse);
+
+        }
+        @Override
+        public Page<ProductResponseDTO> getInactiveProducts(
+                int page,
+                int size,
+                String sortBy,
+                String sortDir
+        ){
+
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return productRepository
+                .findByIsActiveFalse(pageable)
+                .map(productMapper::toResponse);
+
+        }
     private Category getCategoryById(Integer categoryId) {
 
         return categoryRepository.findById(categoryId)
@@ -166,5 +204,17 @@ public class ProductServiceImpl implements ProductService {
         return supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
+@Override
+public void restoreProduct(Integer id){
+
+    Product product = productRepository.findById(id)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException("Product not found"));
+
+    product.setIsActive(true);
+
+    productRepository.save(product);
+
+}
 
 }
