@@ -31,6 +31,8 @@ SUPPLIERS(
     email VARCHAR(100),
     street VARCHAR(100),
     district VARCHAR(100),
+    active BOOLEAN DEFAULT TRUE,
+    deleted_at TIMESTAMP,
 
     PK(supplier_id)
 )

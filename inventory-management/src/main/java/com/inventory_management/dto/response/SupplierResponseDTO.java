@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,5 +26,9 @@ public class SupplierResponseDTO {
     private String street;
 
     private String district;
+
+    private Boolean active;
+
+    private LocalDateTime deletedAt;
 
 }
