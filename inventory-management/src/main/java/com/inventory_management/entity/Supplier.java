@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "suppliers")
 @Getter
@@ -13,6 +15,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Supplier {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "supplier_id")
@@ -35,5 +38,11 @@ public class Supplier {
 
     @Column(name = "district")
     private String district;
+
+    @Column(name = "active", nullable = false)
+    private Boolean active = true;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
 }

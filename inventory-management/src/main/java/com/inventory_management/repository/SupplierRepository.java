@@ -11,27 +11,50 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
+
+    Page<Supplier> findByActive(
+            Boolean active,
+            Pageable pageable
+    );
+
     @Query("""
     SELECT s
     FROM Supplier s
     WHERE
+        s.active = :active
+        AND
+        (
+            LOWER(s.supplierName) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    LOWER(s.supplierName) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR
 
-    OR
+            LOWER(COALESCE(s.companyName,'')) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    LOWER(s.companyName) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR
 
-    OR
+            LOWER(COALESCE(s.email,'')) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    LOWER(s.email) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR
 
-    OR
+            LOWER(COALESCE(s.phone,'')) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    LOWER(str(s.phone)) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR
+
+            LOWER(COALESCE(s.street,'')) LIKE LOWER(CONCAT('%', :keyword, '%'))
+
+            OR
+
+            LOWER(COALESCE(s.district,'')) LIKE LOWER(CONCAT('%', :keyword, '%'))
+        )
     """)
     Page<Supplier> searchSuppliers(
+
             @Param("keyword") String keyword,
+
+            @Param("active") Boolean active,
+
             Pageable pageable
+
     );
+
 }
