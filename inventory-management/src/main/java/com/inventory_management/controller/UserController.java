@@ -6,15 +6,17 @@ import com.inventory_management.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -26,67 +28,132 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-        @Operation(summary = "Create a new user", description = "Creates a new user in the inventory")
+    @Operation(summary = "Create User")
     public ResponseEntity<UserResponseDTO> createUser(
             @Valid @RequestBody UserRequestDTO request
     ) {
 
-        UserResponseDTO response = userService.createUser(request);
+        return new ResponseEntity<>(
+                userService.createUser(request),
+                HttpStatus.CREATED
+        );
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-    @Operation(summary = "Get all users", description = "Retrieves a paginated list of all users in the inventory")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get Users")
     public ResponseEntity<Page<UserResponseDTO>> getAllUsers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "userId") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
+
+            @RequestParam(defaultValue = "true")
+            Boolean active,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "userId")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String sortDir
+
     ) {
 
-        return ResponseEntity.ok(userService.getAllUsers(page, size, sortBy, sortDir));
+        return ResponseEntity.ok(
+
+                userService.getAllUsers(
+                        active,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
+
+        );
+
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-    @Operation(summary = "Search users", description = "Searches for users based on a keyword with pagination and sorting")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Search Users")
     public ResponseEntity<Page<UserResponseDTO>> searchUsers(
-            @RequestParam String keyword,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "userId") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
+
+            @RequestParam
+            String keyword,
+
+            @RequestParam(defaultValue = "true")
+            Boolean active,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "userId")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String sortDir
+
     ) {
 
-        return ResponseEntity.ok(userService.searchUsers(keyword, page, size, sortBy, sortDir));
+        return ResponseEntity.ok(
+
+                userService.searchUsers(
+                        keyword,
+                        active,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
+
+        );
+
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
-        @Operation(summary = "Get user by ID", description = "Retrieves a user by its ID")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get User By ID")
     public ResponseEntity<UserResponseDTO> getUserById(
             @PathVariable Integer id
     ) {
 
-        return ResponseEntity.ok(userService.getUserById(id));
+        return ResponseEntity.ok(
+                userService.getUserById(id)
+        );
+
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Update user by ID", description = "Updates an existing user by its ID")
+    @Operation(summary = "Update User")
     public ResponseEntity<UserResponseDTO> updateUser(
+
             @PathVariable Integer id,
+
             @RequestBody UserRequestDTO request
+
     ) {
 
-        return ResponseEntity.ok(userService.updateUser(id, request));
+        return ResponseEntity.ok(
+
+                userService.updateUser(
+                        id,
+                        request
+                )
+
+        );
+
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-        @Operation(summary = "Delete user by ID", description = "Deletes a user by its ID")
+    @Operation(summary = "Deactivate User")
     public ResponseEntity<Void> deleteUser(
             @PathVariable Integer id
     ) {
@@ -94,6 +161,20 @@ public class UserController {
         userService.deleteUser(id);
 
         return ResponseEntity.noContent().build();
+
+    }
+
+    @PatchMapping("/{id}/restore")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Restore User")
+    public ResponseEntity<Void> restoreUser(
+            @PathVariable Integer id
+    ) {
+
+        userService.restoreUser(id);
+
+        return ResponseEntity.ok().build();
+
     }
 
 }

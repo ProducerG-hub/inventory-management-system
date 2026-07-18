@@ -6,67 +6,58 @@ import com.inventory_management.entity.User;
 import com.inventory_management.mapper.UserMapper;
 import com.inventory_management.repository.UserRepository;
 import com.inventory_management.service.UserService;
-import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService {
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(UserServiceImpl.class);
+
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    private final UserMapper userMapper;
-
     @Override
-    @Transactional
     public UserResponseDTO createUser(UserRequestDTO request) {
 
         User user = userMapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        user.setPassword(
+                passwordEncoder.encode(request.getPassword())
+        );
+
+        user.setIsActive(true);
+        user.setDeletedAt(null);
 
         User savedUser = userRepository.save(user);
-        logger.info("User created: {}", savedUser);
+
+        logger.info("User created: {}", savedUser.getEmail());
+
         return userMapper.toResponse(savedUser);
     }
 
     @Override
     @Transactional(readOnly = true)
-        public Page<UserResponseDTO> getAllUsers(
-            int page,
-            int size,
-            String sortBy,
-            String sortDir
-        ) {
-
-        Sort sort = sortDir.equalsIgnoreCase("desc")
-            ? Sort.by(sortBy).descending()
-            : Sort.by(sortBy).ascending();
-
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        logger.info("Fetching all users");
-
-        return userRepository.findAll(pageable)
-            .map(userMapper::toResponse);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<UserResponseDTO> searchUsers(
-            String keyword,
+    public Page<UserResponseDTO> getAllUsers(
+            Boolean active,
             int page,
             int size,
             String sortBy,
@@ -79,28 +70,53 @@ public class UserServiceImpl implements UserService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        logger.info("Searching users with keyword: {}", keyword);
+        logger.info("Fetching {} users",
+                active ? "active" : "inactive");
 
-        return userRepository.findAll(pageable)
+        return userRepository
+                .findByIsActive(active, pageable)
                 .map(userMapper::toResponse);
     }
 
     @Override
     @Transactional(readOnly = true)
+    public Page<UserResponseDTO> searchUsers(
+            String keyword,
+            Boolean active,
+            int page,
+            int size,
+            String sortBy,
+            String sortDir
+    ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        logger.info("Searching users: {}", keyword);
+
+        return userRepository
+                .searchUsers(keyword, active, pageable)
+                .map(userMapper::toResponse);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public UserResponseDTO getUserById(Integer userId) {
-        logger.info("Fetching user by ID: {}", userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found")
-                );
+                        new RuntimeException("User not found"));
 
-        logger.info("Fetching user by ID: {}", userId);
+        logger.info("Fetching user ID: {}", userId);
+
         return userMapper.toResponse(user);
     }
 
     @Override
-    @Transactional
     public UserResponseDTO updateUser(
             Integer userId,
             UserRequestDTO request
@@ -108,31 +124,66 @@ public class UserServiceImpl implements UserService {
 
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found")
-                );
+                        new RuntimeException("User not found"));
 
         existingUser.setFullName(request.getFullName());
-        existingUser.setPassword(request.getPassword());
         existingUser.setEmail(request.getEmail());
         existingUser.setRole(request.getRole());
         existingUser.setIsActive(request.getIsActive());
 
-        User updatedUser = userRepository.save(existingUser);
+        /*
+         * Update password only if supplied
+         */
+        if (request.getPassword() != null &&
+                !request.getPassword().isBlank()) {
 
-        logger.info("User updated: {}", updatedUser);
+            existingUser.setPassword(
+                    passwordEncoder.encode(request.getPassword())
+            );
+
+        }
+
+        User updatedUser =
+                userRepository.save(existingUser);
+
+        logger.info("User updated: {}",
+                updatedUser.getEmail());
+
         return userMapper.toResponse(updatedUser);
     }
 
     @Override
-    @Transactional
     public void deleteUser(Integer userId) {
-        logger.info("Deleting user by ID: {}", userId);
 
-        if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("User not found");
-        }
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
 
-        userRepository.deleteById(userId);
+        existingUser.setIsActive(false);
+        existingUser.setDeletedAt(LocalDateTime.now());
+
+        userRepository.save(existingUser);
+
+        logger.info("User deactivated: {}",
+                existingUser.getEmail());
+
+    }
+
+    @Override
+    public void restoreUser(Integer userId) {
+
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        existingUser.setIsActive(true);
+        existingUser.setDeletedAt(null);
+
+        userRepository.save(existingUser);
+
+        logger.info("User restored: {}",
+                existingUser.getEmail());
+
     }
 
 }

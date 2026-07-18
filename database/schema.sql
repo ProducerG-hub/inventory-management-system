@@ -7,6 +7,7 @@ USERS(
     role VARCHAR(50),
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP,
 
     PK(user_id)
 )

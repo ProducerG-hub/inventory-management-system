@@ -1,0 +1,729 @@
+.users-page {
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+
+.users-header {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:var(--surface-color);
+
+    padding:20px;
+
+    border-radius:var(--radius-lg);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+
+
+.users-header h2 {
+
+    margin:0;
+
+    color:var(--text-primary);
+
+    font-size:var(--font-xl);
+
+}
+
+
+
+.users-header p {
+
+    margin-top:6px;
+
+    color:var(--text-secondary);
+
+    font-size:var(--font-sm);
+
+}
+
+
+
+/* =========================
+   BUTTON
+========================= */
+
+
+.primary-btn {
+
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #2563EB,
+
+        #0EA5E9
+
+    );
+
+
+    color:white;
+
+
+    border:none;
+
+
+    padding:12px 22px;
+
+
+    border-radius:var(--radius-md);
+
+
+    font-family:var(--font-family);
+
+
+    font-weight:var(--font-medium);
+
+
+    cursor:pointer;
+
+
+    transition:var(--transition-normal);
+
+
+    box-shadow:var(--shadow-sm);
+
+
+}
+
+
+
+.primary-btn:hover {
+
+
+    transform:translateY(-2px);
+
+
+    box-shadow:var(--shadow-md);
+
+
+}
+
+
+
+/* =========================
+   SEARCH
+========================= */
+
+
+.user-search {
+
+
+    background:var(--surface-color);
+
+
+    padding:18px;
+
+
+    border-radius:var(--radius-lg);
+
+
+    box-shadow:var(--shadow-sm);
+
+
+}
+
+
+
+.user-search input {
+
+
+    width:100%;
+
+
+    padding:13px 16px;
+
+
+    border:1px solid var(--border-color);
+
+
+    border-radius:var(--radius-md);
+
+
+    font-family:var(--font-family);
+
+
+    color:var(--text-primary);
+
+
+    outline:none;
+
+
+}
+
+
+
+.user-search input:focus {
+
+
+    border-color:var(--primary-color);
+
+
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+
+
+}
+
+
+
+
+/* =========================
+   TABLE CARD
+========================= */
+
+
+.users-card {
+
+
+    background:var(--surface-color);
+
+
+    border-radius:var(--radius-lg);
+
+
+    padding:20px;
+
+
+    box-shadow:var(--shadow-md);
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+.users-card table {
+
+
+    width:100%;
+
+
+    border-collapse:collapse;
+
+
+}
+
+
+
+
+.users-card th {
+
+
+    background:#F8FAFC;
+
+
+    color:var(--text-secondary);
+
+
+    font-size:var(--font-sm);
+
+
+    font-weight:var(--font-semibold);
+
+
+    padding:15px;
+
+
+}
+
+
+
+
+.users-card td {
+
+
+    padding:15px;
+
+
+    color:var(--text-primary);
+
+
+    border-bottom:1px solid var(--border-color);
+
+
+    font-size:var(--font-sm);
+
+
+}
+
+
+
+
+.users-card tbody tr {
+
+
+    transition:var(--transition-fast);
+
+
+}
+
+
+
+
+.users-card tbody tr:hover {
+
+
+    background:#F8FAFC;
+
+
+}
+
+
+
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+
+.status-active {
+
+
+    background:#DCFCE7;
+
+
+    color:#166534;
+
+
+    padding:6px 12px;
+
+
+    border-radius:20px;
+
+
+    font-size:12px;
+
+
+    font-weight:500;
+
+
+}
+
+
+
+
+.status-inactive {
+
+
+    background:#FEE2E2;
+
+
+    color:#991B1B;
+
+
+    padding:6px 12px;
+
+
+    border-radius:20px;
+
+
+    font-size:12px;
+
+
+    font-weight:500;
+
+
+}
+
+
+
+
+/* =========================
+   ROLE BADGES
+========================= */
+
+
+.role-admin {
+
+
+    background:#DBEAFE;
+
+
+    color:#1D4ED8;
+
+
+    padding:6px 12px;
+
+
+    border-radius:20px;
+
+
+    font-size:12px;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+.role-staff {
+
+
+    background:#EDE9FE;
+
+
+    color:#6D28D9;
+
+
+    padding:6px 12px;
+
+
+    border-radius:20px;
+
+
+    font-size:12px;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+
+.edit-btn {
+
+
+    background:#0EA5E9;
+
+
+    color:white;
+
+
+    border:none;
+
+
+    padding:7px 14px;
+
+
+    border-radius:var(--radius-sm);
+
+
+    cursor:pointer;
+
+
+    margin-right:8px;
+
+
+    font-size:var(--font-sm);
+
+
+}
+
+
+
+.edit-btn:hover {
+
+
+    opacity:.85;
+
+
+}
+
+
+
+
+.delete-btn {
+
+
+    background:var(--danger-color);
+
+
+    color:white;
+
+
+    border:none;
+
+
+    padding:7px 14px;
+
+
+    border-radius:var(--radius-sm);
+
+
+    cursor:pointer;
+
+
+    font-size:var(--font-sm);
+
+
+}
+
+
+
+.delete-btn:hover {
+
+
+    opacity:.85;
+
+
+}
+
+
+
+
+.restore-btn {
+
+
+    background:#16A34A;
+
+
+    color:white;
+
+
+    border:none;
+
+
+    padding:7px 14px;
+
+
+    border-radius:var(--radius-sm);
+
+
+    cursor:pointer;
+
+
+    font-size:var(--font-sm);
+
+
+}
+
+
+
+.restore-btn:hover {
+
+
+    opacity:.85;
+
+
+}
+
+
+
+
+/* =========================
+   TABS
+========================= */
+
+
+.users-tabs {
+
+
+    display:flex;
+
+
+    gap:12px;
+
+
+    margin:20px 0;
+
+
+}
+
+
+
+.tab-btn {
+
+
+    padding:10px 22px;
+
+
+    border:none;
+
+
+    background:#EEF2FF;
+
+
+    border-radius:10px;
+
+
+    cursor:pointer;
+
+
+    font-weight:600;
+
+
+    transition:.25s;
+
+
+}
+
+
+
+.tab-btn:hover {
+
+
+    transform:translateY(-2px);
+
+
+}
+
+
+
+.tab-btn.active {
+
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        var(--primary-color),
+
+        var(--primary-hover)
+
+    );
+
+
+    color:white;
+
+
+}
+
+
+
+
+/* =========================
+   PAGINATION
+========================= */
+
+
+.pagination {
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    gap:20px;
+
+
+    padding:15px;
+
+
+}
+
+
+
+.pagination button {
+
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #2563EB,
+
+        #0EA5E9
+
+    );
+
+
+    color:white;
+
+
+    border:none;
+
+
+    padding:9px 18px;
+
+
+    border-radius:var(--radius-md);
+
+
+    cursor:pointer;
+
+
+}
+
+
+
+
+.pagination button:disabled {
+
+
+    opacity:.5;
+
+
+    cursor:not-allowed;
+
+
+}
+
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+
+@media(max-width:768px){
+
+
+    .users-header {
+
+
+        flex-direction:column;
+
+
+        align-items:flex-start;
+
+
+        gap:15px;
+
+
+    }
+
+
+
+    .users-card {
+
+
+        overflow-x:auto;
+
+
+    }
+
+
+}

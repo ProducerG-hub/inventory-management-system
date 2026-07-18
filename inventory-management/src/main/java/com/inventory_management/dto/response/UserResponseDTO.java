@@ -25,4 +25,6 @@ public class UserResponseDTO {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime deletedAt;
+
 }
