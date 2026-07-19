@@ -50,6 +50,8 @@ public class AuthServiceImpl implements AuthService {
                 "Login successful",
                 token,
 
+                user.getUserId(),
+                
                 user.getFullName(),
 
 

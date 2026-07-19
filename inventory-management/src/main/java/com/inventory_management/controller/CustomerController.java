@@ -24,7 +24,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Create a new customer", description = "Creates a new customer in the inventory")
     public ResponseEntity<CustomerResponseDTO> createCustomer(
             @Valid @RequestBody CustomerRequestDTO request
@@ -36,7 +36,7 @@ public class CustomerController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Get all customers", description = "Retrieves a paginated list of all customers in the inventory")
     public ResponseEntity<Page<CustomerResponseDTO>> getAllCustomers(
             @RequestParam(defaultValue = "0") int page,
@@ -49,7 +49,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Get customer by ID", description = "Retrieves a customer by its ID")
     public ResponseEntity<CustomerResponseDTO> getCustomerById(
             @PathVariable Integer id
@@ -73,7 +73,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(summary = "Update customer by ID", description = "Updates an existing customer by its ID")
     public ResponseEntity<CustomerResponseDTO> updateCustomer(
             @PathVariable Integer id,

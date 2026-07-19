@@ -4,7 +4,8 @@ import {
     TagsFill,
     Truck,
     PeopleFill,
-    FileEarmarkBarGraphFill
+    FileEarmarkBarGraphFill,
+    CartCheck
 } from "react-bootstrap-icons";
 
 import ROUTES from "./routes";
@@ -18,6 +19,17 @@ const navigation = [
         path: `/${ROUTES.DASHBOARD}`,
         icon: HouseDoorFill,
         roles: [ROLES.ADMIN, ROLES.STAFF]
+    },
+    
+    {
+        key: "sales",
+        label: "Sales",
+        path: `/${ROUTES.SALES}`,
+        icon: CartCheck,
+        roles: [
+            ROLES.ADMIN,
+            ROLES.STAFF
+        ]
     },
 
     {

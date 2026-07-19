@@ -11,17 +11,15 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaleItemResponseDTO {
-
-    private Integer saleItemId;
+public class ReceiptItemDTO {
 
     private Integer productId;
 
     private String productName;
 
-    private BigDecimal unitPrice;
-
     private Integer quantity;
+
+    private BigDecimal unitPrice;
 
     private BigDecimal subtotal;
 

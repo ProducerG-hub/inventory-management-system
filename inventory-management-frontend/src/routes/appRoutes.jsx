@@ -2,6 +2,7 @@ import MainLayout from "../layouts/MainLayout";
 import PrivateRoute from "./PrivateRoute";
 
 import Dashboard from "../pages/dashboard/Dashboard";
+import Sales from "../pages/sales/SalesPage";
 import Products from "../pages/products/Products";
 import Categories from "../pages/categories/Categories";
 import Suppliers from "../pages/suppliers/Suppliers";
@@ -25,6 +26,12 @@ const appRoutes = [
                 path: ROUTES.DASHBOARD,
                 element: <Dashboard />
             },
+
+            {
+                path: ROUTES.SALES,
+                element: <Sales />
+            },
+
             {
                 path: ROUTES.PRODUCTS,
                 element: <Products />
