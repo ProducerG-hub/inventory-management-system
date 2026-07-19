@@ -14,6 +14,19 @@ const API_ENDPOINTS = {
 
     },
 
+    SALES: {
+
+
+        BASE:"/sales",
+
+
+        SEARCH:"/sales/search",
+
+
+        RECEIPT:"/sales/{id}/receipt"
+
+    },
+
     PRODUCTS: {
 
         BASE: "/products",

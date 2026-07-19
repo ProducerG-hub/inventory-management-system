@@ -1,6 +1,7 @@
 package com.inventory_management.controller;
 
 import com.inventory_management.dto.request.SaleRequestDTO;
+import com.inventory_management.dto.response.ReceiptResponseDTO;
 import com.inventory_management.dto.response.SaleResponseDTO;
 import com.inventory_management.service.SaleService;
 
@@ -25,7 +26,7 @@ public class SaleController {
     private final SaleService saleService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
         @Operation(summary = "Create a new sale", description = "Creates a new sale in the inventory")
     public ResponseEntity<SaleResponseDTO> createSale(
             @Valid @RequestBody SaleRequestDTO request
@@ -64,7 +65,7 @@ public class SaleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
         @Operation(summary = "Get sale by ID", description = "Retrieves a sale by its ID")
     public ResponseEntity<SaleResponseDTO> getSaleById(
             @PathVariable Integer id
@@ -82,6 +83,22 @@ public class SaleController {
     ) {
 
         return ResponseEntity.ok(saleService.updateSale(id, request));
+    }
+
+    @GetMapping("/{id}/receipt")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @Operation(
+            summary = "Generate receipt",
+            description = "Returns receipt details for a completed sale"
+    )
+    public ResponseEntity<ReceiptResponseDTO> getReceipt(
+            @PathVariable Integer id
+    ){
+
+        return ResponseEntity.ok(
+                saleService.getReceipt(id)
+        );
+
     }
 
     @DeleteMapping("/{id}")

@@ -11,12 +11,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaleItemRequestDTO {
+public class CheckoutItemDTO {
 
-    @NotNull(message = "Product is required")
+    @NotNull(message = "Product ID is required")
     private Integer productId;
 
-    @Min(value = 1, message = "Quantity must be at least 1")
+    @NotNull(message = "Quantity is required")
+    @Min(value = 1, message = "Quantity must be greater than zero")
     private Integer quantity;
 
 }

@@ -1,6 +1,7 @@
 package com.inventory_management.dto.request;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,16 +14,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaleRequestDTO {
+public class CheckoutRequestDTO {
 
-    @NotNull(message = "Customer is required")
+    @NotNull(message = "Customer ID is required")
     private Integer customerId;
 
-    @NotNull(message = "User is required")
-    private Integer userId;
-
     @Valid
-    @NotNull(message = "Sale items are required")
-    private List<SaleItemRequestDTO> items;
+    @NotEmpty(message = "Cart cannot be empty")
+    private List<CheckoutItemDTO> items;
 
 }

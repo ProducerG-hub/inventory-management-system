@@ -13,22 +13,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaleResponseDTO {
+public class CheckoutResponseDTO {
 
     private Integer saleId;
 
-    private BigDecimal totalAmount;
+    private String customerName;
+
+    private String cashierName;
 
     private LocalDateTime saleDate;
 
-    private Integer customerId;
+    private BigDecimal totalAmount;
 
-    private String customerName;
-
-    private Integer userId;
-
-    private String userFullName;
-
-    private List<SaleItemResponseDTO> items;
+    private List<ReceiptItemDTO> items;
 
 }

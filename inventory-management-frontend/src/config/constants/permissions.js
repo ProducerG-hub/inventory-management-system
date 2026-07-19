@@ -4,6 +4,11 @@ const PERMISSIONS = {
 
     MANAGE_USERS: [ROLES.ADMIN],
 
+    MANAGE_SALES: [
+        ROLES.ADMIN,
+        ROLES.STAFF
+    ],
+
     MANAGE_PRODUCTS: [
         ROLES.ADMIN,
         ROLES.STAFF

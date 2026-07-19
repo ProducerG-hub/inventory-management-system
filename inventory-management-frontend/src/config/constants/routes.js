@@ -6,6 +6,8 @@ const ROUTES = {
 
     DASHBOARD: "dashboard",
 
+    SALES: "sales",
+
     PRODUCTS: "products",
 
     CATEGORIES: "categories",
