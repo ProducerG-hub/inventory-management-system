@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 import { useAuth } from "../../context/AuthContext";
 import authService from "../../services/authService";
+import logo from "../../assets/images/mlue_logo(white).png";
 import {
     emailValidation,
     passwordValidation,
@@ -58,7 +59,9 @@ const Login = () => {
                 <div className="brand-content">
 
                     <div className="brand-logo">
-                        IMS
+                        <img src={logo} alt="MLUE Technology Logo" 
+                        style={{ width: "100px", height: "100px", objectFit: "contain" }}
+                        />
                     </div>
 
                     <h2>

@@ -1849,203 +1849,6 @@ body {
 }
 
 
-
-
-
-/* =========================
-   PRINT
-========================= */
-
-
-/* =========================
-   PRINT RECEIPT
-========================= */
-
-
-/* =========================
-   PRINT RECEIPT FIX
-========================= */
-
-
-/* =========================
-   PRINT RECEIPT ONLY
-========================= */
-
-
-@media print {
-
-
-    @page {
-
-        size:auto;
-
-        margin:0;
-
-    }
-
-
-
-    body {
-
-
-        margin:0;
-
-        padding:0;
-
-
-    }
-
-
-
-
-
-    body * {
-
-
-        visibility:hidden;
-
-
-    }
-
-
-
-
-
-
-
-    .print-area,
-    .print-area * {
-
-
-        visibility:visible;
-
-
-    }
-
-
-
-
-
-
-
-    .print-area {
-
-
-        position:absolute;
-
-
-        top:0;
-
-
-        left:0;
-
-
-        width:100%;
-
-
-        height:auto;
-
-
-        display:block;
-
-
-        background:white;
-
-
-        margin:0;
-
-
-        padding:0;
-
-
-    }
-
-
-
-
-
-
-
-    .receipt-modal {
-
-
-        position:relative;
-
-
-        width:80mm;
-
-
-        max-width:80mm;
-
-
-        margin:0 auto;
-
-
-        padding:15px;
-
-
-        background:white;
-
-
-        box-shadow:none;
-
-
-        border-radius:0;
-
-
-        overflow:hidden;
-
-
-    }
-
-
-
-
-
-
-
-    .receipt-actions {
-
-
-        display:none !important;
-
-
-    }
-
-
-
-
-
-
-
-    .receipt-table {
-
-
-        page-break-inside:avoid;
-
-
-    }
-
-
-
-
-
-    .receipt-header,
-    .receipt-details,
-    .receipt-total,
-    .receipt-footer {
-
-
-        page-break-inside:avoid;
-
-
-    }
-
-
-
-
-}
-
 /* =========================
    PRODUCT SKELETON
 ========================= */
@@ -2274,4 +2077,260 @@ body {
     font-size:13px;
 
 
+}
+
+/* =========================
+   RECEIPT 
+========================= */
+
+.receipt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.6); 
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+
+.receipt-modal {
+    width: 420px;
+    max-width: 95%;
+    max-height: 90vh; 
+    overflow-y: auto;  
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, .18);
+    display: flex;
+    flex-direction: column;
+}
+
+.receipt-header {
+    text-align: center;
+}
+
+.receipt-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.logo-placeholder {
+    width: 74px;
+    height: 74px;
+    border: 2px dashed #CBD5E1;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748B;
+    background: #F8FAFC;
+}
+
+.logo-placeholder img {
+    width: 74px;
+    height: 74px;
+    object-fit: contain;
+}
+
+.receipt-header h2 {
+    margin: 0;
+    color: #1E293B;
+    font-size: 24px;
+}
+
+.receipt-header p {
+    margin: 5px 0;
+    color: #64748B;
+}
+
+.receipt-header small {
+    color: #94A3B8;
+}
+
+.receipt-divider {
+    border-top: 1px dashed #CBD5E1;
+    margin: 18px 0;
+}
+
+.receipt-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.receipt-details div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.receipt-details span {
+    color: #64748B;
+}
+
+.receipt-details strong {
+    color: #1E293B;
+}
+
+.receipt-items {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.receipt-item {
+    border-bottom: 1px dashed #E2E8F0;
+    padding-bottom: 10px;
+}
+
+.receipt-item:last-child {
+    border: none;
+}
+
+.receipt-item-name {
+    font-weight: 600;
+    color: #0F172A;
+    margin-bottom: 4px;
+    word-break: break-word;
+}
+
+.receipt-item-row {
+    display: flex;
+    justify-content: space-between;
+    color: #64748B;
+    font-size: 13px;
+}
+
+.receipt-item-row strong {
+    color: #0F172A;
+}
+
+.receipt-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+}
+
+.receipt-logo-img{
+
+    width:100px;
+
+    height:100px;
+
+    object-fit:contain;
+
+}
+
+.receipt-total strong {
+    color: #2563EB;
+    font-size: 22px;
+}
+
+.receipt-footer {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.receipt-footer p {
+    margin: 0;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.receipt-footer small {
+    color: #94A3B8;
+}
+
+/* 3. Button Actions */
+.receipt-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.receipt-actions button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .25s;
+}
+
+.print-btn {
+    background: linear-gradient(135deg, #2563EB, #0EA5E9);
+    color: #fff;
+}
+
+.close-btn {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.receipt-actions button:hover {
+    transform: translateY(-2px);
+}
+
+/* =================
+   PRINT STYLES 
+==================== */
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    .receipt-modal, 
+    .receipt-modal * {
+        visibility: visible !important;
+    }
+
+    .receipt-overlay {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 80mm !important;
+        height: auto !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .receipt-modal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 80mm !important;
+        max-width: 80mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10px !important;
+        margin: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    
+    @page {
+        size: auto;
+        margin: 0mm; 
+    }
 }

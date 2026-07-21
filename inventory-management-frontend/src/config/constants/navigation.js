@@ -20,7 +20,7 @@ const navigation = [
         icon: HouseDoorFill,
         roles: [ROLES.ADMIN, ROLES.STAFF]
     },
-    
+
     {
         key: "sales",
         label: "Sales",
@@ -69,7 +69,7 @@ const navigation = [
         label: "Reports",
         path: `/${ROUTES.REPORTS}`,
         icon: FileEarmarkBarGraphFill,
-        roles: [ROLES.ADMIN, ROLES.STAFF]
+        roles: [ROLES.ADMIN]
     }
 
 ];
