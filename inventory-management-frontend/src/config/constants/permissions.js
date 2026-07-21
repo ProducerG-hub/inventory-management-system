@@ -25,8 +25,7 @@ const PERMISSIONS = {
     ],
 
     VIEW_REPORTS: [
-        ROLES.ADMIN,
-        ROLES.STAFF
+        ROLES.ADMIN
     ]
 
 };

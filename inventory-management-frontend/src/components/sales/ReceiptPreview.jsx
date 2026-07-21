@@ -1,354 +1,225 @@
 import React from "react";
+import logo from "../../assets/images/mlue_logo(blue).png";
 
+import {
+    PrinterFill,
+    XCircleFill
+} from "react-bootstrap-icons";
 
 const ReceiptPreview = ({ receipt, onClose }) => {
 
-
     if (!receipt) return null;
 
+    const formatCurrency = (amount) =>
+        new Intl.NumberFormat("en-TZ", {
+            style: "currency",
+            currency: "TZS",
+            minimumFractionDigits: 0
+        }).format(amount);
 
-
-    const formatCurrency = (amount) => {
-
-        return new Intl.NumberFormat(
-            "en-TZ",
-            {
-                style:"currency",
-                currency:"TZS",
-                minimumFractionDigits:0
-            }
-        ).format(amount);
-
-    };
-
-
-
+    const formatDate = (date) =>
+        new Date(date).toLocaleString("en-GB");
 
     const handlePrint = () => {
-
         window.print();
-
     };
-
-
-
 
     return (
 
-        <div className="receipt-overlay print-area">
-
+        <div className="receipt-overlay">
 
             <div className="receipt-modal">
 
-
-                {/* HEADER */}
+                {/* ================= HEADER ================= */}
 
                 <div className="receipt-header">
 
-
-                    <h2>
-                        MLUE INVENTORY
-                    </h2>
+                    <div className="receipt-logo">
 
 
-                    <p>
-                        Inventory Management System
-                    </p>
+                        <div className="logo-placeholder">
 
+                            <img
+                                src={logo}
+                                alt="MLUE Technology Logo"
+                                className="receipt-logo-img"
+                            />
 
-                    <p>
-                        Sales Receipt
-                    </p>
+                        </div>
 
+                    </div>
+
+                    <h2>MLUE POS SYSTEM</h2>
+
+                    <p>Manage Your Sales Efficiently</p>
+
+                    <small>Sales Receipt</small>
 
                 </div>
 
+                <div className="receipt-divider"></div>
 
-
-
-
-                {/* SALE INFORMATION */}
+                {/* ================= DETAILS ================= */}
 
                 <div className="receipt-details">
 
+                    <div>
+
+                        <span>Receipt</span>
+
+                        <strong>#{receipt.saleId}</strong>
+
+                    </div>
 
                     <div>
 
-                        <span>
-                            Receipt No
-                        </span>
-
+                        <span>Date</span>
 
                         <strong>
-                            #{receipt.saleId}
+
+                            {formatDate(receipt.saleDate)}
+
                         </strong>
 
                     </div>
 
-
-
-
                     <div>
 
-                        <span>
-                            Date
-                        </span>
-
+                        <span>Customer</span>
 
                         <strong>
-                            {
-                                new Date(
-                                    receipt.saleDate
-                                )
-                                .toLocaleString()
-                            }
-                        </strong>
 
-
-                    </div>
-
-
-
-
-                    <div>
-
-                        <span>
-                            Customer
-                        </span>
-
-
-                        <strong>
                             {receipt.customerName}
+
                         </strong>
 
-
                     </div>
-
-
-
 
                     <div>
 
-                        <span>
-                            Cashier
-                        </span>
-
+                        <span>Cashier</span>
 
                         <strong>
+
                             {receipt.cashier}
+
                         </strong>
 
-
                     </div>
-
-
 
                 </div>
 
+                <div className="receipt-divider"></div>
 
+                {/* ================= ITEMS ================= */}
 
+                <div className="receipt-items">
 
+                    {receipt.items?.map(item => (
 
+                        <div
+                            key={item.productId}
+                            className="receipt-item"
+                        >
 
+                            <div className="receipt-item-name">
 
+                                {item.productName}
 
-                {/* ITEMS */}
+                            </div>
 
-                <table className="receipt-table">
+                            <div className="receipt-item-row">
 
+                                <span>
 
-                    <thead>
+                                    {item.quantity} × {formatCurrency(item.unitPrice)}
 
-                        <tr>
+                                </span>
 
-                            <th>
-                                Item
-                            </th>
+                                <strong>
 
+                                    {formatCurrency(item.subtotal)}
 
-                            <th>
-                                Qty
-                            </th>
+                                </strong>
 
+                            </div>
 
-                            <th>
-                                Price
-                            </th>
+                        </div>
 
+                    ))}
 
-                            <th>
-                                Total
-                            </th>
+                </div>
 
+                <div className="receipt-divider"></div>
 
-                        </tr>
+                {/* ================= TOTAL ================= */}
 
+                <div className="receipt-total">
 
-                    </thead>
-
-
-
-
-
-                    <tbody>
-
-
-                        {
-                            receipt.items?.map(
-                                (item,index)=> (
-
-                                    <tr key={index}>
-
-
-                                        <td>
-                                            {item.productName}
-                                        </td>
-
-
-
-                                        <td>
-                                            {item.quantity}
-                                        </td>
-
-
-
-                                        <td>
-                                            {
-                                                formatCurrency(
-                                                    item.unitPrice
-                                                )
-                                            }
-                                        </td>
-
-
-
-                                        <td>
-                                            {
-                                                formatCurrency(
-                                                    item.subtotal
-                                                )
-                                            }
-                                        </td>
-
-
-
-                                    </tr>
-
-
-                                )
-                            )
-                        }
-
-
-
-                    </tbody>
-
-
-
-                </table>
-
-
-
-
-
-
-
-
-                {/* TOTAL */}
-
-
-                <div className="receipt-total" style={{marginTop:"20px", display:"flex", justifyContent:"space-between"}}>
-
-
-                    <span>
-                        Total Amount: 
-                    </span>
-
+                    <span>Total Amount</span>
 
                     <strong>
 
-                        {
-                            formatCurrency(
-                                receipt.totalAmount
-                            )
-                        }
+                        {formatCurrency(receipt.totalAmount)}
 
                     </strong>
 
-
                 </div>
 
+                <div className="receipt-divider"></div>
 
-
-
-
-
-
-                {/* FOOTER */}
-
+                {/* ================= FOOTER ================= */}
 
                 <div className="receipt-footer">
 
-
                     <p>
-                        Thank you for shopping with us!
+
+                        Thank you for shopping!
+
                     </p>
 
-
                     <small>
-                        Powered by MLUE Technology
-                    </small>
 
+                        Powered by MLUE Technology
+
+                    </small>
 
                 </div>
 
+                {/* ================= ACTIONS ================= */}
 
-
-
-
-
-
-
-                {/* ACTIONS */}
-
-
-                <div className="receipt-actions no-print" >
-
+                <div className="receipt-actions no-print">
 
                     <button
+                        className="print-btn"
                         onClick={handlePrint}
                     >
 
-                        Print Receipt
+                        <PrinterFill />
+
+                        Print
 
                     </button>
 
-
-
                     <button
+                        className="close-btn"
                         onClick={onClose}
                     >
+
+                        <XCircleFill />
 
                         Close
 
                     </button>
 
-
                 </div>
-
-
-
 
             </div>
 
-
-
         </div>
-
 
     );
 
 };
-
 
 export default ReceiptPreview;
