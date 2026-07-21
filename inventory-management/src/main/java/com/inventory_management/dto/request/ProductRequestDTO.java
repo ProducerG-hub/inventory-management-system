@@ -49,4 +49,8 @@ public class ProductRequestDTO {
     @Schema(description = "The supplier ID of the product", example = "1")
     @NotNull(message = "Supplier is required")
     private Integer supplierId;
+
+    @Schema(description = "The ID of the user who created the product", example = "1")
+    @NotNull(message = "User ID is required")
+    private Integer userId;
 }

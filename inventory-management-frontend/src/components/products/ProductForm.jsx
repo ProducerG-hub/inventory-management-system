@@ -4,6 +4,7 @@ import "./ProductModal.css";
 
 import categoryService from "../../services/categoryService";
 import supplierService from "../../services/supplierService";
+import { useAuth } from "../../context/AuthContext";
 
 
 const ProductForm = ({
@@ -12,7 +13,8 @@ const ProductForm = ({
     onCancel
 }) => {
 
-
+    const { user } = useAuth();
+    
     const initialState = {
 
         productName: "",
@@ -27,7 +29,7 @@ const ProductForm = ({
 
         categoryId: "",
 
-        supplierId: ""
+        supplierId: "",
 
     };
 
@@ -234,7 +236,9 @@ const ProductForm = ({
             categoryId:Number(form.categoryId),
 
 
-            supplierId:Number(form.supplierId)
+            supplierId:Number(form.supplierId),
+
+            userId: user.userId || user.id
 
 
 

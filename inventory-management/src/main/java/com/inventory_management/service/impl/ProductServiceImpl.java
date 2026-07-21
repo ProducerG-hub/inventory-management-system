@@ -12,6 +12,11 @@ import com.inventory_management.repository.ProductRepository;
 import com.inventory_management.repository.SupplierRepository;
 import com.inventory_management.service.ProductService;
 import org.springframework.transaction.annotation.Transactional;
+import com.inventory_management.entity.StockMovement;
+import com.inventory_management.entity.User;
+import com.inventory_management.entity.enums.movementType;
+import com.inventory_management.repository.StockMovementRepository;
+import com.inventory_management.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,18 +44,64 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
 
+    private final StockMovementRepository stockMovementRepository;
+
+    private final UserRepository userRepository;
+
     @Override
     @Transactional
-    public ProductResponseDTO createProduct(ProductRequestDTO request) {
+    public ProductResponseDTO createProduct(ProductRequestDTO request){
 
-        Product product = productMapper.toEntity(request);
-        product.setCategory(getCategoryById(request.getCategoryId()));
-        product.setSupplier(getSupplierById(request.getSupplierId()));
+        Product product =
+                productMapper.toEntity(request);
 
-        Product savedProduct = productRepository.save(product);
-        logger.info("Product created: {}", savedProduct.getProductName());
+        product.setCategory(
+                getCategoryById(request.getCategoryId())
+        );
+
+        product.setSupplier(
+                getSupplierById(request.getSupplierId())
+        );
+
+        Product savedProduct =
+                productRepository.save(product);
+
+        User user =
+                userRepository.findById(
+                                request.getUserId()
+                        )
+                        .orElseThrow(() ->
+                                new RuntimeException("User not found")
+                        );
+
+        StockMovement movement =
+                new StockMovement();
+
+        movement.setProduct(savedProduct);
+
+        movement.setUser(user);
+
+        movement.setQuantity(
+                savedProduct.getQuantity()
+        );
+
+        movement.setMovementType(
+                movementType.IN
+        );
+
+        movement.setRemarks(
+                "Initial stock added"
+        );
+
+        stockMovementRepository.save(movement);
+
+        logger.info(
+                "Product created: {}",
+                savedProduct.getProductName()
+        );
 
         return productMapper.toResponse(savedProduct);
+
     }
 
     @Override

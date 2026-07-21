@@ -65,11 +65,11 @@ const Login = () => {
                     </div>
 
                     <h2>
-                        Inventory Management System
+                        MLUE Point of Sale System
                     </h2>
 
                     <p>
-                        Smart inventory control solution for managing
+                        Smart point of sale solution for managing
                         products, suppliers and stock efficiently.
                     </p>
 

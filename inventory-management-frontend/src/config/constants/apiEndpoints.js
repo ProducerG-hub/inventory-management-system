@@ -57,6 +57,14 @@ const API_ENDPOINTS = {
 
         SEARCH: "/users/search"
 
+    },
+
+    STOCK_MOVEMENTS: {
+
+    BASE: "/stock-movements",
+
+    SEARCH: "/stock-movements/search"
+
     }
 
 };

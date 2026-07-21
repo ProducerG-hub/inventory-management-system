@@ -8,6 +8,7 @@ import Categories from "../pages/categories/Categories";
 import Suppliers from "../pages/suppliers/Suppliers";
 import Users from "../pages/users/Users";
 import Reports from "../pages/reports/Reports";
+import SalesHistory from "../pages/salesHistory/SalesHistoryPage";
 import NotFound from "../pages/error/NotFound";
 
 import ROUTES from "../config/constants/routes";
@@ -47,6 +48,10 @@ const appRoutes = [
             {
                 path: ROUTES.USERS,
                 element: <Users />
+            },
+            {
+                path: ROUTES.SALES_HISTORY,
+                element: <SalesHistory />
             },
             {
                 path: ROUTES.REPORTS,

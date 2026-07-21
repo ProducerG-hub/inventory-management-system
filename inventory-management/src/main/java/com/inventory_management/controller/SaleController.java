@@ -38,7 +38,7 @@ public class SaleController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all sales", description = "Retrieves a paginated list of all sales in the inventory")
     public ResponseEntity<Page<SaleResponseDTO>> getAllSales(
             @RequestParam(defaultValue = "0") int page,
@@ -51,7 +51,7 @@ public class SaleController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Search sales", description = "Searches for sales based on a keyword with pagination and sorting")
     public ResponseEntity<Page<SaleResponseDTO>> searchSales(
             @RequestParam String keyword,
@@ -65,7 +65,7 @@ public class SaleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Get sale by ID", description = "Retrieves a sale by its ID")
     public ResponseEntity<SaleResponseDTO> getSaleById(
             @PathVariable Integer id
@@ -86,7 +86,7 @@ public class SaleController {
     }
 
     @GetMapping("/{id}/receipt")
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Generate receipt",
             description = "Returns receipt details for a completed sale"
