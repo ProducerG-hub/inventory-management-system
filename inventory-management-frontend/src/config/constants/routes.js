@@ -16,6 +16,8 @@ const ROUTES = {
 
     USERS: "users",
 
+    SALES_HISTORY: "sales-history",
+
     REPORTS: "reports"
 };
 

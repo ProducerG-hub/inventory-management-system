@@ -34,4 +34,29 @@ public interface StockMovementRepository extends JpaRepository<StockMovement, In
             @Param("keyword") String keyword,
             Pageable pageable
     );
+
+    @Query("""
+    SELECT COUNT(sm)
+    FROM StockMovement sm
+    WHERE sm.movementType = 'IN'
+    """)
+    long countStockIn();
+
+
+
+    @Query("""
+    SELECT COUNT(sm)
+    FROM StockMovement sm
+    WHERE sm.movementType = 'OUT'
+    """)
+    long countStockOut();
+
+
+
+    @Query("""
+    SELECT COUNT(sm)
+    FROM StockMovement sm
+    WHERE CAST(sm.movementDate AS date) = CURRENT_DATE
+    """)
+    long countTodayMovements();
 }

@@ -2,6 +2,7 @@ package com.inventory_management.controller;
 
 import com.inventory_management.dto.request.StockMovementRequestDTO;
 import com.inventory_management.dto.response.StockMovementResponseDTO;
+import com.inventory_management.dto.response.StockMovementStatsDTO;
 import com.inventory_management.service.StockMovementService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,7 @@ public class StockMovementController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all stock movements", description = "Retrieves a paginated list of all stock movements in the inventory")
     public ResponseEntity<Page<StockMovementResponseDTO>> getAllStockMovements(
             @RequestParam(defaultValue = "0") int page,
@@ -50,7 +51,7 @@ public class StockMovementController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @Operation(summary = "Search stock movements", description = "Searches for stock movements based on a keyword with pagination and sorting")
     public ResponseEntity<Page<StockMovementResponseDTO>> searchStockMovements(
             @RequestParam String keyword,
@@ -63,8 +64,18 @@ public class StockMovementController {
         return ResponseEntity.ok(stockMovementService.searchStockMovements(keyword, page, size, sortBy, sortDir));
     }
 
+    @GetMapping("/stats")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<StockMovementStatsDTO> getStats(){
+
+        return ResponseEntity.ok(
+            stockMovementService.getStats()
+        );
+
+    }
+
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN','STAFF')")
+    @PreAuthorize("hasRole('ADMIN')")
         @Operation(summary = "Get stock movement by ID", description = "Retrieves a stock movement by its ID")
     public ResponseEntity<StockMovementResponseDTO> getStockMovementById(
             @PathVariable Integer id

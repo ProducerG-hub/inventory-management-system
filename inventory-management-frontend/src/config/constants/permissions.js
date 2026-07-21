@@ -24,6 +24,10 @@ const PERMISSIONS = {
         ROLES.STAFF
     ],
 
+    VIEW_SALES_HISTORY:[
+        ROLES.ADMIN
+    ],
+
     VIEW_REPORTS: [
         ROLES.ADMIN
     ]

@@ -2,6 +2,8 @@ package com.inventory_management.service;
 
 import com.inventory_management.dto.request.StockMovementRequestDTO;
 import com.inventory_management.dto.response.StockMovementResponseDTO;
+import com.inventory_management.dto.response.StockMovementStatsDTO;
+
 import org.springframework.data.domain.Page;
 
 public interface StockMovementService {
@@ -24,6 +26,8 @@ public interface StockMovementService {
         );
 
     StockMovementResponseDTO getStockMovementById(Integer movementId);
+
+    StockMovementStatsDTO getStats();
 
     StockMovementResponseDTO updateStockMovement(Integer movementId, StockMovementRequestDTO request);
 

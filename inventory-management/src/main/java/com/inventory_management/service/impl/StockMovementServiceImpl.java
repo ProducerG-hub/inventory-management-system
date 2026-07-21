@@ -13,6 +13,7 @@ import com.inventory_management.service.StockMovementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import com.inventory_management.dto.response.StockMovementStatsDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +48,24 @@ public class StockMovementServiceImpl implements StockMovementService {
         StockMovement savedStockMovement = stockMovementRepository.save(stockMovement);
         logger.info("Stock movement created: {}", savedStockMovement);
         return stockMovementMapper.toResponse(savedStockMovement);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public StockMovementStatsDTO getStats(){
+
+        long total = stockMovementRepository.count();
+        long totalIn = stockMovementRepository.countStockIn();
+        long totalOut = stockMovementRepository.countStockOut();
+        long today = stockMovementRepository.countTodayMovements();
+        return new StockMovementStatsDTO(
+                total,
+                totalIn,
+                totalOut,
+                today
+        );
+
+
     }
 
     @Override
