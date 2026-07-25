@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import navigation from "../../config/constants/navigation";
 
 import { useAuth } from "../../context/AuthContext";
+import logo from "../../assets/images/mlue_logo(white).png";
 
 
 const Sidebar = () => {
@@ -26,9 +27,10 @@ const Sidebar = () => {
 
             <div className="sidebar-logo">
 
-                IMS
+                <img src={logo} alt="Logo" className="logo-img" />
 
             </div>
+            <hr />
 
 
 
