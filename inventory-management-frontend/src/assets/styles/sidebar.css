@@ -17,25 +17,46 @@
 
 
     padding:20px;
+    overflow-y:auto;
 
 
     transition:var(--transition-normal);
 
 }
 
-
-.sidebar-logo{
-
-    font-size:var(--font-xl);
-
-    font-weight:var(--font-bold);
-
-    margin-bottom:40px;
-
-    text-align:center;
-
+.sidebar::-webkit-scrollbar {
+    width: 6px;
 }
 
+.sidebar::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2); 
+    border-radius: 10px; 
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4); 
+}
+
+
+.sidebar-logo {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 10px; 
+}
+
+.logo-img {
+    width: 100%;
+    max-width: 100px; 
+    height: auto; 
+    object-fit: contain;
+}
 
 
 .sidebar-menu{
