@@ -9,33 +9,31 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    
-    /* Ongeza shadow nyepesi kwa muonekano wa kiprofeshinali zaidi */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
 }
 
-/* Staili kwa ajili ya jina la mfumo */
+
 .navbar-title {
-    margin: 0; /* Kuondoa nafasi ya asili (default margin) ya <h5> */
+    margin: 0; 
     font-size: 1.2rem;
-    font-weight: var(--font-semibold, 600); /* Tumia variable yako au 600 kama fallback */
+    font-weight: var(--font-semibold, 600); 
     color: var(--text-primary);
     letter-spacing: 0.5px;
 }
 
-/* Mipangilio ya upande wa kulia */
+
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 15px; /* Husaidia kuacha nafasi kama utaongeza vitu vingine k.m kengele ya Notifications */
+    gap: 15px; 
 }
 
-/* Duara la Wasifu wa Mtumiaji (User Profile Circle) */
+
 .user-profile-circle {
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* Inatengeneza duara kamili */
-    background-color:var(--secondary-color); /* Rangi ya bluu ya kiprofeshinali (unaweza kutumia variable zako) */
+    border-radius: 50%; 
+    background-color:var(--secondary-color); 
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -46,37 +44,37 @@
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-/* Hover effect inapofikiwa na mouse */
+
 .user-profile-circle:hover {
     background-color: #1d4ed8;
-    transform: scale(1.05); /* Inakuza duara kidogo */
+    transform: scale(1.05); 
 }
 
-/* Wrapper inayoshikilia duara na pop-up */
+
 .profile-dropdown-wrapper {
-    position: relative; /* Hii ni muhimu sana ili pop-up itumie absolute position kulingana na hapa */
+    position: relative; 
 }
 
-/* Pop-up Card yenyewe */
+
 .profile-popup-card {
     position: absolute;
-    top: 55px; /* Inashuka chini kidogo ya lile duara */
-    right: 0; /* Inajipanga sawa na upande wa kulia wa duara */
+    top: 55px; 
+    right: 0; 
     width: 200px;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border: 1px solid #eaeaea;
     overflow: hidden;
-    z-index: 1001; /* Ikae juu ya vitu vyote */
-    animation: slideDown 0.2s ease-out; /* Animation fupi */
+    z-index: 1001; 
+    animation: slideDown 0.2s ease-out; 
 }
 
-/* Sehemu ya Jina na Role */
+
 .popup-header {
     padding: 15px;
     border-bottom: 1px solid #eaeaea;
-    background-color: #f8f9fa; /* Rangi tofauti kidogo kutenganisha na menu za chini */
+    background-color: #f8f9fa; 
 }
 
 .user-name {
@@ -92,7 +90,7 @@
     color: #6b7280;
 }
 
-/* Orodha ya Menu za ndani (Profile na Logout) */
+
 .popup-menu {
     display: flex;
     flex-direction: column;
@@ -114,17 +112,17 @@
     background-color: #f3f4f6;
 }
 
-/* Staili maalum kwa ajili ya Logout (Rangi nyekundu) */
+
 .menu-item.logout {
     color: #dc2626; 
-    border-top: 1px solid #f3f4f6; /* Kamstari kembamba ka kutenganisha */
+    border-top: 1px solid #f3f4f6; 
 }
 
 .menu-item.logout:hover {
     background-color: #fef2f2;
 }
 
-/* Huu ni msimbo wa animation kufanya pop-up ishuke vizuri */
+
 @keyframes slideDown {
     from {
         opacity: 0;
