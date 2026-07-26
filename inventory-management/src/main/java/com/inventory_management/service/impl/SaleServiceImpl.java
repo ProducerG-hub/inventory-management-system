@@ -149,7 +149,8 @@ public class SaleServiceImpl implements SaleService {
             BigDecimal unitPrice =
                     product.getSellingPrice();
 
-
+            BigDecimal costPrice =
+                    product.getBuyingPrice();
 
             BigDecimal subtotal =
                     unitPrice.multiply(
@@ -172,6 +173,8 @@ public class SaleServiceImpl implements SaleService {
             saleItem.setProduct(product);
 
             saleItem.setUnitPrice(unitPrice);
+
+            saleItem.setCostPrice(costPrice);
 
             saleItem.setQuantity(
                     itemRequest.getQuantity()
@@ -276,6 +279,8 @@ public class SaleServiceImpl implements SaleService {
         return saleMapper.toResponse(savedSale);
 
     }
+
+
 
 
 
