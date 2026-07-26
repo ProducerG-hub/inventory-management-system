@@ -81,6 +81,7 @@ CREATE TABLE sale_items (
     saleitem_id SERIAL PRIMARY KEY,
 
     unit_price DECIMAL(10,2) NOT NULL CHECK (unit_price >= 0),
+    cost_price DECIMAL(10,2) NOT NULL CHECK (cost_price >= 0),
     quantity INTEGER NOT NULL CHECK (quantity > 0),
     subtotal DECIMAL(10,2) NOT NULL CHECK (subtotal >= 0),
 

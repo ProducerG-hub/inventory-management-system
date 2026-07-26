@@ -25,6 +25,9 @@ public class SaleItem {
     @Column(name = "unit_price", nullable = false)
     private BigDecimal unitPrice;
 
+    @Column(name = "cost_price", nullable = false)
+    private BigDecimal costPrice;
+
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;

@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import org.springframework.stereotype.Repository;
+import com.inventory_management.dto.response.InventoryReportDTO;
 
 
 import java.util.List;
@@ -61,6 +62,40 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByIsActiveTrue(Pageable pageable);
 
     Page<Product> findByIsActiveFalse(Pageable pageable);
+
+    @Query("""
+    SELECT new com.inventory_management.dto.response.InventoryReportDTO(
+    
+        p.productId,
+    
+        p.productName,
+    
+        p.category.categoryName,
+    
+        p.supplier.supplierName,
+    
+        p.buyingPrice,
+    
+        p.sellingPrice,
+    
+        p.quantity,
+    
+        (p.buyingPrice * p.quantity),
+    
+        CASE
+            WHEN p.quantity <= 10 THEN 'Low Stock'
+            ELSE 'In Stock'
+        END
+    
+    )
+    
+    FROM Product p
+    
+    WHERE p.isActive = true
+    
+    ORDER BY p.productName ASC
+    """)
+        List<InventoryReportDTO> getInventoryReport();
 
 
 }

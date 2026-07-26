@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import com.inventory_management.dto.response.CustomerReportDTO;
+import java.util.List;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
@@ -30,4 +32,35 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             @Param("keyword") String keyword,
             Pageable pageable
     );
+
+    @Query("""
+    SELECT new com.inventory_management.dto.response.CustomerReportDTO(
+    
+        c.customerId,
+    
+        c.customerName,
+    
+        c.phone,
+    
+        COUNT(s),
+    
+        COALESCE(SUM(s.totalAmount),0),
+    
+        MAX(s.saleDate)
+    
+    )
+    
+    FROM Customer c
+    
+    LEFT JOIN c.sales s
+    
+    GROUP BY
+        c.customerId,
+        c.customerName,
+        c.phone
+    
+    ORDER BY SUM(s.totalAmount) DESC
+    
+    """)
+        List<CustomerReportDTO> getCustomerReport();
 }

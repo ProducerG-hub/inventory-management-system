@@ -7,7 +7,7 @@ import Products from "../pages/products/Products";
 import Categories from "../pages/categories/Categories";
 import Suppliers from "../pages/suppliers/Suppliers";
 import Users from "../pages/users/Users";
-import Reports from "../pages/reports/Reports";
+import ReportsPage from "../pages/reports/ReportsPage";
 import SalesHistory from "../pages/salesHistory/SalesHistoryPage";
 import NotFound from "../pages/error/NotFound";
 
@@ -55,7 +55,7 @@ const appRoutes = [
             },
             {
                 path: ROUTES.REPORTS,
-                element: <Reports />
+                element: <ReportsPage />
             }
         ]
     },
