@@ -286,20 +286,7 @@ const Products = () => {
 
 
 
-                <div>
-
-
-                    <h2>
-                        Products
-                    </h2>
-
-
-                    <p>
-                        Manage inventory products
-                    </p>
-
-
-                </div>
+                <div />
 
 
 

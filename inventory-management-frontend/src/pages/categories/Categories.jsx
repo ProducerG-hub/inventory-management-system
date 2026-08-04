@@ -423,22 +423,7 @@ const Category = () => {
 
             <div className="categories-header">
 
-
-
-                <div>
-
-
-                    <h2>
-                        Categories
-                    </h2>
-
-
-                    <p>
-                        Manage product categories
-                    </p>
-
-
-                </div>
+                <div />
 
 
 

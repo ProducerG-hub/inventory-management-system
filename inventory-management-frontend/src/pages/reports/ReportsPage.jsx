@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import reportService from "../../services/reportService";
 
-import ReportHeader from "../../components/reports/ReportHeader";
 import ReportCards from "../../components/reports/ReportCards";
 import ReportTabs from "../../components/reports/ReportTabs";
 import Charts from "../../components/reports/Charts";
@@ -100,7 +99,6 @@ const ReportsPage = () => {
                 ),
 
                 reportService.getInventoryReport(),
-
                 reportService.getCustomerReport(),
 
                 reportService.getProfitReport(),
@@ -115,7 +113,6 @@ const ReportsPage = () => {
             setSummary(summaryData);
 
             setSales(salesData);
-
             setInventory(inventoryData);
 
             setCustomers(customerData);
@@ -155,8 +152,6 @@ const ReportsPage = () => {
 
         <div className="reports-page">
 
-
-            <ReportHeader />
 
             <DateFilter onFilter={handleDateFilter} />
 
