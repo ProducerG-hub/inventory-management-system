@@ -6,9 +6,6 @@ import {useAuth} from "../../context/AuthContext";
 
 import dashboardService from "../../services/dashboardService";
 
-
-import DashboardHeader from "../../components/dashboard/DashboardHeader";
-
 import StatCard from "../../components/dashboard/StatCard";
 
 import RecentProductsTable from "../../components/dashboard/RecentProductsTable";
@@ -85,12 +82,6 @@ const Dashboard =()=>{
     return (
 
         <div className="dashboard">
-
-
-
-            <DashboardHeader/>
-
-
 
 
             <div className="stats-grid">

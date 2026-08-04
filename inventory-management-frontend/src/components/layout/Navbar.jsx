@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; 
 import { FiUser, FiLogOut } from "react-icons/fi";
+import navigation from "../../config/constants/navigation";
 
 const Navbar = () => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -9,6 +11,10 @@ const Navbar = () => {
     
     const { user, logout } = useAuth(); 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const currentPageTitle =
+        navigation.find((item) => item.path === location.pathname)?.label || "Mlue POS System";
 
     const toggleProfile = () => {
         setIsProfileOpen(!isProfileOpen);
@@ -36,7 +42,7 @@ const Navbar = () => {
     return (
         <header className="navbar-custom">
             <div className="navbar-left">
-                <h5 className="navbar-title">Mlue POS System</h5>
+                <h5 className="navbar-title">{currentPageTitle}</h5>
             </div>
             
             <div className="navbar-right">

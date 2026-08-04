@@ -396,20 +396,7 @@ return (
 
 <div className="suppliers-header">
 
-
-<div>
-
-<h2>
-Suppliers
-</h2>
-
-
-<p>
-Manage inventory suppliers
-</p>
-
-
-</div>
+<div />
 
 
 

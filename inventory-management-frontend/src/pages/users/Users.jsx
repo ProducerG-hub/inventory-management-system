@@ -251,21 +251,7 @@ const Users = () => {
 
             <div className="users-header">
 
-                <div>
-
-                    <h2>
-
-                        Users
-
-                    </h2>
-
-                    <p>
-
-                        Manage system users
-
-                    </p>
-
-                </div>
+                <div />
 
                 {
                     user?.role === "ADMIN" && (

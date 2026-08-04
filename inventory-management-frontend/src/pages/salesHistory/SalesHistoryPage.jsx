@@ -171,19 +171,6 @@ const SalesHistoryPage = () => {
 
     return (
         <div className="sales-history-page">
-            <div className="sales-history-header">
-                <div>
-                    <h2>
-                        {activeTab === "sales" ? "Sales History" : "Stock Movements"}
-                    </h2>
-                    <p>
-                        {activeTab === "sales"
-                            ? "View completed sales and receipts."
-                            : "Track stock IN and OUT movements."}
-                    </p>
-                </div>
-            </div>
-
             <SalesTabs
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
