@@ -8,6 +8,7 @@ import ReportTabs from "../../components/reports/ReportTabs";
 import Charts from "../../components/reports/Charts";
 import DateFilter from "../../components/reports/DateFilter";
 import ExportButtons from "../../components/reports/ExportButtons";
+import { getReportConfig, REPORT_TABS } from "../../components/reports/reportConfig";
 
 import "./Reports.css";
 
@@ -41,14 +42,36 @@ const ReportsPage = () => {
     useEffect(()=>{
 
 
-        loadReports();
+        loadReports(filters);
 
 
-    },[]);
+    },[filters]);
 
     const handleDateFilter = (dates)=>{
 
     setFilters(dates);
+
+    };
+
+    const handleTabChange = (reportKey) => {
+
+        setActiveReport(reportKey);
+
+    };
+
+    const getSalesParams = (currentFilters = {}) => {
+
+        const params = {};
+
+        if (currentFilters.startDate) {
+            params.startDate = currentFilters.startDate;
+        }
+
+        if (currentFilters.endDate) {
+            params.endDate = currentFilters.endDate;
+        }
+
+        return params;
 
     };
 
@@ -72,7 +95,9 @@ const ReportsPage = () => {
 
                 reportService.getSummary(),
 
-                reportService.getSalesReport(),
+                reportService.getSalesReport(
+                    getSalesParams(filters)
+                ),
 
                 reportService.getInventoryReport(),
 
@@ -114,6 +139,16 @@ const ReportsPage = () => {
 
     };
 
+    const reportData = {
+        sales,
+        inventory,
+        customers,
+        profit
+    };
+
+    const activeReportConfig = getReportConfig(activeReport);
+    const activeReportData = reportData[activeReport] || [];
+
 
 
     return (
@@ -130,30 +165,27 @@ const ReportsPage = () => {
             />
 
             <ExportButtons
-
-                sales={sales}
+                data={activeReportData}
+                reportConfig={activeReportConfig}
 
             />
 
+
+            <ReportTabs
+                tabs={REPORT_TABS}
+                activeTab={activeReport}
+                onTabChange={handleTabChange}
+                sales={sales}
+                inventory={inventory}
+                customers={customers}
+                profit={profit}
+
+            />
+
+            
             <Charts
                 salesTrend={salesTrend}
                 topSelling={topSelling}
-            />
-
-            <ReportTabs
-
-                sales={sales}
-
-                inventory={inventory}
-
-                customers={customers}
-
-                profit={profit}
-
-                salesTrend={salesTrend}
-
-                topSelling={topSelling}
-
             />
 
 

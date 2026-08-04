@@ -7,6 +7,9 @@ import ProfitReport from "./ProfitReport";
 
 
 const ReportTabs = ({
+    tabs = [],
+    activeTab,
+    onTabChange,
 
     sales,
     inventory,
@@ -16,44 +19,25 @@ const ReportTabs = ({
 }) => {
 
 
-    const [active,setActive] = useState("sales");
-
-
-
     return (
 
-        <div className="report-tabs">
+        <div className="report-tabs mb-4">
 
 
             <div className="tabs-buttons">
 
 
-                <button
-                    onClick={()=>setActive("sales")}
-                >
-                    Sales
-                </button>
-
-
-                <button
-                    onClick={()=>setActive("inventory")}
-                >
-                    Inventory
-                </button>
-
-
-                <button
-                    onClick={()=>setActive("customers")}
-                >
-                    Customers
-                </button>
-
-
-                <button
-                    onClick={()=>setActive("profit")}
-                >
-                    Profit
-                </button>
+                {tabs.map((tab) => (
+                    <button
+                        key={tab.key}
+                        type="button"
+                        className={activeTab === tab.key ? "tab-button is-active" : "tab-button"}
+                        onClick={() => onTabChange(tab.key)}
+                        aria-pressed={activeTab === tab.key}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
 
 
             </div>
@@ -64,7 +48,7 @@ const ReportTabs = ({
 
 
                 {
-                    active==="sales" &&
+                    activeTab==="sales" &&
 
                     <SalesReport 
                         data={sales}
@@ -75,7 +59,7 @@ const ReportTabs = ({
 
 
                 {
-                    active==="inventory" &&
+                    activeTab==="inventory" &&
 
                     <InventoryReport
                         data={inventory}
@@ -86,7 +70,7 @@ const ReportTabs = ({
 
 
                 {
-                    active==="customers" &&
+                    activeTab==="customers" &&
 
                     <CustomerReport
                         data={customers}
@@ -97,7 +81,7 @@ const ReportTabs = ({
 
 
                 {
-                    active==="profit" &&
+                    activeTab==="profit" &&
 
                     <ProfitReport
                         data={profit}

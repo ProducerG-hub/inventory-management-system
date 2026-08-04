@@ -78,7 +78,7 @@ const CustomerReport = ({ data }) => {
 
                             <td>
 
-                                {customer.phoneNumber}
+                                {customer.phone}
 
                             </td>
 
