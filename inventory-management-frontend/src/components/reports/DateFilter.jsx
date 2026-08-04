@@ -68,6 +68,7 @@ const DateFilter = ({ onFilter }) => {
                     <input
 
                         type="date"
+                        className="date-input"
 
                         value={startDate}
 
@@ -96,6 +97,7 @@ const DateFilter = ({ onFilter }) => {
                     <input
 
                         type="date"
+                        className="date-input"
 
                         value={endDate}
 
@@ -113,9 +115,9 @@ const DateFilter = ({ onFilter }) => {
 
 
 
-                <button type="submit">
+                <button type="submit" className="filter-button filter-button--primary" onClick={handleSubmit}>
 
-                    Apply Filter
+                    Filter
 
                 </button>
 
@@ -124,6 +126,7 @@ const DateFilter = ({ onFilter }) => {
                 <button
 
                     type="button"
+                    className="filter-button filter-button--secondary"
 
                     onClick={clearFilter}
 

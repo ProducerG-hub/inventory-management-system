@@ -37,14 +37,16 @@ const Charts = ({
                     salesTrend &&
                     salesTrend.length > 0 &&
 
-                    <ResponsiveContainer
-                        width="100%"
-                        height={350}
-                    >
+                    <div className="chart-frame">
 
-                        <LineChart
-                            data={salesTrend}
+                        <ResponsiveContainer
+                            width="100%"
+                            height="100%"
                         >
+
+                            <LineChart
+                                data={salesTrend}
+                            >
 
 
                             <CartesianGrid
@@ -74,11 +76,21 @@ const Charts = ({
                             />
 
 
-                        </LineChart>
+                            </LineChart>
 
 
-                    </ResponsiveContainer>
+                        </ResponsiveContainer>
 
+                    </div>
+
+                }
+
+                {
+                    (!salesTrend || salesTrend.length === 0) &&
+
+                    <div className="empty-report chart-empty-state">
+                        No sales trend data available
+                    </div>
                 }
 
 
@@ -104,16 +116,17 @@ const Charts = ({
                     topSelling &&
                     topSelling.length > 0 &&
 
+                    <div className="chart-frame">
 
-                    <ResponsiveContainer
-                        width="100%"
-                        height={350}
-                    >
-
-
-                        <BarChart
-                            data={topSelling}
+                        <ResponsiveContainer
+                            width="100%"
+                            height="100%"
                         >
+
+
+                            <BarChart
+                                data={topSelling}
+                            >
 
 
                             <CartesianGrid
@@ -142,11 +155,21 @@ const Charts = ({
                             />
 
 
-                        </BarChart>
+                            </BarChart>
 
 
-                    </ResponsiveContainer>
+                        </ResponsiveContainer>
 
+                    </div>
+
+                }
+
+                {
+                    (!topSelling || topSelling.length === 0) &&
+
+                    <div className="empty-report chart-empty-state">
+                        No top selling product data available
+                    </div>
                 }
 
 
