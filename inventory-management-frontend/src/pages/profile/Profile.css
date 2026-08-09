@@ -1,0 +1,147 @@
+.profile-page {
+    padding: 1.5rem;
+}
+
+.profile-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.profile-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #0f766e 0%, #2563eb 100%);
+    color: #fff;
+}
+
+.profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.profile-hero-content h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.2rem;
+}
+
+.profile-hero-content p {
+    margin: 0 0 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.profile-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.profile-actions .btn {
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    color: #1f2937;
+}
+
+.card-heading h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.info-list,
+.setting-list,
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.info-item,
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.info-item:last-child,
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.info-item span,
+.setting-item p {
+    color: #6b7280;
+    font-size: 0.92rem;
+}
+
+.setting-item strong {
+    display: block;
+    margin-bottom: 0.15rem;
+}
+
+.setting-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+}
+
+.pill {
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.activity-list {
+    padding-left: 0;
+    list-style: none;
+}
+
+.activity-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #374151;
+}
+
+.activity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2563eb;
+}
+
+@media (max-width: 900px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}

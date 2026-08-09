@@ -9,6 +9,7 @@ import Suppliers from "../pages/suppliers/Suppliers";
 import Users from "../pages/users/Users";
 import ReportsPage from "../pages/reports/ReportsPage";
 import SalesHistory from "../pages/salesHistory/SalesHistoryPage";
+import Profile from "../pages/profile/Profile";
 import NotFound from "../pages/error/NotFound";
 
 import ROUTES from "../config/constants/routes";
@@ -56,6 +57,10 @@ const appRoutes = [
             {
                 path: ROUTES.REPORTS,
                 element: <ReportsPage />
+            },
+            {
+                path: ROUTES.PROFILE,
+                element: <Profile />
             }
         ]
     },

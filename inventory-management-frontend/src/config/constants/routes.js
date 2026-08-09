@@ -18,7 +18,9 @@ const ROUTES = {
 
     SALES_HISTORY: "sales-history",
 
-    REPORTS: "reports"
+    REPORTS: "reports",
+
+    PROFILE: "profile"
 };
 
 export default ROUTES;
