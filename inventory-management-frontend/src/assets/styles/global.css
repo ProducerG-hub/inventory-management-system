@@ -18,6 +18,8 @@ html{
 body{
 
     font-family:var(--font-family);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
 
     background:var(--background-color);
 
@@ -73,15 +75,26 @@ ul{
 
 .container-fluid{
 
-    padding-left:20px;
-
-    padding-right:20px;
+    padding-inline:clamp(16px,2vw,24px);
 
 }
 
 .app-layout{
 
     min-height:100vh;
+    position:relative;
+
+}
+
+.sidebar-overlay{
+
+    position:fixed;
+    inset:0;
+    z-index:999;
+    background:rgba(15,23,42,.45);
+    border:none;
+    padding:0;
+    margin:0;
 
 }
 
@@ -89,14 +102,17 @@ ul{
 .main-wrapper{
 
     margin-left:var(--sidebar-width);
+    min-height:100vh;
 
 }
 
 
 .content-area{
 
-    padding:25px;
-
+    width:100%;
+    max-width:1600px;
+    margin:0 auto;
+    padding:clamp(16px,2vw,28px);
     min-height:calc(100vh - var(--navbar-height));
 
 }
@@ -111,5 +127,45 @@ ul{
     background:white;
 
     border-top:1px solid var(--border-color);
+
+}
+
+@media (max-width:1024px){
+
+    :root{
+
+        --sidebar-width:220px;
+        --navbar-height:64px;
+
+    }
+
+    .main-wrapper{
+
+        margin-left:var(--sidebar-width);
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .main-wrapper{
+
+        margin-left:0;
+
+    }
+
+    .content-area{
+
+        max-width:100%;
+        padding:16px;
+
+    }
+
+    .sidebar-overlay{
+
+        backdrop-filter:blur(2px);
+
+    }
 
 }

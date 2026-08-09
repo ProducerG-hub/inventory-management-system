@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import logo from "../../assets/images/mlue_logo(white).png";
 
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen = false, onNavigate }) => {
 
 
     const { user } = useAuth();
@@ -22,7 +22,7 @@ const Sidebar = () => {
 
     return (
 
-        <aside className="sidebar">
+        <aside className={`sidebar ${isOpen ? "is-open" : ""}`}>
 
 
             <div className="sidebar-logo">
@@ -51,6 +51,7 @@ const Sidebar = () => {
                                 key={item.key}
 
                                 to={item.path}
+                                onClick={onNavigate}
 
 
                                 className={({isActive})=>
