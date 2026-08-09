@@ -5,6 +5,9 @@
     flex-direction:column;
 
     gap:24px;
+    width:100%;
+    max-width:1600px;
+    margin:0 auto;
 
 }
 
@@ -25,7 +28,7 @@
 
     background:var(--surface-color);
 
-    padding:20px;
+    padding:clamp(18px,2vw,24px);
 
     border-radius:var(--radius-lg);
 
@@ -68,7 +71,7 @@
 
     background:var(--surface-color);
 
-    padding:18px;
+    padding:clamp(16px,2vw,18px);
 
     border-radius:var(--radius-lg);
 
@@ -132,11 +135,11 @@
 
     border-radius:var(--radius-lg);
 
-    padding:20px;
+    padding:clamp(16px,2vw,22px);
 
     box-shadow:var(--shadow-md);
 
-    overflow:scroll;
+    overflow-x:auto;
 
 }
 
@@ -149,6 +152,7 @@
 
 
     border-collapse:collapse;
+    min-width:820px;
 
 
 }
@@ -510,6 +514,13 @@
     }
 
 
+    .suppliers-page{
+
+        gap:20px;
+
+    }
+
+
 
     .suppliers-card {
 
@@ -519,5 +530,48 @@
 
     }
 
+
+    .suppliers-card th,
+    .suppliers-card td{
+
+        padding:12px;
+
+    }
+
+    .suppliers-tabs{
+
+        flex-wrap:wrap;
+        gap:8px;
+
+    }
+
+    .tab-btn{
+
+        padding:9px 16px;
+
+    }
+
+
+}
+
+@media(max-width:480px){
+
+    .suppliers-header,
+    .supplier-search,
+    .suppliers-card{
+
+        padding:14px;
+
+    }
+
+    .edit-btn,
+    .delete-btn,
+    .restore-btn{
+
+        width:100%;
+        margin-right:0;
+        margin-bottom:8px;
+
+    }
 
 }

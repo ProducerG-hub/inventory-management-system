@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; 
-import { FiUser, FiLogOut } from "react-icons/fi";
+import { FiUser, FiLogOut, FiMoreVertical } from "react-icons/fi";
 import navigation from "../../config/constants/navigation";
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     
     
@@ -42,6 +42,16 @@ const Navbar = () => {
     return (
         <header className="navbar-custom">
             <div className="navbar-left">
+                <button
+                    type="button"
+                    className={`sidebar-toggle ${isSidebarOpen ? "active" : ""}`}
+                    onClick={onMenuClick}
+                    aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={isSidebarOpen}
+                >
+                    <FiMoreVertical />
+                </button>
+
                 <h5 className="navbar-title">{currentPageTitle}</h5>
             </div>
             

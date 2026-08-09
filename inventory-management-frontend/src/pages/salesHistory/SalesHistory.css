@@ -5,6 +5,9 @@
     flex-direction:column;
 
     gap:24px;
+    width:100%;
+    max-width:1600px;
+    margin:0 auto;
 
 }
 
@@ -22,7 +25,7 @@ HEADER
 
     background:var(--surface-color);
 
-    padding:20px;
+    padding:clamp(18px,2vw,24px);
 
     border-radius:var(--radius-lg);
 
@@ -59,6 +62,7 @@ TABS
     display:flex;
 
     gap:12px;
+    flex-wrap:wrap;
 
 }
 
@@ -122,7 +126,7 @@ TABS
 
     background:var(--surface-color);
 
-    padding:18px 20px;
+    padding:clamp(16px,2vw,20px);
 
     border-radius:var(--radius-lg);
 
@@ -233,7 +237,7 @@ TABLE
 
     border-radius:var(--radius-lg);
 
-    padding:20px;
+    padding:clamp(16px,2vw,20px);
 
     box-shadow:var(--shadow-md);
 
@@ -246,6 +250,7 @@ TABLE
     width:100%;
 
     border-collapse:collapse;
+    min-width:820px;
 
 }
 
@@ -340,7 +345,7 @@ BUTTON
 
     box-shadow:var(--shadow-sm);
 
-    padding:70px 30px;
+    padding:clamp(40px,4vw,70px) 30px;
 
     text-align:center;
 
@@ -411,6 +416,7 @@ PAGINATION
     align-items:center;
 
     gap:20px;
+    flex-wrap:wrap;
 
 }
 
@@ -562,6 +568,7 @@ RESPONSIVE
     flex-direction:column;
 
     gap:20px;
+    width:100%;
 
 }
 
@@ -573,7 +580,7 @@ RESPONSIVE
 
     background:var(--surface-color);
 
-    padding:20px;
+    padding:clamp(18px,2vw,24px);
 
     border-radius:var(--radius-lg);
 
@@ -623,9 +630,7 @@ RESPONSIVE
     display:grid;
 
 
-    grid-template-columns:
-
-    repeat(4,1fr);
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 
 
     gap:18px;
@@ -643,7 +648,7 @@ RESPONSIVE
     background:var(--surface-color);
 
 
-    padding:20px;
+    padding:clamp(16px,2vw,20px);
 
 
     border-radius:var(--radius-lg);
@@ -798,7 +803,7 @@ RESPONSIVE
     background:var(--surface-color);
 
 
-    padding:16px;
+    padding:clamp(14px,2vw,16px);
 
 
     border-radius:var(--radius-lg);
@@ -959,6 +964,96 @@ RESPONSIVE
     }
 
 
+    .sales-history-header{
+
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+
+    }
+
+
+    .sales-search,
+    .movement-search-container{
+
+        flex-direction:column;
+        align-items:stretch;
+
+    }
+
+
+    .sales-search-info{
+
+        text-align:center;
+
+    }
+
+
+    .sales-card th,
+    .sales-card td,
+    .movement-table th,
+    .movement-table td{
+
+        padding:12px;
+
+    }
+
+
+}
+
+@media(max-width:480px){
+
+    .sales-history-page{
+
+        gap:18px;
+
+    }
+
+
+    .sales-history-header,
+    .sales-search,
+    .sales-card,
+    .empty-state,
+    .sales-skeleton,
+    .movement-header,
+    .movement-search-container,
+    .movement-table-wrapper{
+
+        padding:14px;
+
+    }
+
+
+    .tab-btn,
+    .pagination button,
+    .view-btn{
+
+        width:100%;
+
+    }
+
+
+    .pagination{
+
+        gap:12px;
+
+    }
+
+
+    .movement-summary{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .skeleton-row{
+
+        grid-template-columns:1fr;
+
+    }
+
+
 }
 
 /* ===============================
@@ -976,6 +1071,7 @@ RESPONSIVE
 
 
     box-shadow:var(--shadow-sm);
+    overflow-x:auto;
 
 
     overflow-x:auto;
@@ -992,6 +1088,7 @@ RESPONSIVE
 
 
     border-collapse:collapse;
+    min-width:860px;
 
 
 }
@@ -1006,7 +1103,7 @@ RESPONSIVE
     text-align:left;
 
 
-    padding:15px;
+    padding:14px;
 
 
     background:#F8FAFC;
@@ -1030,7 +1127,7 @@ RESPONSIVE
 .movement-table td{
 
 
-    padding:15px;
+    padding:14px;
 
 
     border-bottom:1px solid var(--border-color);
