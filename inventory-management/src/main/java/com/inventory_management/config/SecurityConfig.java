@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.inventory_management.security.JwtAuthenticationFilter;
+import com.inventory_management.security.ratelimit.RateLimitFilter;
 
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -23,12 +24,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-        public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        }
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final RateLimitFilter rateLimitFilter;
 
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            RateLimitFilter rateLimitFilter
+    ) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.rateLimitFilter = rateLimitFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,7 +47,6 @@ public class SecurityConfig {
     ) throws Exception {
 
         return configuration.getAuthenticationManager();
-
     }
 
     @Bean
@@ -60,16 +65,19 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
-
                         ).permitAll()
 
                         .anyRequest().authenticated()
-
                 )
 
                 .addFilterBefore(
-                        jwtAuthenticationFilter,
+                        rateLimitFilter,
                         UsernamePasswordAuthenticationFilter.class
+                )
+
+                .addFilterAfter(
+                        jwtAuthenticationFilter,
+                        RateLimitFilter.class
                 )
 
                 .httpBasic(Customizer.withDefaults());
@@ -77,22 +85,34 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
 
-        @Bean
-        public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
 
-                CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(
+                List.of("http://localhost:5173")
+        );
 
-                configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-                configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                configuration.setAllowedHeaders(List.of("*"));
-                configuration.setAllowCredentials(true);
+        configuration.setAllowedMethods(
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "PATCH",
+                        "DELETE",
+                        "OPTIONS"
+                )
+        );
 
-                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
 
-                source.registerCorsConfiguration("/**", configuration);
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
 
-                return source;
+        source.registerCorsConfiguration("/**", configuration);
 
-        }
+        return source;
+    }
 }
