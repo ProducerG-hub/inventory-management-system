@@ -11,23 +11,45 @@ public class RateLimitService {
     private final Map<String, TokenBucket> buckets =
             new ConcurrentHashMap<>();
 
-    private final RateLimitConfig config;
-
-    public RateLimitService(RateLimitConfig config) {
-        this.config = config;
+    //constructor for testing purposes
+    public RateLimitService(RateLimitConfig testConfig) {
+        
     }
 
-    public boolean isAllowed(String clientIp) {
+    public boolean isAllowed(
+            String clientIp,
+            RateLimitPolicy policy
+    ) {
+
+        String bucketKey =
+                clientIp + ":" + policy.name();
 
         TokenBucket bucket = buckets.computeIfAbsent(
-                clientIp,
-                ip -> new TokenBucket(
-                        config.getCapacity(),
-                        config.getRefillTokens(),
-                        config.getRefillIntervalMs()
+                bucketKey,
+                key -> new TokenBucket(
+                        policy.capacity(),
+                        policy.refillTokens(),
+                        policy.refillIntervalMillis()
                 )
         );
 
         return bucket.tryConsume();
+    }
+
+    public long getRetryAfterSeconds(
+            String clientIp,
+            RateLimitPolicy policy
+    ) {
+
+        String bucketKey =
+                clientIp + ":" + policy.name();
+
+        TokenBucket bucket = buckets.get(bucketKey);
+
+        if (bucket == null) {
+            return 0;
+        }
+
+        return bucket.getRetryAfterSeconds();
     }
 }

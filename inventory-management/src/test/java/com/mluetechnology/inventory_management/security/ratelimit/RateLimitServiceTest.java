@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.inventory_management.security.ratelimit.RateLimitConfig;
 import com.inventory_management.security.ratelimit.RateLimitService;
+import com.inventory_management.security.ratelimit.RateLimitPolicy;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +21,15 @@ class RateLimitServiceTest {
         return config;
     }
 
+    private RateLimitPolicy createPolicy(String name) {
+        return new RateLimitPolicy(
+                name,
+                10,
+                1,
+                1000
+        );
+    }
+
     @Test
     void shouldAllowRequestsWithinLimit() {
 
@@ -27,9 +37,10 @@ class RateLimitServiceTest {
                 new RateLimitService(createTestConfig());
 
         String ip = "::1";
+        RateLimitPolicy policy = createPolicy("DEFAULT");
 
         for (int i = 0; i < 10; i++) {
-            assertTrue(service.isAllowed(ip));
+            assertTrue(service.isAllowed(ip, policy));
         }
     }
 
@@ -40,12 +51,13 @@ class RateLimitServiceTest {
                 new RateLimitService(createTestConfig());
 
         String ip = "::1";
+        RateLimitPolicy policy = createPolicy("DEFAULT");
 
         for (int i = 0; i < 10; i++) {
-            assertTrue(service.isAllowed(ip));
+            assertTrue(service.isAllowed(ip, policy));
         }
 
-        assertFalse(service.isAllowed(ip));
+        assertFalse(service.isAllowed(ip, policy));
     }
 
     @Test
@@ -56,13 +68,16 @@ class RateLimitServiceTest {
 
         String ip1 = "::1";
         String ip2 = "192.168.1.20";
+        RateLimitPolicy authPolicy = createPolicy("AUTH");
+        RateLimitPolicy salesPolicy = createPolicy("SALES");
+        RateLimitPolicy reportsPolicy = createPolicy("REPORTS");
 
         for (int i = 0; i < 10; i++) {
-            assertTrue(service.isAllowed(ip1));
+            assertTrue(service.isAllowed(ip1, authPolicy));
         }
 
-        assertFalse(service.isAllowed(ip1));
+        assertTrue(service.isAllowed(ip1, salesPolicy));
 
-        assertTrue(service.isAllowed(ip2));
+        assertTrue(service.isAllowed(ip2, reportsPolicy));
     }
 }
