@@ -14,13 +14,16 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private final ClientIpResolver clientIpResolver;
     private final RateLimitService rateLimitService;
+    private RateLimitPolicyResolver policyResolver;
 
     public RateLimitFilter(
             ClientIpResolver clientIpResolver,
-            RateLimitService rateLimitService
+            RateLimitService rateLimitService,
+            RateLimitPolicyResolver policyResolver
     ) {
         this.clientIpResolver = clientIpResolver;
         this.rateLimitService = rateLimitService;
+        this.policyResolver = policyResolver;
     }
 
     @Override
@@ -38,27 +41,44 @@ public class RateLimitFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+        String clientIp =
+        clientIpResolver.resolve(request);
 
-        String clientIp = clientIpResolver.resolve(request);
+        RateLimitPolicy policy =
+        policyResolver.resolve(request);
 
-        boolean allowed = rateLimitService.isAllowed(clientIp);
+        boolean allowed =
+        rateLimitService.isAllowed(
+                clientIp,
+                policy
+        );
 
         if (!allowed) {
 
-            response.setStatus(429);
-            response.setContentType("application/json");
-            response.setHeader("Retry-After", "1");
+                long retryAfter =
+                        rateLimitService.getRetryAfterSeconds(
+                                clientIp,
+                                policy
+                        );
 
-            response.getWriter().write("""
-                    {
-                        "status": 429,
-                        "error": "Too Many Requests",
-                        "message": "Rate limit exceeded. Please try again later."
-                    }
-                    """);
+                response.setStatus(429);
+                response.setContentType("application/json");
 
-            return;
-        }
+                response.setHeader(
+                        "Retry-After",
+                        String.valueOf(retryAfter)
+                );
+
+                response.getWriter().write("""
+                        {
+                            "status": 429,
+                            "error": "Too Many Requests",
+                            "message": "Rate limit exceeded. Please try again later."
+                        }
+                        """);
+
+                return;
+            }
 
         filterChain.doFilter(request, response);
     }

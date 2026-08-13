@@ -34,6 +34,30 @@ public class TokenBucket {
         return false;
     }
 
+    public synchronized long getRetryAfterSeconds() {
+
+        refill();
+
+        if (tokens >= 1) {
+            return 0;
+        }
+
+        long now = System.currentTimeMillis();
+
+        long elapsed = now - lastRefillTimestamp;
+
+        long remainingMillis =
+                refillIntervalMillis - elapsed;
+
+        if (remainingMillis <= 0) {
+            return 0;
+        }
+
+        return (long) Math.ceil(
+                remainingMillis / 1000.0
+        );
+    }
+
     private void refill() {
 
         long now = System.currentTimeMillis();
