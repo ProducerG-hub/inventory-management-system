@@ -1,10 +1,7 @@
 import axios from "axios";
-
 import API from "../api/api";
 import storage from "../utils/authStorage";
-
 import toast from "react-hot-toast";
-
 
 const axiosInstance = axios.create({
 
@@ -17,8 +14,6 @@ const axiosInstance = axios.create({
     },
 
 });
-
-
 
 /*
     REQUEST INTERCEPTOR
@@ -54,9 +49,6 @@ axiosInstance.interceptors.request.use(
 
 );
 
-
-
-
 /*
     RESPONSE INTERCEPTOR
     Global API Error Handling
@@ -64,16 +56,13 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
 
-
     (response) => {
 
         return response;
 
     },
 
-
     (error) => {
-
 
         if (!error.response) {
 
@@ -81,17 +70,11 @@ axiosInstance.interceptors.response.use(
             toast.error(
                 "Network error. Please check your connection."
             );
-
-
             return Promise.reject(error);
 
         }
 
-
-
         const status = error.response.status;
-
-
 
         switch(status) {
 
@@ -104,7 +87,6 @@ axiosInstance.interceptors.response.use(
                 toast.error(
                     "Session expired. Please login again."
                 );
-
 
                 window.location.href = "/login";
 
@@ -120,10 +102,20 @@ axiosInstance.interceptors.response.use(
                     "You don't have permission to perform this action."
                 );
 
-
                 break;
 
+            case 429:
 
+                const retryAfter =
+                    response.headers["retry-after"];
+
+                const message = error.response.data?.message
+
+                toast.error(
+                     message + retryAfter
+                );
+
+                break;
 
             case 500:
 
@@ -135,8 +127,6 @@ axiosInstance.interceptors.response.use(
 
                 break;
 
-
-
             default:
 
 
@@ -147,16 +137,11 @@ axiosInstance.interceptors.response.use(
 
 
         }
-
-
-
         return Promise.reject(error);
 
 
     }
 
 );
-
-
 
 export default axiosInstance;
