@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; 
-import { FiUser, FiLogOut, FiMoreVertical } from "react-icons/fi";
+import { FiUser, FiLogOut, FiMoreVertical, FiMessageCircle } from "react-icons/fi";
 import navigation from "../../config/constants/navigation";
+import ROUTES from "../../config/constants/routes";
 
 const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -14,7 +15,8 @@ const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
     const location = useLocation();
 
     const currentPageTitle =
-        navigation.find((item) => item.path === location.pathname)?.label || "Mlue POS System";
+        navigation.find((item) => item.path === location.pathname)?.label ||
+        (location.pathname === `/${ROUTES.MESSAGES}` ? "Messages" : "Mlue POS System");
 
     const toggleProfile = () => {
         setIsProfileOpen(!isProfileOpen);
@@ -56,6 +58,17 @@ const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
             </div>
             
             <div className="navbar-right">
+                <button
+                    type="button"
+                    className="navbar-action messages-link"
+                    onClick={() => navigate(`/${ROUTES.MESSAGES}`)}
+                    aria-label="Open messages"
+                    title="Messages"
+                >
+                    <FiMessageCircle />
+                    <span className="message-badge">2</span>
+                </button>
+
                 <div className="profile-dropdown-wrapper">
                     
                     <div 

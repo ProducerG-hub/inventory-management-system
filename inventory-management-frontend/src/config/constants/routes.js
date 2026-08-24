@@ -20,7 +20,9 @@ const ROUTES = {
 
     REPORTS: "reports",
 
-    PROFILE: "profile"
+    PROFILE: "profile",
+
+    MESSAGES: "messages"
 };
 
 export default ROUTES;
