@@ -160,3 +160,56 @@ STOCK_MOVEMENTS(
     1 Stock Movement belongs to 1 User (1:1)
     1 User can have many Stock Movements (1:M)
 )
+
+-- conversation table schema
+CONVERSATIONS(
+    conversation_id SERIAL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PK(conversation_id)
+)
+
+-- conversation_participants table schema
+CONVERSATION_PARTICIPANTS(
+    conversation_id INTEGER,
+    user_id INTEGER,
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PK(conversation_id, user_id),
+
+    FK(conversation_id)
+        REFERENCES CONVERSATIONS(conversation_id)
+        ON DELETE CASCADE,
+
+    FK(user_id)
+        REFERENCES USERS(user_id)
+        ON DELETE CASCADE
+
+    -- cardinalities
+    1 Conversation can have many Participants (1:M)
+    1 User can participate in many Conversations (1:M)
+)
+
+-- messages table schema
+MESSAGES(
+    message_id SERIAL,
+    conversation_id INTEGER,
+    sender_id INTEGER,
+    message_text TEXT,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PK(message_id),
+
+    FK(conversation_id)
+        REFERENCES CONVERSATIONS(conversation_id)
+        ON DELETE CASCADE,
+
+    FK(sender_id)
+        REFERENCES USERS(user_id)
+        ON DELETE CASCADE
+
+    -- cardinalities
+    1 Conversation can have many Messages (1:M)
+    1 User can send many Messages (1:M)
+)
