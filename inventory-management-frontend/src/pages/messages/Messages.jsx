@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { FiEdit3, FiSearch, FiSend, FiUsers } from "react-icons/fi";
+import { FiArrowLeft, FiEdit3, FiPlus, FiSearch, FiSend, FiUsers } from "react-icons/fi";
 
 import "./Messages.css";
 
@@ -33,6 +33,15 @@ const initialConversations = [
         color: "green",
         unread: 0,
         messages: [{ id: 4, text: "Scheduled maintenance is complete.", time: "Mon", mine: false }]
+    },
+    {
+        id: 4,
+        name: "Finance team",
+        initials: "FT",
+        role: "Accounting",
+        color: "coral",
+        unread: 0,
+        messages: [{ id: 5, text: "The monthly sales report is ready for review.", time: "Mon", mine: false }]
     }
 ];
 
@@ -41,6 +50,7 @@ const Messages = () => {
     const [activeId, setActiveId] = useState(initialConversations[0].id);
     const [search, setSearch] = useState("");
     const [draft, setDraft] = useState("");
+    const [isMobileChatOpen, setIsMobileChatOpen] = useState(false);
 
     const activeConversation = conversations.find((conversation) => conversation.id === activeId);
     const filteredConversations = useMemo(
@@ -50,6 +60,7 @@ const Messages = () => {
 
     const selectConversation = (conversation) => {
         setActiveId(conversation.id);
+        setIsMobileChatOpen(true);
         setConversations((current) => current.map((item) => item.id === conversation.id ? { ...item, unread: 0 } : item));
     };
 
@@ -78,7 +89,7 @@ const Messages = () => {
                 </button>
             </header>
 
-            <div className="messages-shell">
+            <div className={`messages-shell ${isMobileChatOpen ? "mobile-chat-open" : ""}`}>
                 <aside className="conversation-list">
                     <div className="conversation-heading">
                         <div><h2>Conversations</h2><span>{conversations.length} channels</span></div>
@@ -97,10 +108,16 @@ const Messages = () => {
                             </button>
                         ))}
                     </div>
+                    <button type="button" className="mobile-compose-button" aria-label="Start a new conversation" title="Start a new conversation">
+                        <FiPlus />
+                    </button>
                 </aside>
 
                 {activeConversation && <div className="chat-panel">
                     <div className="chat-heading">
+                        <button type="button" className="chat-back-button" onClick={() => setIsMobileChatOpen(false)} aria-label="Back to conversations" title="Back to conversations">
+                            <FiArrowLeft />
+                        </button>
                         <span className={`avatar ${activeConversation.color}`}>{activeConversation.initials}</span>
                         <div><h2>{activeConversation.name}</h2><span>{activeConversation.role}</span></div>
                     </div>
