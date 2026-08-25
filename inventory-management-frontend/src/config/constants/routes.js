@@ -22,7 +22,9 @@ const ROUTES = {
 
     PROFILE: "profile",
 
-    MESSAGES: "messages"
+    MESSAGES: "messagesPage",
+
+    NOT_FOUND: "*"
 };
 
 export default ROUTES;

@@ -85,6 +85,14 @@ const navigation = [
         path: `/${ROUTES.REPORTS}`,
         icon: FileEarmarkBarGraphFill,
         roles: [ROLES.ADMIN]
+    },
+
+    {
+        key: "profile",
+        label: "Profile",
+        path: `/${ROUTES.PROFILE}`,
+        icon: PeopleFill,
+        roles: [ROLES.ADMIN, ROLES.STAFF]
     }
 
 ];
