@@ -120,3 +120,54 @@ CREATE TABLE stock_movements (
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
 );
+
+-- Message tables
+CREATE TABLE conversations (
+    conversation_id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE conversation_participants (
+    conversation_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (conversation_id, user_id),
+
+    CONSTRAINT fk_conversation_participant_conversation
+        FOREIGN KEY (conversation_id)
+        REFERENCES conversations(conversation_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_conversation_participant_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE messages (
+    message_id SERIAL PRIMARY KEY,
+
+    conversation_id INTEGER NOT NULL,
+
+    sender_id INTEGER NOT NULL,
+
+    message_content TEXT NOT NULL,
+
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+
+    sent_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    deleted_at TIMESTAMP,
+
+    CONSTRAINT fk_message_conversation
+        FOREIGN KEY (conversation_id)
+        REFERENCES conversations(conversation_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_message_sender
+        FOREIGN KEY (sender_id)
+        REFERENCES users(user_id)
+        ON DELETE RESTRICT
+);
