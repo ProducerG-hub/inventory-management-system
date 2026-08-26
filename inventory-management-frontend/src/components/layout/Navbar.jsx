@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext"; 
 import { FiUser, FiLogOut, FiMoreVertical, FiMessageCircle } from "react-icons/fi";
+import { Client } from "@stomp/stompjs";
 import navigation from "../../config/constants/navigation";
 import ROUTES from "../../config/constants/routes";
+import messageService from "../../services/messageService";
+import storage from "../../utils/authStorage";
 
 const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [unreadCount, setUnreadCount] = useState(0);
     
     
     const { user, logout } = useAuth(); 
     const navigate = useNavigate();
     const location = useLocation();
+
+    const token =
+        storage.getToken();
 
     const currentPageTitle =
         navigation.find((item) => item.path === location.pathname)?.label ||
@@ -41,6 +48,106 @@ const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
         return fullName.substring(0, 2).toUpperCase();
     };
 
+
+    const loadUnreadCount = useCallback(async () => {
+
+        try {
+
+            const conversations =
+                await messageService.getConversations();
+
+            const totalUnread = conversations.reduce(
+                (sum, conversation) =>
+                    sum + Number(conversation.unreadCount || 0),
+                0
+            );
+
+            setUnreadCount(totalUnread);
+
+        } catch  {
+            console.error("Error loading unread count:");
+        }
+
+    }, []);
+
+
+    useEffect(() => {
+
+        let isMounted = true;
+
+        const safeLoadUnreadCount = async () => {
+
+            await loadUnreadCount();
+
+            if (!isMounted) {
+                return;
+            }
+
+        };
+
+        void safeLoadUnreadCount();
+
+        const intervalId = setInterval(() => {
+            void safeLoadUnreadCount();
+        }, 15000);
+
+        const handleWindowFocus = () => {
+            void safeLoadUnreadCount();
+        };
+
+        window.addEventListener("focus", handleWindowFocus);
+
+        return () => {
+
+            isMounted = false;
+
+            clearInterval(intervalId);
+
+            window.removeEventListener("focus", handleWindowFocus);
+
+        };
+
+    }, [location.pathname, loadUnreadCount]);
+
+
+    useEffect(() => {
+
+        if (!token) {
+            return undefined;
+        }
+
+        const client = new Client({
+            brokerURL: "ws://localhost:8080/api/ws",
+            connectHeaders: {
+                Authorization: `Bearer ${token}`
+            },
+            reconnectDelay: 5000,
+            onConnect: () => {
+
+                client.subscribe(
+                    "/user/queue/messages",
+                    () => {
+                        void loadUnreadCount();
+                    },
+                    {
+                        id: "navbar-unread-subscription"
+                    }
+                );
+            },
+            onStompError: () => {},
+            onWebSocketError: () => {}
+        });
+
+        client.activate();
+
+        return () => {
+            if (client.active) {
+                client.deactivate();
+            }
+        };
+
+    }, [token, loadUnreadCount]);
+
     return (
         <header className="navbar-custom">
             <div className="navbar-left">
@@ -66,7 +173,13 @@ const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
                     title="Messages"
                 >
                     <FiMessageCircle />
-                    <span className="message-badge">2</span>
+                    {unreadCount > 0 && (
+                        <span className="message-badge">
+                            {unreadCount > 99
+                                ? "99+"
+                                : unreadCount}
+                        </span>
+                    )}
                 </button>
 
                 <div className="profile-dropdown-wrapper">
