@@ -39,6 +39,43 @@
     gap: 15px; 
 }
 
+.navbar-action {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 20px;
+    transition: var(--transition-fast);
+}
+
+.navbar-action:hover {
+    background: #eef4ff;
+    color: var(--primary-color);
+}
+
+.message-badge {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    border: 2px solid white;
+    border-radius: 999px;
+    background: var(--danger-color);
+    color: white;
+    font-size: 9px;
+    font-weight: var(--font-bold, 700);
+}
+
 .sidebar-toggle {
     display: none;
     width: 40px;

@@ -65,6 +65,33 @@ const API_ENDPOINTS = {
 
     SEARCH: "/stock-movements/search"
 
+    },
+
+    SALES_HISTORY: {
+
+        BASE: "/sales-history",
+        SEARCH: "/sales-history/search"
+    },
+
+    REPORTS: {
+        BASE: "/reports",
+        SALES_REPORT: "/reports/sales",
+        STOCK_REPORT: "/reports/stock",
+        CUSTOMER_REPORT: "/reports/customers",
+        PROFIT_REPORT: "/reports/profit"
+    },
+    
+    PROFILE: {
+
+        BASE: "/profile"
+
+    },
+
+    MESSAGES: {
+        BASE: "/messages",
+        CONVERSATIONS: "/messages/conversations",
+        MESSAGES_BY_CONVERSATION: "/messages/conversation/{conversationId}",
+        MARK_AS_READ: "/messages/conversation/{conversationId}/read"
     }
 
 };

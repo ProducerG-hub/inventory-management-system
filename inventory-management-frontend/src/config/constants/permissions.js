@@ -30,6 +30,16 @@ const PERMISSIONS = {
 
     VIEW_REPORTS: [
         ROLES.ADMIN
+    ],
+
+    VIEW_PROFILE: [
+        ROLES.ADMIN,
+        ROLES.STAFF
+    ],
+
+    VIEW_MESSAGES: [
+        ROLES.ADMIN,
+        ROLES.STAFF
     ]
 
 };

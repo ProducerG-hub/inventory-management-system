@@ -5,7 +5,7 @@ const userService = {
     async getActiveUsers(params){
 
         const response = await axiosInstance.get(
-            "/users",
+            "/users/active",
             {
                 params: {
                     ...params,
