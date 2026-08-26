@@ -1,4 +1,5 @@
-import { FiArrowLeft } from "react-icons/fi";
+import { useEffect, useRef, useState } from "react";
+import { FiArrowLeft, FiMoreVertical } from "react-icons/fi";
 
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
@@ -9,8 +10,38 @@ const ChatWindow = ({
     currentUserId,
     onSend,
     onBack,
-    loading
+    loading,
+    isWebSocketConnected,
+    forceScrollTrigger,
+    onClearChat
 }) => {
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const menuRef = useRef(null);
+
+
+    useEffect(() => {
+
+        const handleOutsideClick = (event) => {
+
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target)
+            ) {
+                setIsMenuOpen(false);
+            }
+
+        };
+
+        document.addEventListener("mousedown", handleOutsideClick);
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+
+    }, []);
+
 
     if (!conversation) {
         return (
@@ -55,6 +86,47 @@ const ChatWindow = ({
                     <h2>
                         {conversation.participantName}
                     </h2>
+
+                    <small>
+                        {isWebSocketConnected
+                            ? "Live"
+                            : "Reconnecting..."}
+                    </small>
+                </div>
+
+                <div className="chat-header-actions" ref={menuRef}>
+
+                    <button
+                        type="button"
+                        className="chat-menu-button"
+                        onClick={() =>
+                            setIsMenuOpen((current) => !current)
+                        }
+                        aria-label="Open chat actions"
+                        title="Chat actions"
+                    >
+                        <FiMoreVertical />
+                    </button>
+
+
+                    {isMenuOpen && (
+                        <div className="chat-menu-dropdown">
+
+                            <button
+                                type="button"
+                                className="chat-menu-item"
+                                onClick={() => {
+                                    onClearChat?.(conversation.conversationId);
+                                    setIsMenuOpen(false);
+                                }}
+                                disabled={!messages.length}
+                            >
+                                Clear chat
+                            </button>
+
+                        </div>
+                    )}
+
                 </div>
 
             </div>
@@ -70,6 +142,8 @@ const ChatWindow = ({
                 <MessageList
                     messages={messages}
                     currentUserId={currentUserId}
+                    conversationId={conversation.conversationId}
+                    forceScrollTrigger={forceScrollTrigger}
                 />
 
             )}

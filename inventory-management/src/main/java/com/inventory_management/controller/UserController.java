@@ -164,6 +164,39 @@ public class UserController {
 
     }
 
+    @GetMapping("/active")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    @Operation(summary = "Get Active Users")
+    public ResponseEntity<Page<UserResponseDTO>> getActiveUsers(
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "50")
+            int size,
+
+            @RequestParam(defaultValue = "fullName")
+            String sortBy,
+
+            @RequestParam(defaultValue = "asc")
+            String sortDir
+
+    ) {
+
+        return ResponseEntity.ok(
+
+                userService.getAllUsers(
+                        true,
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
+
+        );
+
+    }
+
     @PatchMapping("/{id}/restore")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Restore User")
