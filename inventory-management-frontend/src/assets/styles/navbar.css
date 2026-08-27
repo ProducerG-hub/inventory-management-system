@@ -5,25 +5,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 clamp(16px,2vw,28px);
+    padding: 0 clamp(14px,1.5vw,22px);
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
-    gap: 16px;
+    gap: 12px;
 }
 
 .navbar-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     min-width: 0;
 }
 
 
 .navbar-title {
     margin: 0; 
-    font-size: clamp(1rem,1.4vw,1.2rem);
+    font-size: clamp(.95rem,1.2vw,1.1rem);
     font-weight: var(--font-semibold, 600); 
     color: var(--text-primary);
     letter-spacing: 0.5px;
@@ -36,7 +36,7 @@
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 15px; 
+    gap: 12px;
 }
 
 .navbar-action {
@@ -44,12 +44,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: transparent;
     color: var(--text-secondary);
-    font-size: 20px;
+    font-size: 18px;
     transition: var(--transition-fast);
 }
 
@@ -78,14 +78,14 @@
 
 .sidebar-toggle {
     display: none;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background-color: var(--secondary-color);
     color: var(--text-light);
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 18px;
     flex-shrink: 0;
     transition: var(--transition-fast);
 }
@@ -97,8 +97,8 @@
 
 
 .user-profile-circle {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%; 
     background-color:var(--secondary-color); 
     color: #ffffff;

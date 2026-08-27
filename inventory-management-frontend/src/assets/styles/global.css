@@ -75,7 +75,7 @@ ul{
 
 .container-fluid{
 
-    padding-inline:clamp(16px,2vw,24px);
+    padding-inline:clamp(14px,1.5vw,20px);
 
 }
 
@@ -110,9 +110,9 @@ ul{
 .content-area{
 
     width:100%;
-    max-width:1600px;
+    max-width:1440px;
     margin:0 auto;
-    padding:clamp(16px,2vw,28px);
+    padding:clamp(14px,1.5vw,22px);
     min-height:calc(100vh - var(--navbar-height));
 
 }
@@ -120,7 +120,7 @@ ul{
 
 .footer{
 
-    padding:15px;
+    padding:12px;
 
     text-align:center;
 
@@ -134,8 +134,8 @@ ul{
 
     :root{
 
-        --sidebar-width:220px;
-        --navbar-height:64px;
+        --sidebar-width:210px;
+        --navbar-height:56px;
 
     }
 

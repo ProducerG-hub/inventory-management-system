@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FiChevronDown } from "react-icons/fi";
 
 import MessageBubble from "./MessageBubble";
 
@@ -14,6 +15,9 @@ const MessageList = ({
     const shouldStickToBottomRef = useRef(true);
 
     const pendingForcedScrollRef = useRef(false);
+
+    const [showScrollToLatest, setShowScrollToLatest] =
+        useState(false);
 
 
     const updateStickToBottom = () => {
@@ -32,6 +36,10 @@ const MessageList = ({
         shouldStickToBottomRef.current =
             distanceFromBottom <= 80;
 
+        setShowScrollToLatest(
+            distanceFromBottom > 160
+        );
+
     };
 
 
@@ -44,6 +52,8 @@ const MessageList = ({
         }
 
         container.scrollTop = container.scrollHeight;
+
+        setShowScrollToLatest(false);
 
     };
 
@@ -110,24 +120,39 @@ const MessageList = ({
     }
 
     return (
-        <div
-            className="chat-messages"
-            ref={containerRef}
-            onScroll={updateStickToBottom}
-        >
+        <div className="chat-messages-wrapper">
+            <div
+                className="chat-messages"
+                ref={containerRef}
+                onScroll={updateStickToBottom}
+            >
 
-            <div className="date-divider">
-                <span>Messages</span>
+                <div className="date-divider">
+                    <span>Messages</span>
+                </div>
+
+                {messages.map((message) => (
+                    <MessageBubble
+                        key={message.messageId}
+                        message={message}
+                        currentUserId={currentUserId}
+                    />
+                ))}
+
             </div>
 
-            {messages.map((message) => (
-                <MessageBubble
-                    key={message.messageId}
-                    message={message}
-                    currentUserId={currentUserId}
-                />
-            ))}
-
+            {showScrollToLatest && (
+                <button
+                    type="button"
+                    className="scroll-to-latest"
+                    onClick={scrollToBottom}
+                    aria-label="Scroll to latest message"
+                    title="Scroll to latest message"
+                >
+                    <FiChevronDown />
+                    Latest
+                </button>
+            )}
         </div>
     );
 };

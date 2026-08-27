@@ -41,12 +41,12 @@
 
     --font-family: "Poppins", sans-serif;
 
-    --font-xs: .75rem;
-    --font-sm: .875rem;
-    --font-md: 1rem;
-    --font-lg: 1.125rem;
-    --font-xl: 1.5rem;
-    --font-xxl: 2rem;
+    --font-xs: .7rem;
+    --font-sm: .8125rem;
+    --font-md: .9375rem;
+    --font-lg: 1.05rem;
+    --font-xl: 1.35rem;
+    --font-xxl: 1.75rem;
 
     --font-light:300;
     --font-normal:400;
@@ -69,11 +69,11 @@
     ======================================== */
 
     --space-xs:4px;
-    --space-sm:8px;
-    --space-md:16px;
-    --space-lg:24px;
-    --space-xl:32px;
-    --space-xxl:48px;
+    --space-sm:7px;
+    --space-md:14px;
+    --space-lg:20px;
+    --space-xl:28px;
+    --space-xxl:40px;
 
     /* ========================================
        SHADOWS
@@ -94,7 +94,7 @@
        LAYOUT
     ======================================== */
 
-    --navbar-height:70px;
-    --sidebar-width:260px;
+    --navbar-height:60px;
+    --sidebar-width:230px;
 
 }
