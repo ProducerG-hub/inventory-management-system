@@ -87,7 +87,13 @@ const ChatWindow = ({
                         {conversation.participantName}
                     </h2>
 
-                    <small>
+                    <small className="chat-presence">
+                        <span
+                            className={isWebSocketConnected
+                                ? "presence-dot online"
+                                : "presence-dot"}
+                            aria-hidden="true"
+                        />
                         {isWebSocketConnected
                             ? "Live"
                             : "Reconnecting..."}
