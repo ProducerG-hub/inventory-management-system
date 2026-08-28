@@ -22,6 +22,24 @@
     margin-bottom: 24px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.report-header::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    right: -70px;
+    top: -115px;
+    background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+}
+
+.report-header > div {
+    position: relative;
+    z-index: 1;
 }
 
 .report-header h1 {
@@ -58,17 +76,59 @@
 
 .report-card:hover {
     transform: translateY(-5px);
+    box-shadow: var(--shadow-md, 0 12px 24px rgba(15, 23, 42, .10));
 }
 
-.report-card h3 {
+.report-card__label {
     color: var(--text-secondary);
     font-size: 14px;
     margin-bottom: 12px;
 }
 
-.report-card h2 {
+.report-card__value {
     color: var(--primary-color);
     font-size: 26px;
+    margin: 0;
+}
+
+/* Reuse the dashboard statistic-card treatment within Reports. */
+.report-cards .stat-card {
+    position: relative;
+    background: var(--surface-color);
+    padding: clamp(18px, 2vw, 22px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: var(--transition-normal);
+}
+
+.report-cards .stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(135deg, #2563EB, #0EA5E9);
+}
+
+.report-cards .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.report-cards .stat-card h4 {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    font-weight: var(--font-medium);
+    margin-bottom: 12px;
+}
+
+.report-cards .stat-card h2 {
+    color: var(--text-primary);
+    font-size: var(--font-xxl);
+    font-weight: var(--font-bold);
     margin: 0;
 }
 
@@ -85,6 +145,52 @@
     margin-bottom: 24px;
 }
 
+.reports-loading {
+    min-height: 430px;
+    display: grid;
+    place-items: center;
+}
+
+.reports-loading__spinner {
+    width: 38px;
+    height: 38px;
+    border: 4px solid color-mix(in srgb, var(--primary-color) 18%, transparent);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: reports-spin .75s linear infinite;
+}
+
+@keyframes reports-spin { to { transform: rotate(360deg); } }
+
+.report-workspace {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: clamp(14px, 2vw, 22px);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+
+.report-workspace__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.report-workspace__toolbar h2 {
+    color: var(--secondary-color);
+    font-size: clamp(18px, 2vw, 22px);
+    margin: 0;
+}
+
+.report-workspace__toolbar p {
+    margin: 4px 0 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
 .date-filter form,
 .export-buttons {
     display: flex;
@@ -92,6 +198,8 @@
     flex-wrap: wrap;
     align-items: end;
 }
+
+.export-buttons { justify-content: flex-end; }
 
 .filter-group {
     display: flex;
@@ -175,9 +283,11 @@
     flex-wrap: wrap;
     margin-bottom: 20px;
     padding: 8px;
-    background: rgba(255,255,255,.55);
+    background: var(--background-color);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-lg, 14px);
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 
 .tabs-buttons button {
@@ -190,6 +300,7 @@
     font-weight: 600;
     transition: var(--transition-normal);
     border: 1px solid transparent;
+    white-space: nowrap;
 }
 
 .tabs-buttons button:hover,
@@ -199,7 +310,7 @@
 }
 
 .tab-content {
-    margin-top: 16px;
+    margin-top: 12px;
 }
 
 /* =========================
@@ -253,7 +364,7 @@
     border-radius: var(--radius-xl);
     padding: clamp(18px, 2vw, 20px);
     overflow-x: auto;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     border: 1px solid var(--border-color);
     min-height: 380px;
 }
@@ -267,7 +378,7 @@
 .report-table th {
     text-align: left;
     padding: 14px;
-    background: var(--background-color);
+    background: color-mix(in srgb, var(--background-color) 75%, #dbeafe);
     color: var(--secondary-color);
     font-size: 14px;
 }
@@ -281,6 +392,8 @@
 .report-table tr:hover {
     background: var(--background-color);
 }
+
+.report-table tbody tr:last-child td { border-bottom: 0; }
 
 /* =========================
    STATUS BADGES
@@ -354,13 +467,16 @@
         align-items: stretch;
     }
 
+    .report-workspace__toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
     .tabs-buttons {
         padding: 6px;
     }
 
-    .tabs-buttons button {
-        width: 100%;
-    }
+    .tabs-buttons { width: calc(100% + 2px); }
 
     .report-table-wrapper,
     .chart-card {

@@ -1,77 +1,24 @@
-const ReportCards = ({summary}) => {
+import StatCard from "../dashboard/StatCard";
 
-
-    if(!summary){
-
+const ReportCards = ({ summary }) => {
+    if (!summary) {
         return null;
-
     }
 
-
-
     const cards = [
-
-        {
-            title:"Total Sales",
-            value: summary.totalSales
-        },
-
-        {
-            title:"Total Revenue",
-            value:
-            `TZS ${summary.totalRevenue.toLocaleString()}`
-        },
-
-        {
-            title:"Total Profit",
-            value:
-            `TZS ${summary.totalProfit.toLocaleString()}`
-        },
-
-        {
-            title:"Low Stock Products",
-            value: summary.lowStockProducts
-        }
-
+        { title: "Total Sales", value: summary.totalSales },
+        { title: "Total Revenue", value: `TZS ${summary.totalRevenue.toLocaleString()}` },
+        { title: "Total Profit", value: `TZS ${summary.totalProfit.toLocaleString()}` },
+        { title: "Low Stock Products", value: summary.lowStockProducts }
     ];
 
-
-
     return (
-
-        <div className="report-cards">
-
-
-            {
-                cards.map((card,index)=>(
-
-                    <div 
-                        className="report-card"
-                        key={index}
-                    >
-
-                        <h3>
-                            {card.title}
-                        </h3>
-
-
-                        <h2>
-                            {card.value}
-                        </h2>
-
-
-                    </div>
-
-
-                ))
-            }
-
-
+        <div className="report-cards stats-grid">
+            {cards.map((card) => (
+                <StatCard key={card.title} title={card.title} value={card.value} />
+            ))}
         </div>
-
     );
-
 };
-
 
 export default ReportCards;
