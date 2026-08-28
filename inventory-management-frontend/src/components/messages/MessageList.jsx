@@ -96,19 +96,13 @@ const MessageList = ({
 
         }
 
-        const lastMessage =
-            messages[messages.length - 1];
-
-        const sentByCurrentUser =
-            lastMessage?.senderId === currentUserId;
-
-        if (shouldStickToBottomRef.current || sentByCurrentUser) {
+        if (shouldStickToBottomRef.current) {
             requestAnimationFrame(() => {
                 scrollToBottom();
             });
         }
 
-    }, [messages, currentUserId]);
+    }, [messages]);
 
     if (!messages.length) {
         return (

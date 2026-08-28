@@ -16,11 +16,11 @@
     color:var(--sidebar-text);
 
 
-    padding:clamp(14px,1.5vw,20px);
+    padding:clamp(10px,1.2vw,14px) clamp(14px,1.5vw,20px);
     overflow-y:auto;
     display:flex;
     flex-direction:column;
-    gap:14px;
+    gap:8px;
 
 
     transition:var(--transition-normal);
@@ -50,8 +50,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 4px;
-    margin-bottom: 2px; 
+    margin: 0;
 }
 
 .logo-img {
@@ -164,7 +163,7 @@
     .sidebar-logo{
 
         justify-content:flex-start;
-        margin-bottom:12px;
+        margin-bottom:6px;
 
     }
 
