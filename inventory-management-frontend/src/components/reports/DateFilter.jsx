@@ -69,6 +69,7 @@ const DateFilter = ({ onFilter }) => {
 
                         type="date"
                         className="date-input"
+                        aria-label="From"
 
                         value={startDate}
 
@@ -98,6 +99,8 @@ const DateFilter = ({ onFilter }) => {
 
                         type="date"
                         className="date-input"
+                        aria-label="To"
+                        min={startDate}
 
                         value={endDate}
 

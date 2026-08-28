@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import SalesReport from "./SalesReport";
 import InventoryReport from "./InventoryReport";
 import CustomerReport from "./CustomerReport";
@@ -24,7 +22,7 @@ const ReportTabs = ({
         <div className="report-tabs mb-4">
 
 
-            <div className="tabs-buttons">
+            <div className="tabs-buttons" role="tablist" aria-label="Report types">
 
 
                 {tabs.map((tab) => (
@@ -34,6 +32,9 @@ const ReportTabs = ({
                         className={activeTab === tab.key ? "tab-button is-active" : "tab-button"}
                         onClick={() => onTabChange(tab.key)}
                         aria-pressed={activeTab === tab.key}
+                        role="tab"
+                        aria-selected={activeTab === tab.key}
+                        tabIndex={activeTab === tab.key ? 0 : -1}
                     >
                         {tab.label}
                     </button>
@@ -44,7 +45,7 @@ const ReportTabs = ({
 
 
 
-            <div className="tab-content">
+            <div className="tab-content" role="tabpanel">
 
 
                 {
