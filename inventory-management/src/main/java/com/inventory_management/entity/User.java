@@ -42,6 +42,9 @@ public class User {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
     @PrePersist
     protected void onCreate() {
         if (isActive == null) {
