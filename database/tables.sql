@@ -6,7 +6,8 @@ CREATE TABLE users (
     role VARCHAR(50) NOT NULL,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP
+    deleted_at TIMESTAMP,
+    profile_picture VARCHAR(255)
 );
 
 CREATE TABLE categories (

@@ -8,6 +8,7 @@ USERS(
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
+    profile_picture VARCHAR(255),
 
     PK(user_id)
 )
