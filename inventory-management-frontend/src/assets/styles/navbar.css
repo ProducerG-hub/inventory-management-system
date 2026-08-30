@@ -108,7 +108,16 @@
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
+    border: 0;
+    padding: 0;
+    overflow: hidden;
     transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.user-profile-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 

@@ -1,0 +1,150 @@
+.profile-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 1000;
+}
+
+.profile-modal {
+    width: 100%;
+    max-width: 500px;
+
+    background: #ffffff;
+    border-radius: 16px;
+
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+
+    overflow: hidden;
+}
+
+.profile-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.profile-modal-header h3 {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.profile-modal-header p {
+    margin: 5px 0 0;
+
+    font-size: 13px;
+    color: #64748b;
+}
+
+.modal-close-btn {
+    border: none;
+    background: transparent;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    color: #64748b;
+
+    font-size: 20px;
+}
+
+.modal-close-btn:hover {
+    background: #f1f5f9;
+}
+
+.profile-modal-form {
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #334155;
+}
+
+.form-group input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    color: #1e293b;
+
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #2563eb;
+}
+
+.form-group input:disabled {
+    background: #f8fafc;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.form-group small {
+    display: block;
+
+    margin-top: 6px;
+
+    font-size: 12px;
+
+    color: #94a3b8;
+}
+
+.profile-modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 28px;
+}
+
+.profile-modal-actions .btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
