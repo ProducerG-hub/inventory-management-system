@@ -7,14 +7,16 @@ import { Client } from "@stomp/stompjs";
 import navigation from "../../config/constants/navigation";
 import ROUTES from "../../config/constants/routes";
 import messageService from "../../services/messageService";
+import profileService from "../../services/profileService";
 import storage from "../../utils/authStorage";
 
 const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
+    const [imageLoadFailed, setImageLoadFailed] = useState(false);
     
     
-    const { user, logout } = useAuth(); 
+    const { user, logout, updateUser } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -47,6 +49,35 @@ const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
         
         return fullName.substring(0, 2).toUpperCase();
     };
+
+    const profilePictureUrl = user?.profilePicture
+        ? user.profilePicture.startsWith("http")
+            ? user.profilePicture
+            : `http://localhost:8080${user.profilePicture}`
+        : null;
+
+    useEffect(() => {
+
+        const loadProfile = async () => {
+
+            try {
+                const profile = await profileService.getMyProfile();
+                updateUser(profile);
+            } catch (error) {
+                console.error("Error loading profile:", error);
+            }
+
+        };
+
+        if (user?.userId || user?.id) {
+            void loadProfile();
+        }
+
+    }, [user?.userId, user?.id, updateUser]);
+
+    useEffect(() => {
+        setImageLoadFailed(false);
+    }, [profilePictureUrl]);
 
 
     const loadUnreadCount = useCallback(async () => {
@@ -184,14 +215,23 @@ const Navbar = ({ onMenuClick, isSidebarOpen = false }) => {
 
                 <div className="profile-dropdown-wrapper">
                     
-                    <div 
+                    <button
+                        type="button"
                         className="user-profile-circle" 
                         onClick={toggleProfile} 
                         title="User Profile"
+                        aria-label="Open user profile menu"
                     >
-                        
-                        <span>{getInitials(user?.fullName)}</span>
-                    </div>
+                        {profilePictureUrl && !imageLoadFailed ? (
+                            <img
+                                src={profilePictureUrl}
+                                alt={`${user?.fullName || "User"} profile`}
+                                onError={() => setImageLoadFailed(true)}
+                            />
+                        ) : (
+                            <span>{getInitials(user?.fullName)}</span>
+                        )}
+                    </button>
 
                     {isProfileOpen && (
                         <div className="profile-popup-card">

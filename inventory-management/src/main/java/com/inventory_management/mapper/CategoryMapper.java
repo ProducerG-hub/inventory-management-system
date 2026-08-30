@@ -8,7 +8,6 @@ import com.inventory_management.entity.Category;
 
 import org.mapstruct.Mapper;
 
-
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
 

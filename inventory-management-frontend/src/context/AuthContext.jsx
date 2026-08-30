@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import storage from "../utils/authStorage";
 
 
@@ -44,6 +44,24 @@ export const AuthProvider = ({ children }) => {
     };
 
 
+    const updateUser = useCallback((userData) => {
+
+        setUser((currentUser) => {
+
+            const updatedUser = {
+                ...currentUser,
+                ...userData
+            };
+
+            storage.setUser(updatedUser);
+
+            return updatedUser;
+
+        });
+
+    }, []);
+
+
     const value = {
 
         user,
@@ -51,6 +69,8 @@ export const AuthProvider = ({ children }) => {
         token,
 
         login,
+
+        updateUser,
 
         logout,
 
