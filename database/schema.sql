@@ -214,3 +214,119 @@ MESSAGES(
     1 Conversation can have many Messages (1:M)
     1 User can send many Messages (1:M)
 )
+
+AUDIT_LOGS(
+    audit_id BIGSERIAL,
+    user_id INTEGER,
+    action VARCHAR(50),
+    entity_type VARCHAR(50),
+    entity_id INTEGER,
+    description TEXT,
+    old_values JSONB,
+    new_values JSONB,
+    ip_address INET,
+    user_agent TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PK(audit_id),
+
+    FK(user_id)
+        REFERENCES USERS(user_id)
+        ON DELETE SET NULL
+
+    CONSTRAINT chk_audit_logs_action
+    CHECK (
+        action IN (
+            'CREATE',
+            'UPDATE',
+            'DELETE',
+            'RESTORE',
+            'ACTIVATE',
+            'DEACTIVATE',
+            'LOGIN_SUCCESS',
+            'LOGIN_FAILED',
+            'LOGOUT',
+            'PASSWORD_CHANGE',
+            'CREATE_SALE',
+            'CANCEL_SALE'
+        )
+    ),
+
+    CONSTRAINT chk_audit_logs_entity_action
+    CHECK (
+        (entity_type = 'USER' AND action IN (
+            'CREATE',
+            'UPDATE',
+            'UPDATE_PROFILE',
+            'ACTIVATE',
+            'DEACTIVATE'
+        ))
+
+        OR
+
+        (entity_type = 'CATEGORY' AND action IN (
+            'CREATE',
+            'UPDATE',
+            'DEACTIVATE',
+            'RESTORE'
+        ))
+
+        OR
+
+        (entity_type = 'SUPPLIER' AND action IN (
+            'CREATE',
+            'UPDATE',
+            'DEACTIVATE',
+            'RESTORE'
+        ))
+
+        OR
+
+        (entity_type = 'PRODUCT' AND action IN (
+            'CREATE',
+            'UPDATE',
+            'DEACTIVATE',
+            'RESTORE'
+        ))
+
+        OR
+
+        (entity_type = 'CUSTOMER' AND action IN (
+            'CREATE',
+            'UPDATE'
+        ))
+
+        OR
+
+        (entity_type = 'SALE' AND action IN (
+            'CREATE',
+            'CANCEL'
+        ))
+
+        OR
+
+        (entity_type = 'STOCK_MOVEMENT' AND action = 'CREATE')
+
+        OR
+
+        (entity_type = 'CONVERSATION' AND action = 'CREATE')
+
+        OR
+
+        (entity_type = 'MESSAGE' AND action IN (
+            'CREATE',
+            'DELETE'
+        ))
+
+        OR
+
+        (entity_type = 'AUTHENTICATION' AND action IN (
+            'LOGIN_SUCCESS',
+            'LOGIN_FAILED',
+            'LOGOUT'
+        ))
+    ),
+
+    -- cardinalities
+    1 User can have many Audit Logs (1:M)
+)
