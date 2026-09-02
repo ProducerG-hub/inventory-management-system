@@ -1,3 +1,5 @@
+DATABASE_NAME = 'inventorydb'
+
 -- Users table schema
 USERS(
     user_id SERIAL,
