@@ -86,7 +86,7 @@ public class SaleController {
     }
 
     @GetMapping("/{id}/receipt")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     @Operation(
             summary = "Generate receipt",
             description = "Returns receipt details for a completed sale"

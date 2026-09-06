@@ -178,16 +178,43 @@ public class ProductServiceImpl implements ProductService {
                         new RuntimeException("Product not found")
                 );
 
+        Integer previousQuantity = existingProduct.getQuantity();
+        Integer updatedQuantity = request.getQuantity();
+
         existingProduct.setProductName(request.getProductName());
         existingProduct.setBuyingPrice(request.getBuyingPrice());
         existingProduct.setSellingPrice(request.getSellingPrice());
-        existingProduct.setQuantity(request.getQuantity());
+        existingProduct.setQuantity(updatedQuantity);
         existingProduct.setIsActive(request.getIsActive());
         existingProduct.setCategory(getCategoryById(request.getCategoryId()));
         existingProduct.setSupplier(getSupplierById(request.getSupplierId()));
 
         Product updatedProduct = productRepository.save(existingProduct);
         logger.info("Product updated: {}", updatedProduct.getProductName());
+
+        //recording the stock movement if the quantity has changed
+        if (!previousQuantity.equals(updatedQuantity)) {
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() ->
+                            new RuntimeException("User not found")
+                    );
+
+            StockMovement movement = new StockMovement();
+            movement.setProduct(updatedProduct);
+            movement.setUser(user);
+            movement.setQuantity(Math.abs(updatedQuantity - previousQuantity));
+            movement.setMovementType(
+                    updatedQuantity > previousQuantity
+                            ? movementType.IN
+                            : movementType.OUT
+            );
+            if(movement.getMovementType() == movementType.IN) {
+                movement.setRemarks("Stock increased");
+            } else {
+                movement.setRemarks("Stock decreased");
+            }
+            stockMovementRepository.save(movement);
+        }
 
         return productMapper.toResponse(updatedProduct);
     }
