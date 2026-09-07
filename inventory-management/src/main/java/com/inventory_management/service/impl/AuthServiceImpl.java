@@ -1,5 +1,6 @@
 package com.inventory_management.service.impl;
 
+import com.inventory_management.audit.AuditEventType;
 import com.inventory_management.dto.request.LoginRequestDTO;
 import com.inventory_management.dto.response.LoginResponseDTO;
 import com.inventory_management.entity.User;
@@ -18,6 +19,8 @@ import com.inventory_management.audit.AuditAction;
 import com.inventory_management.audit.AuditEntityType;
 import com.inventory_management.event.AuditEvent;
 import com.inventory_management.service.AuditEventPublisher;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
 @RequiredArgsConstructor
@@ -30,51 +33,84 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponseDTO login(LoginRequestDTO request) {
 
+        try {
+
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    request.getEmail(),
+                                    request.getPassword()
+                            )
+                    );
+
+            CustomUserDetails userDetails =
+                    (CustomUserDetails) authentication.getPrincipal();
+
+            User user = userDetails.getUser();
+
+            auditEventPublisher.publish(
+                    AuditEvent.builder()
+                            .user(user)
+                            .action(AuditAction.LOGIN_SUCCESS)
+                            .entityType(AuditEntityType.AUTHENTICATION)
+                            .entityId(null)
+                            .description("User logged in successfully")
+                            .eventType(AuditEventType.SECURITY)
+                            .build()
+            );
+
+            String token = jwtService.generateToken(userDetails);
+
+            return new LoginResponseDTO(
+                    "Login successful",
+                    token,
+                    user.getUserId(),
+                    user.getFullName(),
+                    user.getEmail(),
+                    user.getRole()
+            );
+
+        } catch (AuthenticationException e) {
+
+            auditEventPublisher.publish(
+                    AuditEvent.builder()
+                            .user(null)
+                            .action(AuditAction.LOGIN_FAILED)
+                            .entityType(AuditEntityType.AUTHENTICATION)
+                            .entityId(null)
+                            .description("User login failed")
+                            .eventType(AuditEventType.SECURITY)
+                            .build()
+            );
+
+            throw e;
+        }
+    }
+
+    @Override
+    public void logout() {
+
         Authentication authentication =
-                authenticationManager.authenticate(
+                SecurityContextHolder.getContext().getAuthentication();
 
-                        new UsernamePasswordAuthenticationToken(
+        User user = null;
 
-                                request.getEmail(),
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
 
-                                request.getPassword()
+            user = userDetails.getUser();
+        }
 
-                        )
-
-                );
-
-        CustomUserDetails userDetails =
-                (CustomUserDetails) authentication.getPrincipal();
-
-        User user = userDetails.getUser();
         auditEventPublisher.publish(
                 AuditEvent.builder()
                         .user(user)
-                        .action(AuditAction.LOGIN_SUCCESS)
+                        .action(AuditAction.LOGOUT)
                         .entityType(AuditEntityType.AUTHENTICATION)
                         .entityId(null)
-                        .description("User logged in successfully")
+                        .description("User logged out")
+                        .eventType(AuditEventType.SECURITY)
                         .build()
         );
-
-        String token = jwtService.generateToken(userDetails);
-
-        return new LoginResponseDTO(
-
-                "Login successful",
-                token,
-
-                user.getUserId(),
-                
-                user.getFullName(),
-
-
-                user.getEmail(),
-
-                user.getRole()
-
-        );
-
     }
-
 }

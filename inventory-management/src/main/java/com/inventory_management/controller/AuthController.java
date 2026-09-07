@@ -19,18 +19,19 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(
-
-            @Valid @RequestBody LoginRequestDTO request
-
-    ) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
 
         return ResponseEntity.ok(
-
                 authService.login(request)
-
         );
 
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+
+        authService.logout();
+        return ResponseEntity.noContent().build();
     }
 
 }
