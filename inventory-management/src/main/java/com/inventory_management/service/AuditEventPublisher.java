@@ -29,6 +29,7 @@ public class AuditEventPublisher {
                                 auditRequestContext.getIpAddress()
                         ))
                         .userAgent(auditRequestContext.getUserAgent())
+                        .eventType(event.getEventType())
                         .build()
         );
     }

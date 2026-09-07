@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import storage from "../utils/authStorage";
+import authService from "../services/authService";
 
 
 const AuthContext = createContext();
@@ -32,15 +33,18 @@ export const AuthProvider = ({ children }) => {
     };
 
 
-    const logout = () => {
+    const logout = async () => {
 
-        storage.clear();
+        try {
 
+            await authService.logout();
 
-        setUser(null);
+        } finally {
 
-        setToken(null);
+            setUser(null);
+            setToken(null);
 
+        }
     };
 
 

@@ -28,10 +28,19 @@ const authService = {
 
     },
 
-    logout() {
+     async logout() {
 
-        storage.clear();
+        try {
 
+            await axiosInstance.post(
+                API_ENDPOINTS.AUTH.LOGOUT
+            );
+
+        } finally {
+
+            storage.clear();
+
+        }
     }
 
 };

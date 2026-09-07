@@ -6,5 +6,6 @@ import com.inventory_management.dto.response.LoginResponseDTO;
 public interface AuthService {
 
     LoginResponseDTO login(LoginRequestDTO request);
+    void logout();
 
 }
