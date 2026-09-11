@@ -336,6 +336,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
         @Transactional
         public void deleteProduct(Integer productId) {
+        
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        User authUser = null;
+
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+            authUser = userDetails.getUser();
+        }
+         else {
+            throw new IllegalStateException("Authenticated user not found");
+        }
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() ->
@@ -345,6 +356,18 @@ public class ProductServiceImpl implements ProductService {
         product.setIsActive(false);
 
         productRepository.save(product);
+
+        auditEventPublisher.publish(
+                AuditEvent.builder()
+                        .user(authUser)
+                        .action(AuditAction.DEACTIVATE)
+                        .entityType(AuditEntityType.PRODUCT)
+                        .entityId(product.getProductId())
+                        .description("Product deactivated successfully")
+                        .eventType(AuditEventType.BUSINESS)
+                        .build()
+        );
+
         }
 
         @Override
@@ -399,6 +422,17 @@ public class ProductServiceImpl implements ProductService {
 @Override
 public void restoreProduct(Integer id){
 
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        User authUser = null;
+
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+            authUser = userDetails.getUser();
+        }
+         else {
+            throw new IllegalStateException("Authenticated user not found");
+        }
+
     Product product = productRepository.findById(id)
             .orElseThrow(() ->
                     new ResourceNotFoundException("Product not found"));
@@ -407,6 +441,16 @@ public void restoreProduct(Integer id){
 
     productRepository.save(product);
 
+    auditEventPublisher.publish(
+            AuditEvent.builder()
+                    .user(authUser)
+                    .action(AuditAction.RESTORE)
+                    .entityType(AuditEntityType.PRODUCT)
+                    .entityId(product.getProductId())
+                    .description("Product restored successfully")
+                    .eventType(AuditEventType.BUSINESS)
+                    .build()
+    );
 }
 
 }
