@@ -21,6 +21,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inventory_management.audit.AuditAction;
+import com.inventory_management.audit.AuditEntityType;
+import com.inventory_management.audit.AuditEventType;
+import com.inventory_management.event.AuditEvent;
+import com.inventory_management.service.AuditEventPublisher;
+import com.inventory_management.security.CustomUserDetails;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+
 import java.time.LocalDateTime;
 
 @Service
@@ -34,9 +50,23 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper objectMapper;
+    private final AuditEventPublisher auditEventPublisher;
 
     @Override
     public UserResponseDTO createUser(UserRequestDTO request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authUser = null;
+
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+
+            authUser = userDetails.getUser();
+        }
+        else {
+            throw new IllegalStateException("Authenticated user not found");
+        }
 
         User user = userMapper.toEntity(request);
 
@@ -47,7 +77,33 @@ public class UserServiceImpl implements UserService {
         user.setIsActive(true);
         user.setDeletedAt(null);
 
+        Map<String, Object> newValues = new HashMap<>();
+        newValues.put("fullName", request.getFullName());
+        newValues.put("email", request.getEmail());
+        newValues.put("role", request.getRole());
+        newValues.put("isActive", user.getIsActive());
+
+        String newValuesJson;
+
+        try{
+                newValuesJson = objectMapper.writeValueAsString(newValues);
+        } catch (JsonProcessingException e) {
+                throw new RuntimeException("Error converting new values to JSON", e);
+        }
+
         User savedUser = userRepository.save(user);
+
+        auditEventPublisher.publish(
+                AuditEvent.builder()
+                        .user(authUser)
+                        .action(AuditAction.CREATE)
+                        .entityType(AuditEntityType.USER)
+                        .entityId(savedUser.getUserId())
+                        .description("User created successfully")
+                        .newValues(newValuesJson)
+                        .eventType(AuditEventType.BUSINESS)
+                        .build()
+        );
 
         logger.info("User created: {}", savedUser.getEmail());
 
@@ -154,6 +210,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Integer userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authUser = null;
+
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+
+            authUser = userDetails.getUser();
+        }
+        else {
+            throw new IllegalStateException("Authenticated user not found");
+        }
 
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() ->
@@ -164,6 +232,17 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(existingUser);
 
+        auditEventPublisher.publish(
+                AuditEvent.builder()
+                        .user(authUser)
+                        .action(AuditAction.DEACTIVATE)
+                        .entityType(AuditEntityType.USER)
+                        .entityId(existingUser.getUserId())
+                        .description("User deactivated successfully")
+                        .eventType(AuditEventType.BUSINESS)
+                        .build()
+        );
+
         logger.info("User deactivated: {}",
                 existingUser.getEmail());
 
@@ -171,6 +250,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void restoreUser(Integer userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authUser = null;
+
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+
+            authUser = userDetails.getUser();
+        }
+        else {
+            throw new IllegalStateException("Authenticated user not found");
+        }
 
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() ->
@@ -180,6 +271,17 @@ public class UserServiceImpl implements UserService {
         existingUser.setDeletedAt(null);
 
         userRepository.save(existingUser);
+
+        auditEventPublisher.publish(
+                AuditEvent.builder()
+                        .user(authUser)
+                        .action(AuditAction.ACTIVATE)
+                        .entityType(AuditEntityType.USER)
+                        .entityId(existingUser.getUserId())
+                        .description("User activated successfully")
+                        .eventType(AuditEventType.BUSINESS)
+                        .build()
+        );
 
         logger.info("User restored: {}",
                 existingUser.getEmail());
