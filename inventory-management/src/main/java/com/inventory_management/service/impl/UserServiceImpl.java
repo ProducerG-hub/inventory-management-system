@@ -177,15 +177,47 @@ public class UserServiceImpl implements UserService {
             Integer userId,
             UserRequestDTO request
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authUser = null;
+
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+
+            authUser = userDetails.getUser();
+        }
+        else {
+            throw new IllegalStateException("Authenticated user not found");
+        }
+
+        Map<String, Object> oldValues = new HashMap<>();
+        Map<String, Object> newValues = new HashMap<>();
 
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() ->
                         new RuntimeException("User not found"));
 
+        if (!Objects.equals(existingUser.getFullName(), request.getFullName())) {
+            oldValues.put("fullName", existingUser.getFullName());
+            newValues.put("fullName", request.getFullName());
+        }
+
+        if (!Objects.equals(existingUser.getEmail(), request.getEmail())) {
+            oldValues.put("email", existingUser.getEmail());
+            newValues.put("email", request.getEmail());
+        }
+
+        if (!Objects.equals(existingUser.getRole(), request.getRole())) {
+            oldValues.put("role", existingUser.getRole());
+            newValues.put("role", request.getRole());
+        }
+
+        boolean passwordChanged = request.getPassword() != null
+                && !request.getPassword().isBlank();
+
         existingUser.setFullName(request.getFullName());
         existingUser.setEmail(request.getEmail());
         existingUser.setRole(request.getRole());
-        existingUser.setIsActive(request.getIsActive());
 
         /*
          * Update password only if supplied
@@ -204,6 +236,35 @@ public class UserServiceImpl implements UserService {
 
         logger.info("User updated: {}",
                 updatedUser.getEmail());
+
+                String oldValuesJson = null;
+                String newValuesJson = null;
+
+                if (!oldValues.isEmpty()) {
+                        try {
+                                oldValuesJson = objectMapper.writeValueAsString(oldValues);
+                                newValuesJson = objectMapper.writeValueAsString(newValues);
+                        } catch (JsonProcessingException e) {
+                                throw new RuntimeException("Failed to serialize audit values", e);
+                        }
+        }
+
+       if (oldValues.isEmpty() && !passwordChanged) {
+            return userMapper.toResponse(existingUser);
+        }
+
+        auditEventPublisher.publish(
+                AuditEvent.builder()
+                        .user(authUser)
+                        .action(AuditAction.UPDATE)
+                        .entityType(AuditEntityType.USER)
+                        .entityId(updatedUser.getUserId())
+                        .description("User updated successfully")
+                        .oldValues(oldValuesJson)
+                        .newValues(newValuesJson)
+                        .eventType(AuditEventType.BUSINESS)
+                        .build()
+        );
 
         return userMapper.toResponse(updatedUser);
     }
