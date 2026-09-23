@@ -1,67 +1,67 @@
 package com.inventory_management.service.impl;
 
-
 import com.inventory_management.dto.request.*;
 import com.inventory_management.dto.response.*;
-
 import com.inventory_management.entity.*;
-
 import com.inventory_management.entity.enums.movementType;
-
 import com.inventory_management.mapper.SaleItemMapper;
 import com.inventory_management.mapper.SaleMapper;
-
 import com.inventory_management.repository.*;
-
 import com.inventory_management.service.SaleService;
-
 import lombok.RequiredArgsConstructor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 
-
+import com.inventory_management.audit.AuditAction;
+import com.inventory_management.audit.AuditEntityType;
+import com.inventory_management.event.AuditEvent;
+import com.inventory_management.service.AuditEventPublisher;
+import com.inventory_management.audit.AuditEventType;
+import com.inventory_management.security.CustomUserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class SaleServiceImpl implements SaleService {
 
-
     private static final Logger logger =
             LoggerFactory.getLogger(SaleServiceImpl.class);
 
-
-
     private final SaleRepository saleRepository;
-
     private final SaleItemRepository saleItemRepository;
-
     private final ProductRepository productRepository;
-
     private final CustomerRepository customerRepository;
-
-    private final UserRepository userRepository;
-
     private final StockMovementRepository stockMovementRepository;
-
-
     private final SaleMapper saleMapper;
-
     private final SaleItemMapper saleItemMapper;
-
-
-
+    private final AuditEventPublisher auditEventPublisher;
+    private final ObjectMapper objectMapper;
 
     @Override
     public SaleResponseDTO createSale(SaleRequestDTO request) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        User authUser = null;
+
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+
+            authUser = userDetails.getUser();
+        } else {
+            throw new IllegalStateException("Authenticated user not found");
+        }
 
 
         Customer customer =
@@ -70,42 +70,15 @@ public class SaleServiceImpl implements SaleService {
                                 new RuntimeException("Customer not found")
                         );
 
-
-
-        User user =
-                userRepository.findById(request.getUserId())
-                        .orElseThrow(() ->
-                                new RuntimeException("User not found")
-                        );
-
-
-
-
         Sale sale = new Sale();
-
         sale.setCustomer(customer);
-
-        sale.setUser(user);
-
+        sale.setUser(authUser);
         sale.setTotalAmount(BigDecimal.ZERO);
-
-
-
-        Sale savedSale =
-                saleRepository.save(sale);
-
-
-
-
+        Sale savedSale = saleRepository.save(sale);
         BigDecimal grandTotal =
                 BigDecimal.ZERO;
 
-
-
-
         for(SaleItemRequestDTO itemRequest : request.getItems()){
-
-
 
             Product product =
                     productRepository.findById(
@@ -114,9 +87,6 @@ public class SaleServiceImpl implements SaleService {
                             .orElseThrow(() ->
                                     new RuntimeException("Product not found")
                             );
-
-
-
 
             if(!product.getIsActive()){
 
@@ -127,14 +97,9 @@ public class SaleServiceImpl implements SaleService {
 
             }
 
-
-
-
             if(product.getQuantity()
                     <
                     itemRequest.getQuantity()){
-
-
                 throw new RuntimeException(
                         "Not enough stock for "
                                 +
@@ -143,14 +108,9 @@ public class SaleServiceImpl implements SaleService {
 
             }
 
+            BigDecimal unitPrice = product.getSellingPrice();
 
-
-
-            BigDecimal unitPrice =
-                    product.getSellingPrice();
-
-            BigDecimal costPrice =
-                    product.getBuyingPrice();
+            BigDecimal costPrice = product.getBuyingPrice();
 
             BigDecimal subtotal =
                     unitPrice.multiply(
@@ -159,134 +119,99 @@ public class SaleServiceImpl implements SaleService {
                             )
                     );
 
-
-
-
-
-            SaleItem saleItem =
-                    new SaleItem();
-
-
-
+            SaleItem saleItem = new SaleItem();
             saleItem.setSale(savedSale);
-
             saleItem.setProduct(product);
-
             saleItem.setUnitPrice(unitPrice);
-
             saleItem.setCostPrice(costPrice);
-
-            saleItem.setQuantity(
-                    itemRequest.getQuantity()
-            );
-
+            saleItem.setQuantity(itemRequest.getQuantity());
             saleItem.setSubtotal(subtotal);
-
-
-
             saleItemRepository.save(saleItem);
-
-
-
-
-
-
-            // ============================
-            // UPDATE PRODUCT STOCK
-            // ============================
-
-
             product.setQuantity(
                     product.getQuantity()
                             -
                             itemRequest.getQuantity()
             );
 
-
             productRepository.save(product);
-
-
-
-
-
-
 
             // ============================
             // CREATE STOCK MOVEMENT OUT
             // ============================
 
-
             StockMovement movement =
                     new StockMovement();
 
-
-
             movement.setProduct(product);
-
-
-            movement.setUser(user);
-
-
+            movement.setUser(authUser);
             movement.setQuantity(
                     itemRequest.getQuantity()
             );
-
 
             movement.setMovementType(
                     movementType.OUT
             );
 
-
             movement.setRemarks(
                     "Sale transaction"
             );
 
-
-
             stockMovementRepository.save(movement);
 
-
-
-
-
-
-            grandTotal =
-                    grandTotal.add(subtotal);
-
-
-
+            grandTotal = grandTotal.add(subtotal);
         }
 
+        savedSale.setTotalAmount(grandTotal);
+        saleRepository.save(savedSale);
+        Map<String, Object> newValues = new HashMap<>();
 
+        newValues.put(
+                "customerId",
+                customer.getCustomerId()
+        );
 
+        newValues.put(
+                "itemCount",
+                request.getItems().size()
+        );
 
-        savedSale.setTotalAmount(
+        newValues.put(
+                "totalAmount",
                 grandTotal
         );
 
+        String newValuesJson;
 
-        saleRepository.save(savedSale);
+        try {
+            newValuesJson =
+                    objectMapper.writeValueAsString(newValues);
 
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(
+                    "Error converting sale audit values to JSON",
+                    e
+            );
+        }
 
+        auditEventPublisher.publish(
+                AuditEvent.builder()
+                        .user(authUser)
+                        .action(AuditAction.CREATE)
+                        .entityType(AuditEntityType.SALE)
+                        .entityId(savedSale.getSaleId())
+                        .description("Sale created successfully")
+                        .newValues(newValuesJson)
+                        .eventType(AuditEventType.BUSINESS)
+                        .build()
+        );
 
         logger.info(
                 "Sale completed successfully Total={}",
                 grandTotal
         );
 
-
-
         return saleMapper.toResponse(savedSale);
-
     }
-
-
-
-
-
-
-
-
 
     @Override
     @Transactional(readOnly = true)
@@ -313,18 +238,9 @@ public class SaleServiceImpl implements SaleService {
                         sort
                 );
 
-
-
         return saleRepository.findAll(pageable)
                 .map(saleMapper::toResponse);
-
     }
-
-
-
-
-
-
 
     @Override
     @Transactional(readOnly = true)
@@ -352,23 +268,14 @@ public class SaleServiceImpl implements SaleService {
                         sort
                 );
 
-
-
         return saleRepository
                 .searchSales(keyword,pageable)
                 .map(saleMapper::toResponse);
-
     }
-
-
-
-
-
 
     @Override
     @Transactional(readOnly = true)
     public ReceiptResponseDTO getReceipt(Integer saleId){
-
 
         Sale sale =
                 saleRepository.findById(saleId)
@@ -376,58 +283,40 @@ public class SaleServiceImpl implements SaleService {
                                 new RuntimeException("Sale not found")
                         );
 
-
-
         ReceiptResponseDTO receipt =
                 new ReceiptResponseDTO();
-
-
 
         receipt.setSaleId(
                 sale.getSaleId()
         );
 
-
         receipt.setSaleDate(
                 sale.getSaleDate()
         );
-
 
         receipt.setCustomerName(
                 sale.getCustomer()
                         .getCustomerName()
         );
 
-
         receipt.setCashier(
                 sale.getUser()
                         .getFullName()
         );
 
-
         receipt.setTotalAmount(
                 sale.getTotalAmount()
         );
 
-
-
         receipt.setItems(
-
                 sale.getSaleItems()
                         .stream()
                         .map(saleItemMapper::toResponse)
                         .toList()
-
         );
 
-
-
         return receipt;
-
     }
-
-
-
 
     @Override
     public SaleResponseDTO getSaleById(Integer id){
@@ -438,13 +327,9 @@ public class SaleServiceImpl implements SaleService {
                                 new RuntimeException("Sale not found")
                         );
 
-
         return saleMapper.toResponse(sale);
 
     }
-
-
-
 
     @Override
     public SaleResponseDTO updateSale(
@@ -458,9 +343,6 @@ public class SaleServiceImpl implements SaleService {
 
     }
 
-
-
-
     @Override
     public void deleteSale(Integer id){
 
@@ -470,19 +352,14 @@ public class SaleServiceImpl implements SaleService {
 
     }
 
-
-
-
     @Override
     public CheckoutResponseDTO checkout(
             CheckoutRequestDTO request
     ){
-
         throw new UnsupportedOperationException(
                 "Not implemented"
         );
 
     }
-
 
 }
