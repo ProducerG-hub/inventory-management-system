@@ -29,8 +29,4 @@ public interface StockMovementService {
 
     StockMovementStatsDTO getStats();
 
-    StockMovementResponseDTO updateStockMovement(Integer movementId, StockMovementRequestDTO request);
-
-    void deleteStockMovement(Integer movementId);
-
 }

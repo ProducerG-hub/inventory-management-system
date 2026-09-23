@@ -84,27 +84,4 @@ public class StockMovementController {
         return ResponseEntity.ok(stockMovementService.getStockMovementById(id));
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Update stock movement by ID", description = "Updates an existing stock movement by its ID")
-    public ResponseEntity<StockMovementResponseDTO> updateStockMovement(
-            @PathVariable Integer id,
-            @RequestBody StockMovementRequestDTO request
-    ) {
-
-        return ResponseEntity.ok(stockMovementService.updateStockMovement(id, request));
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-        @Operation(summary = "Delete stock movement by ID", description = "Deletes a stock movement by its ID")
-    public ResponseEntity<Void> deleteStockMovement(
-            @PathVariable Integer id
-    ) {
-
-        stockMovementService.deleteStockMovement(id);
-
-        return ResponseEntity.noContent().build();
-    }
-
 }
