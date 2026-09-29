@@ -3,7 +3,6 @@ const API_ENDPOINTS = {
     AUTH: {
 
         LOGIN: "/auth/login",
-
         LOGOUT: "/auth/logout"
 
     },
@@ -16,13 +15,8 @@ const API_ENDPOINTS = {
 
     SALES: {
 
-
         BASE:"/sales",
-
-
         SEARCH:"/sales/search",
-
-
         RECEIPT:"/sales/{id}/receipt"
 
     },
@@ -30,7 +24,6 @@ const API_ENDPOINTS = {
     PRODUCTS: {
 
         BASE: "/products",
-
         SEARCH: "/products/search"
 
     },
@@ -38,7 +31,6 @@ const API_ENDPOINTS = {
     CATEGORIES: {
 
         BASE: "/categories",
-
         SEARCH: "/categories/search"
 
     },
@@ -46,7 +38,6 @@ const API_ENDPOINTS = {
     SUPPLIERS: {
 
         BASE: "/suppliers",
-
         SEARCH: "/suppliers/search"
 
     },
@@ -54,7 +45,6 @@ const API_ENDPOINTS = {
     USERS: {
 
         BASE: "/users",
-
         SEARCH: "/users/search"
 
     },
@@ -62,7 +52,6 @@ const API_ENDPOINTS = {
     STOCK_MOVEMENTS: {
 
     BASE: "/stock-movements",
-
     SEARCH: "/stock-movements/search"
 
     },
@@ -79,6 +68,13 @@ const API_ENDPOINTS = {
         STOCK_REPORT: "/reports/stock",
         CUSTOMER_REPORT: "/reports/customers",
         PROFIT_REPORT: "/reports/profit"
+    },
+
+    AUDIT_LOGS: {
+
+    BASE: "/audit-logs",
+    BY_ID: "/audit-logs/{id}"
+
     },
     
     PROFILE: {

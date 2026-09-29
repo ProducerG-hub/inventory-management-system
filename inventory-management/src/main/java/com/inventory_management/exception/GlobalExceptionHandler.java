@@ -2,6 +2,7 @@ package com.inventory_management.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -44,6 +45,23 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+
+        @ExceptionHandler(AccessDeniedException.class)
+        public ResponseEntity<ApiErrorException> handleAccessDenied(
+                        AccessDeniedException ex,
+                        HttpServletRequest request
+        ) {
+
+                ApiErrorException error = new ApiErrorException(
+                                LocalDateTime.now(),
+                                HttpStatus.FORBIDDEN.value(),
+                                HttpStatus.FORBIDDEN.getReasonPhrase(),
+                                ex.getMessage(),
+                                request.getRequestURI()
+                );
+
+                return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+        }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorException> handleGeneralException(

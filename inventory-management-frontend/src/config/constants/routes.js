@@ -20,6 +20,8 @@ const ROUTES = {
 
     REPORTS: "reports",
 
+    AUDIT_LOGS: "audit-logs",
+
     PROFILE: "profile",
 
     MESSAGES: "messagesPage",

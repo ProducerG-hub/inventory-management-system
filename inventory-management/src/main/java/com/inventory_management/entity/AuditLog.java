@@ -2,6 +2,7 @@ package com.inventory_management.entity;
 
 import com.inventory_management.audit.AuditAction;
 import com.inventory_management.audit.AuditEntityType;
+import com.inventory_management.audit.AuditEventType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -53,6 +54,10 @@ public class AuditLog {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+        @Enumerated(EnumType.STRING)
+        @Column(name = "event_type", nullable = false, length = 20)
+        private AuditEventType eventType;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "old_values", columnDefinition = "jsonb")

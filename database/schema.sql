@@ -221,6 +221,7 @@ AUDIT_LOGS(
     audit_id BIGSERIAL,
     user_id INTEGER,
     action VARCHAR(50),
+    event_type VARCHAR(50) DEFAULT "BUSINESS",
     entity_type VARCHAR(50),
     entity_id INTEGER,
     description TEXT,

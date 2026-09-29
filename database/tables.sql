@@ -177,8 +177,10 @@ CREATE TABLE audit_logs (
     audit_id BIGSERIAL PRIMARY KEY,
     user_id INTEGER,
     action VARCHAR(50) NOT NULL,
+    event_type VARCHAR(50) DEFAULT "BUSINESS",
     entity_type VARCHAR(50) NOT NULL,
     entity_id INTEGER,
+
     description TEXT,
     old_values JSONB,
     new_values JSONB,
