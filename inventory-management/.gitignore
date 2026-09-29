@@ -55,3 +55,5 @@ Desktop.ini
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+auditlog-test.exit

@@ -44,6 +44,7 @@ public class AuditEventListener {
                 .user(event.getUser())
                 .action(event.getAction())
                 .entityType(event.getEntityType())
+                .eventType(event.getEventType())
                 .entityId(event.getEntityId())
                 .description(event.getDescription())
                 .oldValues(event.getOldValues())

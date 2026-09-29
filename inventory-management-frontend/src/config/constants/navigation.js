@@ -5,6 +5,7 @@ import {
     Truck,
     PeopleFill,
     FileEarmarkBarGraphFill,
+    FileEarmarkFill,
     CartCheck,
     CashStack
 } from "react-bootstrap-icons";
@@ -67,13 +68,9 @@ const navigation = [
 
     {
         key:"sales-history",
-
         label:"Sales History",
-
         path:`/${ROUTES.SALES_HISTORY}`,
-
         icon:CashStack,
-
         roles:[
             ROLES.ADMIN
         ]
@@ -84,6 +81,14 @@ const navigation = [
         label: "Reports",
         path: `/${ROUTES.REPORTS}`,
         icon: FileEarmarkBarGraphFill,
+        roles: [ROLES.ADMIN]
+    },
+
+    {
+        key: "audit-logs",
+        label: "Audit Logs",
+        path: `/${ROUTES.AUDIT_LOGS}`,
+        icon: FileEarmarkFill,
         roles: [ROLES.ADMIN]
     },
 

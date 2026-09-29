@@ -32,6 +32,10 @@ const PERMISSIONS = {
         ROLES.ADMIN
     ],
 
+    VIEW_AUDIT_LOGS: [
+        ROLES.ADMIN
+    ],
+
     VIEW_PROFILE: [
         ROLES.ADMIN,
         ROLES.STAFF

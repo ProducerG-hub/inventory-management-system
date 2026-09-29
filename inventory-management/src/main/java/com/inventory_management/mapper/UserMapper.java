@@ -2,6 +2,7 @@ package com.inventory_management.mapper;
 
 import com.inventory_management.dto.request.UserRequestDTO;
 import com.inventory_management.dto.response.UserResponseDTO;
+import com.inventory_management.dto.audit.UserSummaryDTO;
 import com.inventory_management.entity.User;
 import org.mapstruct.Mapper;
 
@@ -12,4 +13,5 @@ public interface UserMapper {
 
     UserResponseDTO toResponse(User user);
 
+    UserSummaryDTO toSummary(User user);
 }
