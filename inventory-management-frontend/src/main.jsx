@@ -19,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     position="top-right"
     reverseOrder={false}
     gutter={12}
+            containerClassName="single-toast-container"
     toastOptions={{
         duration: 4000,
 

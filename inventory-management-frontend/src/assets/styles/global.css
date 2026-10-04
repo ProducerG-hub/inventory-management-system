@@ -29,6 +29,10 @@ body{
 
 }
 
+.single-toast-container > div:not(:first-child){
+    display:none !important;
+}
+
 a{
 
     text-decoration:none;
